@@ -16,7 +16,8 @@ class _LoginPageState extends State<LoginPage> {
           fontSize: 30,
           fontWeight: FontWeight.bold,
           letterSpacing: 3.0,
-        ), textAlign: TextAlign.center);
+        ),
+        textAlign: TextAlign.center);
 
     final email = TextFormField(
       keyboardType: TextInputType.emailAddress,
@@ -50,8 +51,8 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.of(context).pushNamed(MyHomePage.tag);
         },
         padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
-        child: Text('Log In', style: TextStyle(color: Colors.white)),
+        color: Colors.white,
+        child: Text('Log In', style: TextStyle(color: const Color(0xFFf96327))),
       ),
     );
 
@@ -65,8 +66,9 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.of(context).pushNamed(MyHomePage.tag);
         },
         padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
-        child: Text('Register', style: TextStyle(color: Colors.white)),
+        color: Colors.white,
+        child:
+            Text('Register', style: TextStyle(color: const Color(0xFFf96327))),
       ),
     );
 
@@ -79,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.orange,
+      backgroundColor: const Color(0xFFf96327),
       body: Center(
         child: ListView(
           shrinkWrap: true,

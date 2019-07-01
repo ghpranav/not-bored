@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 //PAGES
 import './about.dart';
 import './info.dart';
-import './searchbar.dart';
-// import './searchBar2.dart';
-import './rippleEffect.dart';
 
 class MyHomePage extends StatefulWidget {
   static String tag = 'home-page';
@@ -21,15 +18,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFf96327),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
-            },
-            alignment: Alignment.centerLeft,
-          )
-        ],
       ),
       drawer: Theme(
         data: Theme.of(context).copyWith(

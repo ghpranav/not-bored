@@ -1,23 +1,106 @@
 import 'package:flutter/material.dart';
 
 //PAGES
-import './about.dart';
-import './info.dart';
+import 'about.dart';
+import 'info.dart';
+import 'searchbar.dart';
+import 'auth.dart';
+
+class MyStatefulWidget extends StatefulWidget {
+  MyStatefulWidget({Key key}) : super(key: key);
+
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static List<Widget> _widgetOptions = <Widget>[
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyHomePage(),
+    ),
+    Text(
+      'Search',
+      style: optionStyle,
+    ),
+    Text(
+      'Friends',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    if (index == 1) {
+      showSearch(context: context, delegate: DataSearch());
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var bottomNavigationBar2 = BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          title: Text('Home'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          title: Text('Search'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.people),
+          title: Text('Friends'),
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.amber[800],
+      onTap: _onItemTapped,
+    );
+    return Scaffold(
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: bottomNavigationBar2,
+    );
+  }
+}
 
 class MyHomePage extends StatefulWidget {
   static String tag = 'home-page';
-  
+  MyHomePage({Key key, this.auth, this.userId, this.onSignedOut})
+      : super(key: key);
+
+  final BaseAuth auth;
+  final VoidCallback onSignedOut;
+  final String userId;
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  _signOut() async {
+    try {
+      await widget.auth.signOut();
+      widget.onSignedOut();
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFf96327),
+        title: Text("Not Bored"),
       ),
       drawer: Theme(
         data: Theme.of(context).copyWith(
@@ -60,6 +143,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(
                           builder: (BuildContext context) => AboutPage()));
                 },
+              ),
+              ListTile(
+                title: Text('Log Out'),
+                onTap: _signOut,
               )
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:not_bored/reg_page.dart';
 import 'homepage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -63,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed(MyHomePage.tag);
+          Navigator.of(context).pushNamed(RegPage.tag);
         },
         padding: EdgeInsets.all(12),
         color: Colors.white,

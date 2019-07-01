@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //PAGES
 import 'homepage.dart';
 import 'login_page.dart';
+import 'package:not_bored/reg_page.dart';
 import 'searchbar.dart';
 
 void main() {
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     LoginPage.tag: (context) => LoginPage(),
     MyHomePage.tag: (context) => MyStatefulWidget(),
+    RegPage.tag: (context) => RegPage(),
   };
 
   @override

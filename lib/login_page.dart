@@ -182,28 +182,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  // Widget _showBody() {
-  //   return Scaffold(
-  //     backgroundColor: const Color(0xFFf96327),
-  //     body: Center(
-  //       child: ListView(
-  //         shrinkWrap: true,
-  //         padding: EdgeInsets.only(left: 24.0, right: 24.0),
-  //         children: <Widget>[
-  //           _showLogo(),
-  //           SizedBox(height: 40.0),
-  //           _showEmailInput(),
-  //           SizedBox(height: 8.0),
-  //           _showPasswordInput(),
-  //           SizedBox(height: 24.0),
-  //           _showLoginButton(),
-  //           _showRegButton(),
-  //           _showErrorMessage(),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+
 
   Widget _showBody() {
     return new Scaffold(

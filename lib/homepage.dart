@@ -94,6 +94,22 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     }
   }
+  int _selectedIndex=0;
+
+    void _onItemTapped(int index) {
+    if (index == 1) {
+      showSearch(context: context, delegate: DataSearch());
+    }
+    else if(index == 2){
+    
+
+    }
+    else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +181,26 @@ class _MyHomePageState extends State<MyHomePage> {
         fillColor: const Color(0xFFf96327),
         padding: const EdgeInsets.all(15.0),
       ),
+      bottomNavigationBar: BottomNavigationBar(items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          title: Text('Home'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          title: Text('Search'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.people),
+          title: Text('Friends'),
+          
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.amber[800],
+      onTap: _onItemTapped,),
     );
   }
 }
+
+

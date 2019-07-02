@@ -6,6 +6,7 @@ import 'about.dart';
 import 'info.dart';
 import 'searchbar.dart';
 import 'auth.dart';
+import 'my_friends.dart';
 
 class MyHomePage extends StatefulWidget {
   static String tag = 'home-page';

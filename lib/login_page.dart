@@ -172,8 +172,8 @@ class _LoginPageState extends State<LoginPage> {
       return new Text(
         _errorMessage,
         style: TextStyle(
-            fontSize: 13.0,
-            color: Colors.red,
+            fontSize: 15.0,
+            color: Colors.black,
             height: 1.0,
             fontWeight: FontWeight.w300),
       );

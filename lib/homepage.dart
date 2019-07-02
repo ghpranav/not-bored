@@ -209,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: const Color(0xFFf96327),
         onTap: _onItemTapped,
       ),
     );

@@ -54,24 +54,16 @@ class DataSearch extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     final suggestionList = query.isEmpty
         ? recentfriends
-        : friends.where((p) => p.contains(query)).toList();
+        : friends.where((p) => p.toLowerCase().contains(query)).toList();
+     
+
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
             onTap: () {
               showResults(context);
             },
             leading: Icon(Icons.person),
-            title: RichText(
-              text: TextSpan(
-                  text: suggestionList[index].substring(0, query.length),
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                        text: suggestionList[index].substring(query.length),
-                        style: TextStyle(color: Colors.grey))
-                  ]),
-            ),
+            title: Text(suggestionList[index])
           ),
       itemCount: suggestionList.length,
     );

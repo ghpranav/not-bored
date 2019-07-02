@@ -6,72 +6,6 @@ import 'info.dart';
 import 'searchbar.dart';
 import 'auth.dart';
 
-class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key}) : super(key: key);
-
-  @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
-    ),
-    Text(
-      'Search',
-      style: optionStyle,
-    ),
-    Text(
-      'Friends',
-      style: optionStyle,
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    if (index == 1) {
-      showSearch(context: context, delegate: DataSearch());
-    } else {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var bottomNavigationBar2 = BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          title: Text('Search'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people),
-          title: Text('Friends'),
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
-      onTap: _onItemTapped,
-    );
-    return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: bottomNavigationBar2,
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
   static String tag = 'home-page';
   MyHomePage({Key key, this.auth, this.userId, this.onSignedOut})
@@ -94,17 +28,16 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     }
   }
-  int _selectedIndex=0;
 
-    void _onItemTapped(int index) {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
     if (index == 1) {
       showSearch(context: context, delegate: DataSearch());
-    }
-    else if(index == 2){
-    
-
-    }
-    else {
+    } else if (index == 2) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => AboutPage()));
+    } else {
       setState(() {
         _selectedIndex = index;
       });
@@ -181,26 +114,25 @@ class _MyHomePageState extends State<MyHomePage> {
         fillColor: const Color(0xFFf96327),
         padding: const EdgeInsets.all(15.0),
       ),
-      bottomNavigationBar: BottomNavigationBar(items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          title: Text('Search'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people),
-          title: Text('Friends'),
-          
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
-      onTap: _onItemTapped,),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            title: Text('Search'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            title: Text('Friends'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
-
-

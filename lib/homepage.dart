@@ -114,8 +114,10 @@ class _MyHomePageState extends State<MyHomePage> {
     if (index == 1) {
       showSearch(context: context, delegate: DataSearch());
     } else if (index == 2) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => MyFriendsPage()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => MyFriendsPage()));
     } else {
       setState(() {
         _selectedIndex = index;
@@ -181,17 +183,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: RawMaterialButton(
-        onPressed: () {},
-        child: new Icon(
-          Icons.sentiment_dissatisfied,
-          size: 140.0,
-          color: Colors.white54,
+      floatingActionButton: Container(
+        height: 140.0,
+        width: 140.0,
+        child: FittedBox(
+          child: FloatingActionButton(
+            child: new Icon(
+              Icons.sentiment_dissatisfied,
+              size: 50.0,
+              color: Colors.white54,
+            ),
+            backgroundColor: const Color(0xFFf96327),
+            foregroundColor: Colors.white54,
+            onPressed: () {},
+          ),
         ),
-        shape: new CircleBorder(),
-        elevation: 2.0,
-        fillColor: const Color(0xFFf96327),
-        padding: const EdgeInsets.all(15.0),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

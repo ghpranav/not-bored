@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     return false;
   }
 
-  // Perform login or signup
+  // Perform login
   void _validateAndSubmit() async {
     setState(() {
       _errorMessage = "";
@@ -155,7 +155,9 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed(RegPage.tag);
+          //Navigator.of(context).pushNamed(RegPage.tag);
+          Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => RegPage(auth: widget.auth)));
         },
         padding: EdgeInsets.all(12),
         color: Colors.white,
@@ -181,8 +183,6 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
   }
-
-
 
   Widget _showBody() {
     return new Scaffold(

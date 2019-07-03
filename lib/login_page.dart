@@ -92,12 +92,15 @@ class _LoginPageState extends State<LoginPage> {
               color: Colors.black,
             )),
         validator: (value) {
+          Pattern pattern =
+              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+          RegExp regex = new RegExp(pattern);
           if (value.isEmpty) {
             setState(() {
               _isLoading = false;
             });
             return 'Email can\'t be empty';
-          }
+          } else if (!regex.hasMatch(value)) return 'Enter Valid Email';
         },
         onSaved: (String value) => _email = value,
       ),
@@ -156,8 +159,11 @@ class _LoginPageState extends State<LoginPage> {
         ),
         onPressed: () {
           //Navigator.of(context).pushNamed(RegPage.tag);
-          Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => RegPage(auth: widget.auth)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      RegPage(auth: widget.auth)));
         },
         padding: EdgeInsets.all(12),
         color: Colors.white,

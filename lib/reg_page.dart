@@ -172,12 +172,15 @@ class _RegPageState extends State<RegPage> {
               color: Colors.black,
             )),
         validator: (value) {
+          Pattern pattern =
+              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+          RegExp regex = new RegExp(pattern);
           if (value.isEmpty) {
             setState(() {
               _isLoading = false;
             });
             return 'Email can\'t be empty';
-          }
+          } else if (!regex.hasMatch(value)) return 'Enter Valid Email';
         },
         onSaved: (String value) => _email = value,
       ),
@@ -261,7 +264,8 @@ class _RegPageState extends State<RegPage> {
               _isLoading = false;
             });
             return 'Phone number can\'t be empty';
-          }
+          } else if (value.length != 10)
+            return 'Mobile Number must be of 10 digit';
         },
         onSaved: (String value) => _phone = value,
       ),

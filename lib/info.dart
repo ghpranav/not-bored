@@ -4,14 +4,21 @@ class UserInfo extends StatefulWidget {
   @override
   _UserInfoState createState() => _UserInfoState();
 }
-
-
+const PrimaryColor = const Color(0xFFf96327);
 
 class _UserInfoState extends State<UserInfo> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: new Stack(
+      appBar: AppBar(
+        backgroundColor: PrimaryColor,
+        automaticallyImplyLeading: true,
+        title: Text('Profile Page'),
+        leading: IconButton(icon:Icon(Icons.arrow_back),
+          onPressed:() => Navigator.pop(context, false),
+        )
+      ),
+        body:  new Stack(
       children: <Widget>[
         ClipPath(
           child: Container(color: Colors.black.withOpacity(0.8)),

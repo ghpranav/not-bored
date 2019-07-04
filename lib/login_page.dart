@@ -85,6 +85,7 @@ class _LoginPageState extends State<LoginPage> {
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Email',
+            errorStyle: TextStyle( color: Colors.black,),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -118,6 +119,7 @@ class _LoginPageState extends State<LoginPage> {
             hintText: 'Password',
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
+                errorStyle: TextStyle( color: Colors.black,),
             icon: new Icon(
               Icons.lock,
               color: Colors.black,

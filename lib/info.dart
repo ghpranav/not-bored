@@ -19,11 +19,13 @@ class _UserInfoState extends State<UserInfo> {
         )
       ),
         body:  new Stack(
+         
       children: <Widget>[
         ClipPath(
           child: Container(color: Colors.black.withOpacity(0.8)),
           clipper: getClipper(),
         ),
+        
         Positioned(
             width: 350.0,
             top: MediaQuery.of(context).size.height / 5,
@@ -42,7 +44,7 @@ class _UserInfoState extends State<UserInfo> {
                         boxShadow: [
                           BoxShadow(blurRadius: 7.0, color: Colors.black)
                         ])),
-                SizedBox(height: 90.0),
+                SizedBox(height: 40.0),
                 Text(
                   'Balachandra DS',
                   style: TextStyle(

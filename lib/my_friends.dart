@@ -27,49 +27,49 @@ Widget getListView() {
      ListTile(
        leading:Icon(Icons.person),
        title: Text("Balu"),
-       subtitle: Text("balu@lala.com")
+       subtitle: Text("slaying")
                ),
 
        ListTile(
        leading:Icon(Icons.person),
        title: Text("pranav"),
-       subtitle: Text("bedrepranav@lala.com")
+       subtitle: Text("can u give me some pick up code,oops i mean line")
        ),
 
        ListTile(
        leading:Icon(Icons.person),
        title: Text("Aditya"),
-       subtitle: Text("Adityaas@lala.com")
+       subtitle: Text("which one to choose")
        ),
 
        ListTile(
        leading:Icon(Icons.person),
        title: Text("Rahul"),
-       subtitle: Text("Rahul@gmail.com")
+       subtitle: Text("yooooo")
        ),
 
        ListTile(
        leading:Icon(Icons.person),
        title: Text("shusma"),
-       subtitle: Text("sushma@yahoo.com")
+       subtitle: Text("potterhead")
        ),
 
        ListTile(
        leading:Icon(Icons.person),
        title: Text("Alen"),
-       subtitle: Text("Alen@shag.com")
+       subtitle: Text("8 times a day")
        )
        
        ,ListTile(
        leading:Icon(Icons.person),
        title: Text("chris"),
-       subtitle: Text("chris@df.com")
+       subtitle: Text("im worthy")
        ),
 
        ListTile(
        leading:Icon(Icons.person),
        title: Text("arvind"),
-       subtitle: Text("arvind@ndcm.com")
+       subtitle: Text("maaaal")
        ),
    
 

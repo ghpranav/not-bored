@@ -109,7 +109,7 @@ class _RegPageState extends State<RegPage> {
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'First Name',
-            errorStyle: TextStyle( color: Colors.blue,),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -138,7 +138,7 @@ class _RegPageState extends State<RegPage> {
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Last Name',
-            errorStyle: TextStyle( color: Colors.blue,),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -167,7 +167,7 @@ class _RegPageState extends State<RegPage> {
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Email',
-            errorStyle: TextStyle( color: Colors.blue,),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -199,7 +199,7 @@ class _RegPageState extends State<RegPage> {
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Password',
-            errorStyle: TextStyle( color: Colors.blue,),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -228,7 +228,7 @@ class _RegPageState extends State<RegPage> {
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'User ID',
-            errorStyle: TextStyle( color: Colors.blue,),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -257,7 +257,7 @@ class _RegPageState extends State<RegPage> {
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Phone Number',
-            errorStyle: TextStyle( color: Colors.blue,),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(

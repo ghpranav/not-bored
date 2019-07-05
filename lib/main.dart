@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 
 //PAGES
-import 'homepage.dart';
-import 'login_page.dart';
-import 'package:not_bored/reg_page.dart';
-import 'auth.dart';
-import 'root_page.dart';
-import 'my_friends.dart';
+import 'package:not_bored/pages/home.dart';
+import 'package:not_bored/pages/login.dart';
+import 'package:not_bored/pages/reg.dart';
+import 'package:not_bored/pages/my_friends.dart';
 
-
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     LoginPage.tag: (context) => LoginPage(),
-    MyHomePage.tag: (context) => MyHomePage(),
+    LandingPage.tag: (context) => LandingPage(),
     RegPage.tag: (context) => RegPage(),
     MyFriendsPage.tag: (context) => MyFriendsPage(),
   };
@@ -25,7 +20,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RootPage(auth: new Auth()),
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+      ),
+      home: HomePage(),
       routes: routes,
     );
   }

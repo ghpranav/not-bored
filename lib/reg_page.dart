@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:not_bored/models/user_provider.dart';
+import 'auth.dart';
 
 class RegPage extends StatefulWidget {
   static String tag = 'reg-page';
+
+  RegPage({this.auth});
+
+  final BaseAuth auth;
 
   @override
   _RegPageState createState() => new _RegPageState();
@@ -12,28 +15,15 @@ class RegPage extends StatefulWidget {
 class _RegPageState extends State<RegPage> {
   final _formKey = new GlobalKey<FormState>();
 
-  TextEditingController _fname;
-  TextEditingController _lname;
-  TextEditingController _email;
-  TextEditingController _password;
-  TextEditingController _userid;
-  TextEditingController _phone;
+  String _fname;
+  String _lname;
+  String _email;
+  String _password;
+  String _userid;
+  String _phone;
   String _errorMessage;
 
   bool _isLoading;
-
-  @override
-  void initState() {
-    _errorMessage = "";
-    _isLoading = false;
-    super.initState();
-    _fname = TextEditingController(text: "");
-    _lname = TextEditingController(text: "");
-    _email = TextEditingController(text: "");
-    _password = TextEditingController(text: "");
-    _userid = TextEditingController(text: "");
-    _phone = TextEditingController(text: "");
-  }
 
   void _showVerifyEmailSentDialog() {
     showDialog(
@@ -68,7 +58,6 @@ class _RegPageState extends State<RegPage> {
 
   // Perform signup
   void _validateAndSubmit() async {
-    final user = Provider.of<UserProvider>(context);
     setState(() {
       _errorMessage = "";
       _isLoading = true;
@@ -76,9 +65,8 @@ class _RegPageState extends State<RegPage> {
     if (_validateAndSave()) {
       String userId = "";
       try {
-        await user.signUp(_email.text, _password.text);
-        userId = user.user.uid;
-        user.user.sendEmailVerification();
+        userId = await widget.auth.signUp(_email, _password);
+        widget.auth.sendEmailVerification();
         _showVerifyEmailSentDialog();
         print('Signed up user: $userId');
         setState(() {
@@ -92,6 +80,13 @@ class _RegPageState extends State<RegPage> {
         });
       }
     }
+  }
+
+  @override
+  void initState() {
+    _errorMessage = "";
+    _isLoading = false;
+    super.initState();
   }
 
   Widget _showLogo() {
@@ -109,15 +104,12 @@ class _RegPageState extends State<RegPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
       child: new TextFormField(
-        controller: _fname,
         maxLines: 1,
         keyboardType: TextInputType.text,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'First Name',
-            errorStyle: TextStyle(
-              color: Colors.blue[900],
-            ),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -130,9 +122,9 @@ class _RegPageState extends State<RegPage> {
               _isLoading = false;
             });
             return 'Name can\'t be empty';
-          } else
-            return null;
+          }
         },
+        onSaved: (String value) => _fname = value,
       ),
     );
   }
@@ -141,15 +133,12 @@ class _RegPageState extends State<RegPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
-        controller: _lname,
         maxLines: 1,
         keyboardType: TextInputType.text,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Last Name',
-            errorStyle: TextStyle(
-              color: Colors.blue[900],
-            ),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -162,9 +151,9 @@ class _RegPageState extends State<RegPage> {
               _isLoading = false;
             });
             return 'Name can\'t be empty';
-          } else
-            return null;
+          }
         },
+        onSaved: (String value) => _lname = value,
       ),
     );
   }
@@ -173,15 +162,12 @@ class _RegPageState extends State<RegPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
-        controller: _email,
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Email',
-            errorStyle: TextStyle(
-              color: Colors.blue[900],
-            ),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -197,11 +183,9 @@ class _RegPageState extends State<RegPage> {
               _isLoading = false;
             });
             return 'Email can\'t be empty';
-          } else if (!regex.hasMatch(value))
-            return 'Enter Valid Email';
-          else
-            return null;
+          } else if (!regex.hasMatch(value)) return 'Enter Valid Email';
         },
+        onSaved: (String value) => _email = value,
       ),
     );
   }
@@ -210,15 +194,12 @@ class _RegPageState extends State<RegPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
-        controller: _password,
         maxLines: 1,
         obscureText: true,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Password',
-            errorStyle: TextStyle(
-              color: Colors.blue[900],
-            ),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -231,9 +212,9 @@ class _RegPageState extends State<RegPage> {
               _isLoading = false;
             });
             return 'Password can\'t be empty';
-          } else
-            return null;
+          }
         },
+        onSaved: (value) => _password = value,
       ),
     );
   }
@@ -242,15 +223,12 @@ class _RegPageState extends State<RegPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
-        controller: _userid,
         maxLines: 1,
         keyboardType: TextInputType.text,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'User ID',
-            errorStyle: TextStyle(
-              color: Colors.blue[900],
-            ),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -263,9 +241,9 @@ class _RegPageState extends State<RegPage> {
               _isLoading = false;
             });
             return 'Name can\'t be empty';
-          } else
-            return null;
+          }
         },
+        onSaved: (String value) => _userid = value,
       ),
     );
   }
@@ -274,15 +252,12 @@ class _RegPageState extends State<RegPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
-        controller: _phone,
         maxLines: 1,
         keyboardType: TextInputType.phone,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Phone Number',
-            errorStyle: TextStyle(
-              color: Colors.blue[900],
-            ),
+            errorStyle: TextStyle( color: Colors.blue[900],),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -297,9 +272,8 @@ class _RegPageState extends State<RegPage> {
             return 'Phone number can\'t be empty';
           } else if (value.length != 10)
             return 'Mobile Number must be of 10 digit';
-          else
-            return null;
         },
+        onSaved: (String value) => _phone = value,
       ),
     );
   }
@@ -373,32 +347,14 @@ class _RegPageState extends State<RegPage> {
     );
   }
 
-  Future<bool> _onWillPop() {
-    Provider.of<UserProvider>(context).setLogin();
-    return Future<bool>.value(false);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(
-      onWillPop: _onWillPop,
-    child: new Scaffold(
+    return new Scaffold(
         body: Stack(
       children: <Widget>[
         _showBody(),
         _showCircularProgress(),
       ],
-    )));
-  }
-
-  @override
-  void dispose() {
-    _fname.dispose();
-    _lname.dispose();
-    _email.dispose();
-    _password.dispose();
-    _userid.dispose();
-    _phone.dispose();
-    super.dispose();
+    ));
   }
 }

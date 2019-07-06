@@ -1,54 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
-import 'package:not_bored/models/user_provider.dart';
+import 'package:not_bored/my_friends.dart';
 
 //PAGES
-import 'package:not_bored/pages/login.dart';
-import 'package:not_bored/pages/reg.dart';
-import 'package:not_bored/pages/about.dart';
-import 'package:not_bored/pages/info.dart';
-import 'package:not_bored/pages/searchbar.dart';
-import 'package:not_bored/pages/my_friends.dart';
-import 'package:not_bored/pages/splash.dart';
+import 'about.dart';
+import 'info.dart';
+import 'searchbar.dart';
+import 'auth.dart';
+import 'my_friends.dart';
 
-class HomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  static String tag = 'home-page';
+  MyHomePage({Key key, this.auth, this.userId, this.onSignedOut})
+      : super(key: key);
+
+  final BaseAuth auth;
+  final VoidCallback onSignedOut;
+  final String userId;
+
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      builder: (_) => UserProvider.instance(),
-      child: Consumer(
-        builder: (context, UserProvider user, _) {
-          switch (user.status) {
-            case Status.Uninitialized:
-              return Splash();
-            case Status.Unauthenticated:
-            case Status.Authenticating:
-              return LoginPage();
-            case Status.Regeistering:
-              return RegPage();
-            case Status.Authenticated:
-              return LandingPage(user: user.user);
-            default:
-              return Splash();
-          }
-        },
-      ),
-    );
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  _signOut() async {
+    try {
+      await widget.auth.signOut();
+      widget.onSignedOut();
+    } catch (e) {
+      print(e);
+    }
   }
-}
 
-class LandingPage extends StatefulWidget {
-  static String tag = 'landing-page';
-  final FirebaseUser user;
+  _signOutClose() async {
+    try {
+      await widget.auth.signOut();
+      widget.onSignedOut();
+    } catch (e) {
+      print(e);
+    }
+    Navigator.of(context).pop();
+  }
 
-  const LandingPage({Key key, this.user}) : super(key: key);
-
-  @override
-  _LandingPageState createState() => _LandingPageState();
-}
-
-class _LandingPageState extends State<LandingPage> {
   int _selectedIndex = 0;
 
   bool _isEmailVerified = false;
@@ -61,14 +53,14 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void _checkEmailVerification() async {
-    _isEmailVerified = widget.user.isEmailVerified;
+    _isEmailVerified = await widget.auth.isEmailVerified();
     if (!_isEmailVerified) {
       _showVerifyEmailDialog();
     }
   }
 
   void _resentVerifyEmail() {
-    widget.user.sendEmailVerification();
+    widget.auth.sendEmailVerification();
     _showVerifyEmailSentDialog();
   }
 
@@ -90,7 +82,7 @@ class _LandingPageState extends State<LandingPage> {
             ),
             new FlatButton(
               child: new Text("Dismiss"),
-              onPressed: () => Provider.of<UserProvider>(context).signOut(),
+              onPressed: _signOutClose,
             ),
           ],
         );
@@ -110,7 +102,7 @@ class _LandingPageState extends State<LandingPage> {
           actions: <Widget>[
             new FlatButton(
               child: new Text("Dismiss"),
-              onPressed: () => Provider.of<UserProvider>(context).signOut(),
+              onPressed: _signOutClose,
             ),
           ],
         );
@@ -157,7 +149,7 @@ class _LandingPageState extends State<LandingPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => MyInfo()));
+                            builder: (BuildContext context) => UserInfo()));
                   },
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
@@ -169,7 +161,7 @@ class _LandingPageState extends State<LandingPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => MyInfo()));
+                          builder: (BuildContext context) => UserInfo()));
                 },
               ),
               ListTile(
@@ -184,7 +176,7 @@ class _LandingPageState extends State<LandingPage> {
               ),
               ListTile(
                 title: Text('Log Out'),
-                onTap: () => Provider.of<UserProvider>(context).signOut(),
+                onTap: _signOut,
               )
             ],
           ),

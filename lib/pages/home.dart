@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:not_bored/my_friends.dart';
+import 'package:not_bored/services/auth.dart';
 
-//PAGES
-import 'about.dart';
-import 'info.dart';
-import 'searchbar.dart';
-import 'auth.dart';
-import 'my_friends.dart';
+import 'package:not_bored/pages/about.dart';
+import 'package:not_bored/pages/info.dart';
+import 'package:not_bored/pages/searchbar.dart';
+import 'package:not_bored/pages/my_friends.dart';
 
 class MyHomePage extends StatefulWidget {
   static String tag = 'home-page';
@@ -149,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => UserInfo()));
+                            builder: (BuildContext context) => MyInfo()));
                   },
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
@@ -161,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => UserInfo()));
+                          builder: (BuildContext context) => MyInfo()));
                 },
               ),
               ListTile(

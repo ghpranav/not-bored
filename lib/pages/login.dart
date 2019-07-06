@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:not_bored/reg_page.dart';
-import 'auth.dart';
+import 'package:not_bored/services/auth.dart';
+
+import 'package:not_bored/pages/reg.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -16,11 +17,21 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = new GlobalKey<FormState>();
 
-  String _email;
-  String _password;
+  TextEditingController _email;
+  TextEditingController _password;
   String _errorMessage;
 
   bool _isLoading;
+
+  @override
+  void initState() {
+    _errorMessage = "";
+    _isLoading = false;
+    super.initState();
+    _email = TextEditingController(text: "");
+    _password = TextEditingController(text: "");
+  }
+
   bool _validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
@@ -39,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_validateAndSave()) {
       String userId = "";
       try {
-        userId = await widget.auth.signIn(_email, _password);
+        userId = await widget.auth.signIn(_email.text, _password.text);
         print('Signed in: $userId');
         setState(() {
           _isLoading = false;
@@ -58,13 +69,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  @override
-  void initState() {
-    _errorMessage = "";
-    _isLoading = false;
-    super.initState();
-  }
-
   Widget _showLogo() {
     return Text('NOT BORED',
         style: TextStyle(
@@ -80,12 +84,15 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
       child: new TextFormField(
+        controller: _email,
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Email',
-            errorStyle: TextStyle( color: Colors.blue[900],),
+            errorStyle: TextStyle(
+              color: Colors.blue[900],
+            ),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             icon: new Icon(
@@ -102,8 +109,8 @@ class _LoginPageState extends State<LoginPage> {
             });
             return 'Email can\'t be empty';
           } else if (!regex.hasMatch(value)) return 'Enter Valid Email';
+          return null;
         },
-        onSaved: (String value) => _email = value,
       ),
     );
   }
@@ -112,6 +119,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
+        controller: _password,
         maxLines: 1,
         obscureText: true,
         autofocus: false,
@@ -119,7 +127,9 @@ class _LoginPageState extends State<LoginPage> {
             hintText: 'Password',
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
-                errorStyle: TextStyle( color: Colors.blue[900],),
+            errorStyle: TextStyle(
+              color: Colors.blue[900],
+            ),
             icon: new Icon(
               Icons.lock,
               color: Colors.black,
@@ -131,8 +141,8 @@ class _LoginPageState extends State<LoginPage> {
             });
             return 'Password can\'t be empty';
           }
+          return null;
         },
-        onSaved: (value) => _password = value,
       ),
     );
   }
@@ -233,5 +243,12 @@ class _LoginPageState extends State<LoginPage> {
         _showCircularProgress(),
       ],
     ));
+  }
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class UserInfo extends StatefulWidget {
+class MyInfo extends StatefulWidget {
   @override
-  _UserInfoState createState() => _UserInfoState();
+  _MyInfoState createState() => _MyInfoState();
 }
 const PrimaryColor = const Color(0xFFf96327);
 
-class _UserInfoState extends State<UserInfo> {
+class _MyInfoState extends State<MyInfo> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -23,7 +23,7 @@ class _UserInfoState extends State<UserInfo> {
       children: <Widget>[
         ClipPath(
           child: Container(color: Colors.black.withOpacity(0.8)),
-          clipper: getClipper(),
+          clipper: GetClipper(),
         ),
         
         Positioned(
@@ -126,7 +126,7 @@ class _UserInfoState extends State<UserInfo> {
   }
 }
 
-class getClipper extends CustomClipper<Path> {
+class GetClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = new Path();

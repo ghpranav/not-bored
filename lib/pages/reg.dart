@@ -80,7 +80,15 @@ class _RegPageState extends State<RegPage> {
     if (_validateAndSave()) {
       String userId = "";
       try {
-        userId = await widget.auth.signUp(_email.text, _password.text);
+        Map _profile = {
+          'fname': _fname.text,
+          'lname': _lname.text,
+          'email': _email.text,
+          'userid': _userid.text,
+          'phone': _phone.text,
+          'password': _password.text,
+        };
+        userId = await widget.auth.signUp(_profile);
         widget.auth.sendEmailVerification();
         _showVerifyEmailSentDialog();
         print('Signed up user: $userId');

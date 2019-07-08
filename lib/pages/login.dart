@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:not_bored/services/auth.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 import 'package:not_bored/pages/reg.dart';
 
@@ -70,14 +71,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _showLogo() {
-    return Text('NOT BORED',
-        style: TextStyle(
+    return Center(
+      child: TyperAnimatedTextKit(
+        text: ["NOT BORED"],
+        isRepeatingAnimation: false,
+        duration: Duration(milliseconds: 5000),
+        textStyle: TextStyle(
           color: Colors.black,
           fontSize: 30,
           fontWeight: FontWeight.bold,
           letterSpacing: 3.0,
         ),
-        textAlign: TextAlign.center);
+        textAlign: TextAlign.start,
+        alignment: AlignmentDirectional.topStart));
   }
 
   Widget _showEmailInput() {

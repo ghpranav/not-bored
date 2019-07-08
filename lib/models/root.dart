@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:not_bored/services/auth.dart';
+import 'package:provider/provider.dart';
 
 import 'package:not_bored/pages/login.dart';
-import 'package:not_bored/pages/home.dart';
+import 'package:not_bored/pages/landing.dart';
 
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
@@ -58,9 +59,13 @@ class _RootPageState extends State<RootPage> {
   Widget _buildWaitingScreen() {
     return Scaffold(
       body: Container(
-        alignment: Alignment.center,
-        child: CircularProgressIndicator(),
-      ),
+          alignment: Alignment.center,
+          child: Stack(
+            children: <Widget>[
+              CircularProgressIndicator(),
+              Text("Not Bored Loading")
+            ],
+          )),
     );
   }
 
@@ -78,10 +83,13 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return new MyHomePage(
-            userId: _userId,
-            auth: widget.auth,
-            onSignedOut: _onSignedOut,
+          return new ChangeNotifierProvider<LandingPageProvider>(
+            child: LandingPage(
+              userId: _userId,
+              auth: widget.auth,
+              onSignedOut: _onSignedOut,
+            ),
+            builder: (BuildContext context) => LandingPageProvider(),
           );
         } else
           return _buildWaitingScreen();

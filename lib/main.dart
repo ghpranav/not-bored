@@ -12,7 +12,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     LoginPage.tag: (context) => LoginPage(),
-    MyHomePage.tag: (context) => MyHomePage(),
+    HomePage.tag: (context) => HomePage(),
     RegPage.tag: (context) => RegPage(),
     MyFriendsPage.tag: (context) => MyFriendsPage(),
   };
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.deepOrange,
       ),
       home: RootPage(auth: new Auth()),
       routes: routes,

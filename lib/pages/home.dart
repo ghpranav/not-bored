@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:not_bored/services/auth.dart';
 
-import 'package:not_bored/pages/about.dart';
-import 'package:not_bored/pages/info.dart';
-import 'package:not_bored/pages/searchbar.dart';
-import 'package:not_bored/pages/my_friends.dart';
-
-class MyHomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   static String tag = 'home-page';
-  MyHomePage({Key key, this.auth, this.userId, this.onSignedOut})
+  HomePage({Key key, this.auth, this.userId, this.onSignedOut})
       : super(key: key);
 
   final BaseAuth auth;
@@ -16,17 +11,17 @@ class MyHomePage extends StatefulWidget {
   final String userId;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  _signOut() async {
-    try {
-      await widget.auth.signOut();
-      widget.onSignedOut();
-    } catch (e) {
-      print(e);
-    }
+class _HomePageState extends State<HomePage> {
+  bool _isEmailVerified = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _checkEmailVerification();
   }
 
   _signOutClose() async {
@@ -37,17 +32,6 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     }
     Navigator.of(context).pop();
-  }
-
-  int _selectedIndex = 0;
-
-  bool _isEmailVerified = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _checkEmailVerification();
   }
 
   void _checkEmailVerification() async {
@@ -108,77 +92,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _onItemTapped(int index) {
-    if (index == 1) {
-      showSearch(context: context, delegate: DataSearch());
-    } else if (index == 2) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => MyFriendsPage()));
-    } else {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFf96327),
-        title: Text("Not Bored"),
-      ),
-      drawer: Theme(
-        data: Theme.of(context).copyWith(
-          backgroundColor: const Color(0xFFf96327),
-        ),
-        child: Drawer(
-          child: ListView(
-            children: <Widget>[
-              UserAccountsDrawerHeader(
-                accountName: Text('Adithya'),
-                accountEmail: Text('adithyaaravi10@gmail.com'),
-                decoration: BoxDecoration(color: const Color(0xFFf96327)),
-                currentAccountPicture: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => MyInfo()));
-                  },
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        'https://yt3.ggpht.com/-hvABjgr3fn8/AAAAAAAAAAI/AAAAAAAAFLI/0LG1v5zQMKw/s88-mo-c-c0xffffffff-rj-k-no/photo.jpg'),
-                  ),
-                ),
-                onDetailsPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => MyInfo()));
-                },
-              ),
-              ListTile(
-                title: Text('About'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => AboutPage()));
-                },
-              ),
-              ListTile(
-                title: Text('Log Out'),
-                onTap: _signOut,
-              )
-            ],
-          ),
-        ),
+      body: Center(
+        child: Text("Home Page"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
@@ -196,25 +114,6 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {},
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('Search'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            title: Text('Friends'),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color(0xFFf96327),
-        onTap: _onItemTapped,
       ),
     );
   }

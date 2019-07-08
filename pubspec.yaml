@@ -27,6 +27,7 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   animated_text_kit:
+  provider:
 
 dev_dependencies:
   flutter_test:

@@ -37,8 +37,6 @@ class _LandingPageState extends State<LandingPage> {
     var provider = Provider.of<LandingPageProvider>(context);
     var currentTab = [
       HomePage(),
-      DataSearch(),
-      //showSearch(context: context, delegate: DataSearch()),
       MyFriendsPage(),
     ];
 
@@ -115,25 +113,34 @@ class _LandingPageState extends State<LandingPage> {
               ),
             ),
             body: currentTab[provider.currentIndex],
-            bottomNavigationBar: BottomNavigationBar(
-              currentIndex: provider.currentIndex,
-              onTap: (index) {
-                provider.currentIndex = index;
+            floatingActionButton: FloatingActionButton(
+              heroTag: 'SearchBtn',
+              elevation: 4.0,
+              backgroundColor: Colors.deepOrangeAccent,
+              child: const Icon(Icons.search, color: Colors.white),
+              onPressed: () {
+                showSearch(context: context, delegate: DataSearch());
               },
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  title: Text('Home'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  title: Text('Search'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.people),
-                  title: Text('Friends'),
-                ),
-              ],
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: BottomAppBar(
+              shape: CircularNotchedRectangle(),
+              color: const Color(0xFFf96327),
+              child: new Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.home, color: Colors.white),
+                    onPressed: () => provider.currentIndex = 0,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.people, color: Colors.white),
+                    onPressed: () => provider.currentIndex = 1,
+                  ),
+                ],
+              ),
             ),
           );
         });

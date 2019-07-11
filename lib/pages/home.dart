@@ -100,10 +100,11 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
-        height: 140.0,
+        height: 180.0,
         width: 140.0,
         child: FittedBox(
           child: FloatingActionButton(
+            heroTag: 'MainBtn',
             child: new Icon(
               Icons.sentiment_dissatisfied,
               size: 50.0,

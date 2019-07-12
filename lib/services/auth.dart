@@ -55,6 +55,7 @@ class Auth implements BaseAuth {
       'userid': profile['userid'],
       'phone': profile['phone'],
       'imageURL': user.photoUrl,
+      'isMailVerified': false,
     });
   }
 

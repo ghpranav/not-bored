@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:not_bored/services/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   static String tag = 'home-page';
@@ -35,9 +36,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _checkEmailVerification() async {
+    DocumentReference _ref =
+        Firestore.instance.collection('users').document(widget.userId);
     _isEmailVerified = await widget.auth.isEmailVerified();
     if (!_isEmailVerified) {
       _showVerifyEmailDialog();
+    } else {
+      _ref.updateData(<String, dynamic>{
+        'isMailVerified': true,
+      });
     }
   }
 

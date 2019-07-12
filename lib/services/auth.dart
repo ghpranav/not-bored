@@ -13,6 +13,8 @@ abstract class BaseAuth {
 
   Future<void> createUser(Map profile, FirebaseUser user);
 
+  Future<void> uploadProPic(String url);
+
   Future<void> sendEmailVerification();
 
   Future<bool> isEmailVerified();
@@ -49,13 +51,22 @@ class Auth implements BaseAuth {
   Future<void> createUser(Map profile, FirebaseUser user) async {
     DocumentReference _ref = _firestore.collection('users').document(user.uid);
     _ref.setData(<String, dynamic>{
-      'name': profile['fname'] +' '+ profile['lname'],
+      'name': profile['fname'] + ' ' + profile['lname'],
       'email': profile['email'],
       'userid': profile['userid'],
       'phone': profile['phone'],
       'status': 'I am Bored',
-      'imageURL': 'https://firebasestorage.googleapis.com/v0/b/not-bored.appspot.com/o/pro_pics%2Fdefault.jpg?alt=media&token=2b95838b-d7cd-4540-a7a9-f957e7a526ee',
+      'imageURL':
+          'https://firebasestorage.googleapis.com/v0/b/not-bored.appspot.com/o/pro_pics%2Fdefault.jpg?alt=media&token=2b95838b-d7cd-4540-a7a9-f957e7a526ee',
       'isMailVerified': false,
+    });
+  }
+
+  Future<void> uploadProPic(String url) async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    DocumentReference _ref = _firestore.collection('users').document(user.uid);
+    _ref.updateData(<String, dynamic>{
+      'imageURL': url,
     });
   }
 

@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
       child: TyperAnimatedTextKit(
         text: ["NOT BORED"],
         isRepeatingAnimation: false,
-        duration: Duration(milliseconds: 5000),
+        duration: Duration(milliseconds: 3000),
         textStyle: TextStyle(
           color: Colors.black,
           fontSize: 30,

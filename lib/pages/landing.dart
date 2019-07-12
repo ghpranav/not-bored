@@ -161,8 +161,8 @@ class _LandingPageState extends State<LandingPage> {
                                       )));
                         },
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              'https://yt3.ggpht.com/-hvABjgr3fn8/AAAAAAAAAAI/AAAAAAAAFLI/0LG1v5zQMKw/s88-mo-c-c0xffffffff-rj-k-no/photo.jpg'),
+                          backgroundImage:
+                              NetworkImage(userDocument['imageURL']),
                         ),
                       ),
                       onDetailsPressed: () {

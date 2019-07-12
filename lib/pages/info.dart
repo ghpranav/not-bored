@@ -55,9 +55,10 @@ class _MyInfoState extends State<MyInfo> {
                                   color: Colors.red,
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          'https://scontent.fmaa2-1.fna.fbcdn.net/v/t1.0-1/p160x160/48361415_1012165775652855_7154124804449107968_n.jpg?_nc_cat=104&_nc_oc=AQl4O3XXsZFkYkHk5uIHXNgu8Ex_HAo3ni61Hrg0hfvBENWc_e_h24erbqVxafXJqPM&_nc_ht=scontent.fmaa2-1.fna&oh=46259f95a10b2a262147b3ef656499b6&oe=5DB3898F'),
+                                          userDocument['imageURL']),
                                       fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(75.0)),
                                   boxShadow: [
                                     BoxShadow(
                                         blurRadius: 7.0, color: Colors.black)
@@ -72,7 +73,7 @@ class _MyInfoState extends State<MyInfo> {
                           ),
                           SizedBox(height: 15.0),
                           Text(
-                            'Slaying!!!!',
+                            userDocument['status'],
                             style: TextStyle(
                                 fontSize: 17.0,
                                 fontStyle: FontStyle.italic,

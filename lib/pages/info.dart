@@ -64,7 +64,7 @@ class _MyInfoState extends State<MyInfo> {
                                   ])),
                           SizedBox(height: 40.0),
                           Text(
-                            userDocument['fname'] + ' ' + userDocument['lname'],
+                            userDocument['name'],
                             style: TextStyle(
                                 fontSize: 30.0,
                                 fontWeight: FontWeight.bold,

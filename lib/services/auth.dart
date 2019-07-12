@@ -49,8 +49,7 @@ class Auth implements BaseAuth {
   Future<void> createUser(Map profile, FirebaseUser user) async {
     DocumentReference _ref = _firestore.collection('users').document(user.uid);
     _ref.setData(<String, dynamic>{
-      'fname': profile['fname'],
-      'lname': profile['lname'],
+      'name': profile['fname'] +' '+ profile['lname'],
       'email': profile['email'],
       'userid': profile['userid'],
       'phone': profile['phone'],

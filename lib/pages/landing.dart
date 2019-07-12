@@ -146,7 +146,7 @@ class _LandingPageState extends State<LandingPage> {
                 child: ListView(
                   children: <Widget>[
                     UserAccountsDrawerHeader(
-                      accountName: Text(userDocument['fname']),
+                      accountName: Text(userDocument['name']),
                       accountEmail: Text(userDocument['email']),
                       decoration: BoxDecoration(color: const Color(0xFFf96327)),
                       currentAccountPicture: GestureDetector(

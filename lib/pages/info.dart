@@ -44,7 +44,7 @@ class _MyInfoState extends State<MyInfo> {
                     clipper: GetClipper(),
                   ),
                   Positioned(
-                      width: 350.0,
+                      width: MediaQuery.of(context).size.width,
                       top: MediaQuery.of(context).size.height / 5,
                       child: Column(
                         children: <Widget>[

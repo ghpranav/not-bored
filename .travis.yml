@@ -1,40 +1,58 @@
 dist: trusty
 language: android
 os:
-  - linux
+- linux
 sudo: false
 licenses:
-  - 'android-sdk-preview-license-.+'
-  - 'android-sdk-license-.+'
-  - 'google-gdk-license-.+'
+- android-sdk-preview-license-.+
+- android-sdk-license-.+
+- google-gdk-license-.+
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-28.0.3
-    - android-28
-    - extra-android-m2repository
-    - extra-google-m2repository
-    - extra-google-android-support
+  - tools
+  - platform-tools
+  - build-tools-28.0.3
+  - android-28
+  - extra-android-m2repository
+  - extra-google-m2repository
+  - extra-google-android-support
 jdk: openjdk8
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test # you need this source to get the right version of libstdc++6
+    - ubuntu-toolchain-r-test
     packages:
-      - libstdc++6
-      - fonts-noto
+    - libstdc++6
+    - fonts-noto
 install:
-  - echo 'Avoid default Travis CI install step'
+- echo 'Avoid default Travis CI install step'
 before_script:
-  - cd $HOME
-  - git clone https://github.com/flutter/flutter.git -b beta
-  - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
-  - flutter doctor
+- cd $HOME
+- git clone https://github.com/flutter/flutter.git -b beta
+- export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+- flutter doctor
 script:
-  - cd $TRAVIS_BUILD_DIR
-  - flutter packages get
-  - flutter build apk --split-per-abi
+- cd $TRAVIS_BUILD_DIR
+- flutter packages get
+- flutter build apk --split-per-abi
 cache:
   directories:
-    - $HOME/.pub-cache
+  - "$HOME/.pub-cache"
+  - /usr/local/android-sdk/
+before_deploy:
+      # Set up git user name and tag this commit
+      - git config --local user.name "ghpranav"
+      - git config --local user.email "bedrepranav@gmail.com"
+      - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+      - git tag $TRAVIS_TAG
+deploy:
+  provider: releases
+  api_key:
+    secure: ffJiyeVc+cvLvmdHfb6VfxCoqebC8tBK2eBA5ofUW+QV4dKImv1ylSBvPBrZnqDT/e3gx5nBcOjoD+DWc2JG9hp+lkF1P8yr/NXj5Mxa/r5qbH3SKcszYgQYKOyCaIF8Dk/bsN5o3Z5gAvMbG5uLHXmT3NgaDx23tlpmoQlD8jX/VftrKIj7S8jbTeqAtzJ6bIEsFyIjXV4vkCfvok56Xg0e/yeEVXQmz4P5VEPfbDtSaMp0/7lMFZRwL9D+6+hitVZkRHLqZzpyl0qsNVHQFKsWoHaviTsuOfdy+ZBXmb8u3Xk0vCOniulboq+hV5Y+ItJrBCUZNUYRvBbJjZxaNOyQ+Bn/WBuFzPOTZ7UYHkNc7Lsm3kfDE/26Y/g1O1p966lFct6e6yaPZ4uae/JdOa5AFwCfhUP56Nq/0YbEVe/VqBk2W+kL7dmx7rh7SdoqM/TsYm/db+BovVPslDetoqojcRdvwtHVDMOIPZW9QdVSvz9dsrFxXesZQw1M4rQR9GlunyiQvUlbQUwR5f99KJyBuShd+KMBpbCpOZuRWO3P4C3aBEhFTI1rZP4J4fh1pWef1+SCtfADCBSV/eg9HMijTZCEq75YR1vGFjwWb0wNnWdYaBgcP+ug5RYgijlfWTavdIL21LS1vjS/JVUokBBPlo172EeTSekFrjehig8=
+  file:
+    - build/app/outputs/apk/release/app-arm64-v8a-release.apk
+    - build/app/outputs/apk/release/app-armeabi-v7a-release.apk
+  file_glob: true
+  skip_cleanup: true
+  on:
+    tags: true

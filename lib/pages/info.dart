@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import 'package:not_bored/pages/splash.dart';
+import 'package:not_bored/pages/edit_profile.dart';
 
 class MyInfo extends StatefulWidget {
   MyInfo({Key key, this.auth, this.userId}) : super(key: key);
@@ -61,6 +62,28 @@ class _MyInfoState extends State<MyInfo> {
                 backgroundColor: PrimaryColor,
                 automaticallyImplyLeading: true,
                 title: Text('Profile Page'),
+                actions: <Widget>[
+                  FlatButton(
+                    textColor: Colors.white,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => EditProfile(
+                                    auth: widget.auth,
+                                    profile: {
+                                      'name': userDocument['name'],
+                                      'userid': userDocument['userid'],
+                                      'phone': userDocument['phone'],
+                                      'status': userDocument['status'],
+                                    },
+                                  )));
+                    },
+                    child: Text("EDIT"),
+                    shape: CircleBorder(
+                        side: BorderSide(color: Colors.transparent)),
+                  ),
+                ],
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () => Navigator.pop(context, false),

@@ -15,6 +15,8 @@ abstract class BaseAuth {
 
   Future<void> uploadProPic(String url);
 
+  Future<void> updateProfile(Map profile);
+
   Future<void> sendEmailVerification();
 
   Future<bool> isEmailVerified();
@@ -67,6 +69,17 @@ class Auth implements BaseAuth {
     DocumentReference _ref = _firestore.collection('users').document(user.uid);
     _ref.updateData(<String, dynamic>{
       'imageURL': url,
+    });
+  }
+
+  Future<void> updateProfile(Map profile) async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    DocumentReference _ref = _firestore.collection('users').document(user.uid);
+    _ref.updateData(<String, dynamic>{
+      'name': profile['name'],
+      'userid': profile['userid'],
+      'phone': profile['phone'],
+      'status': profile['status'],
     });
   }
 

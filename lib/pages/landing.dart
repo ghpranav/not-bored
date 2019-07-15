@@ -202,7 +202,10 @@ class _LandingPageState extends State<LandingPage> {
               backgroundColor: Colors.deepOrangeAccent,
               child: const Icon(Icons.search, color: Colors.white),
               onPressed: () {
-                showSearch(context: context, delegate: DataSearch());
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => DataSearch()));
               },
             ),
             floatingActionButtonLocation:

@@ -1,0 +1,40 @@
+dist: trusty
+language: android
+os:
+  - linux
+sudo: false
+licenses:
+  - 'android-sdk-preview-license-.+'
+  - 'android-sdk-license-.+'
+  - 'google-gdk-license-.+'
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-28.0.3
+    - android-28
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - extra-google-android-support
+jdk: openjdk8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test # you need this source to get the right version of libstdc++6
+    packages:
+      - libstdc++6
+      - fonts-noto
+install:
+  - echo 'Avoid default Travis CI install step'
+before_script:
+  - cd $HOME
+  - git clone https://github.com/flutter/flutter.git -b beta
+  - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+  - flutter doctor
+script:
+  - cd $TRAVIS_BUILD_DIR
+  - flutter packages get
+  - flutter build apk --split-per-abi
+cache:
+  directories:
+    - $HOME/.pub-cache

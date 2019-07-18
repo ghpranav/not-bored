@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:not_bored/pages/searchbar.dart';
 
 class Users extends StatefulWidget {
   Users({Key key, this.data}) : super(key: key);
@@ -12,6 +11,21 @@ class Users extends StatefulWidget {
 const PrimaryColor = const Color(0xFFf96327);
 
 class _UsersState extends State<Users> {
+  String text = "Friend Request";
+  void friendrequest() {
+    setState(() {
+      if (text == "Friend Request") {
+        text = "Request Sent";
+      } else if (text == "Request Sent") {
+        text = "Cancel Request";
+      } else if (text == "Cancel Request") {
+        text = "Friend Request";
+      } else if (text == "Friend") {
+        text = "Unfriend";
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -62,57 +76,53 @@ class _UsersState extends State<Users> {
               ),
             ),
             Positioned(
-              bottom: 30.0,
-              left: 20.0,
-              height: 55.0,
-               width: 150.0,
-              child:  Material(
-                              borderRadius: BorderRadius.circular(20.0),
-                              shadowColor: Colors.orangeAccent,
-                              color: Colors.deepOrange,
-                              elevation: 7.0,
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: Center(
-                                  child: Text(
-                                    "Friend Request",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 20.0),
-                                  ),
-                                ),
-                              ),
-                            )
-
-            ),
-
-             Positioned(
-              bottom: 30.0,
-              right: 20.0,
-              height: 55.0,
-               width: 150.0,
-              child:  Material(
-                              borderRadius: BorderRadius.circular(20.0),
-                              shadowColor: Colors.orangeAccent,
-                              color: Colors.deepOrange,
-                              elevation: 7.0,
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: Center(
-                                  child: Text(
-                                    "Friends",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 20.0),
-                                  ),
-                                ),
-                              ),
-                            )
-
-            ),
-            
+                bottom: 30.0,
+                left: 20.0,
+                height: 55.0,
+                width: 150.0,
+                child: Material(
+                  borderRadius: BorderRadius.circular(20.0),
+                  shadowColor: Colors.orangeAccent,
+                  color: Colors.deepOrange,
+                  elevation: 7.0,
+                  child: GestureDetector(
+                    onTap: () {
+                      friendrequest();
+                    },
+                    child: Center(
+                      child: Text(
+                        text,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Montserrat',
+                            fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                )),
+            Positioned(
+                bottom: 30.0,
+                right: 20.0,
+                height: 55.0,
+                width: 150.0,
+                child: Material(
+                  borderRadius: BorderRadius.circular(20.0),
+                  shadowColor: Colors.orangeAccent,
+                  color: Colors.deepOrange,
+                  elevation: 7.0,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Center(
+                      child: Text(
+                        "Friends",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Montserrat',
+                            fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                )),
           ],
         ));
   }

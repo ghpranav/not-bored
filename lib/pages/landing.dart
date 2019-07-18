@@ -135,9 +135,13 @@ class _LandingPageState extends State<LandingPage> {
           var userDocument = snapshot.data;
           return new Scaffold(
             appBar: AppBar(
-              backgroundColor: const Color(0xFFf96327),
-              title: Text("Not Bored"),
-            ),
+                backgroundColor: const Color(0xFFf96327),
+                title: Text("Not Bored"),
+                actions:<Widget>[ IconButton(
+                  icon:  Icon(Icons.person,color: Colors.white,),
+                  tooltip: 'Air it',
+                  onPressed:null ,
+                )]),
             drawer: Theme(
               data: Theme.of(context).copyWith(
                 backgroundColor: const Color(0xFFf96327),

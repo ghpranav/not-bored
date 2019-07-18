@@ -167,7 +167,7 @@ class _EditProfileState extends State<EditProfile> {
         keyboardType: TextInputType.text,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'First Name',
+            hintText: 'Status',
             errorStyle: TextStyle(
               color: Colors.blue[900],
             ),

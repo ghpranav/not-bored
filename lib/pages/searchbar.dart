@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:not_bored/pages/about.dart';
+import 'package:not_bored/pages/users.dart';
+
 
 class DataSearch extends StatefulWidget {
   @override
@@ -11,11 +12,13 @@ class _DataSearchState extends State<DataSearch> {
   var queryResultSet = [];
   var tempSearchStore = [];
 
+
   initiateSearch(value) {
     if (value.length == 0) {
       setState(() {
         queryResultSet = [];
         tempSearchStore = [];
+   
       });
     }
 
@@ -24,7 +27,7 @@ class _DataSearchState extends State<DataSearch> {
 
     if (queryResultSet.length == 0 && value.length == 1) {
       SearchService().searchByName(value).then((QuerySnapshot docs) {
-        for (int i = 0; i < docs.documents.length; ++i) {
+        for (int i = 0; i < docs.documents.length; ++i) {        
           queryResultSet.add(docs.documents[i].data);
         }
       });
@@ -78,6 +81,7 @@ class _DataSearchState extends State<DataSearch> {
   }
 
   Widget buildResultCard(data) {
+
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
         leading: Icon(Icons.person),
@@ -87,7 +91,9 @@ class _DataSearchState extends State<DataSearch> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => AboutPage()));
+                  builder: (BuildContext context) => Users(
+                   data: data,
+                  )));
         },
       ),
       itemCount: tempSearchStore.length,

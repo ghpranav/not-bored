@@ -138,7 +138,7 @@ class _LandingPageState extends State<LandingPage> {
                 backgroundColor: const Color(0xFFf96327),
                 title: Text("Not Bored"),
                 actions:<Widget>[ IconButton(
-                  icon:  Icon(Icons.person,color: Colors.white,),
+                  icon:  Icon(Icons.notifications,color: Colors.white,),
                   tooltip: 'Air it',
                   onPressed:null ,
                 )]),

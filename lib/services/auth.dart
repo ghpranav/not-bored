@@ -55,13 +55,16 @@ class Auth implements BaseAuth {
     _ref.setData(<String, dynamic>{
       'name': profile['fname'] + ' ' + profile['lname'],
       'email': profile['email'],
-      'userid': profile['userid'],
+      'username': profile['username'],
+      'userid': user.uid.toString(),
       'phone': profile['phone'],
       'status': 'I am Bored',
       'imageURL':
           'https://firebasestorage.googleapis.com/v0/b/not-bored.appspot.com/o/pro_pics%2Fdefault.jpg?alt=media&token=2b95838b-d7cd-4540-a7a9-f957e7a526ee',
       'isMailVerified': false,
-      'searchKey': profile['fname'][0],
+      'searchKey': profile['fname'][0].toString().toUpperCase(),
+      'req_rec': [],
+      'req_sent': [],
     });
   }
 

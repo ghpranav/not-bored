@@ -137,11 +137,16 @@ class _LandingPageState extends State<LandingPage> {
             appBar: AppBar(
                 backgroundColor: const Color(0xFFf96327),
                 title: Text("Not Bored"),
-                actions:<Widget>[ IconButton(
-                  icon:  Icon(Icons.notifications,color: Colors.white,),
-                  tooltip: 'Air it',
-                  onPressed:null ,
-                )]),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.notifications,
+                      color: Colors.white,
+                    ),
+                    tooltip: 'Air it',
+                    onPressed: null,
+                  )
+                ]),
             drawer: Theme(
               data: Theme.of(context).copyWith(
                 backgroundColor: const Color(0xFFf96327),
@@ -209,7 +214,10 @@ class _LandingPageState extends State<LandingPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => DataSearch()));
+                        builder: (BuildContext context) => DataSearch(
+                              auth: widget.auth,
+                              userId: widget.userId,
+                            )));
               },
             ),
             floatingActionButtonLocation:

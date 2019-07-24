@@ -19,7 +19,7 @@ class _RegPageState extends State<RegPage> {
   TextEditingController _lname;
   TextEditingController _email;
   TextEditingController _password;
-  TextEditingController _userid;
+  TextEditingController _username;
   TextEditingController _phone;
   String _errorMessage;
 
@@ -34,7 +34,7 @@ class _RegPageState extends State<RegPage> {
     _lname = TextEditingController(text: "");
     _email = TextEditingController(text: "");
     _password = TextEditingController(text: "");
-    _userid = TextEditingController(text: "");
+    _username = TextEditingController(text: "");
     _phone = TextEditingController(text: "");
   }
 
@@ -78,20 +78,20 @@ class _RegPageState extends State<RegPage> {
       _isLoading = true;
     });
     if (_validateAndSave()) {
-      String userId = "";
+      String userid = "";
       try {
         Map _profile = {
           'fname': _fname.text,
           'lname': _lname.text,
           'email': _email.text,
-          'userid': _userid.text,
+          'username': _username.text,
           'phone': _phone.text,
           'password': _password.text,
         };
-        userId = await widget.auth.signUp(_profile);
+        userid = await widget.auth.signUp(_profile);
         widget.auth.sendEmailVerification();
         _showVerifyEmailSentDialog();
-        print('Signed up user: $userId');
+        print('Signed up user: $userid');
         setState(() {
           _isLoading = false;
         });
@@ -247,16 +247,16 @@ class _RegPageState extends State<RegPage> {
     );
   }
 
-  Widget _showUserId() {
+  Widget _showUsername() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
-        controller: _userid,
+        controller: _username,
         maxLines: 1,
         keyboardType: TextInputType.text,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'User ID',
+            hintText: 'User Name',
             errorStyle: TextStyle(
               color: Colors.blue[900],
             ),
@@ -271,7 +271,7 @@ class _RegPageState extends State<RegPage> {
             setState(() {
               _isLoading = false;
             });
-            return 'Name can\'t be empty';
+            return 'User Name can\'t be empty';
           }
           return null;
         },
@@ -361,7 +361,7 @@ class _RegPageState extends State<RegPage> {
                   _showLastName(),
                   _showEmailInput(),
                   _showPasswordInput(),
-                  _showUserId(),
+                  _showUsername(),
                   _showPhone(),
                   SizedBox(height: 50.0),
                   _showSignupButton(),
@@ -398,7 +398,7 @@ class _RegPageState extends State<RegPage> {
     _lname.dispose();
     _email.dispose();
     _password.dispose();
-    _userid.dispose();
+    _username.dispose();
     _phone.dispose();
     super.dispose();
   }

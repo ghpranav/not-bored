@@ -73,7 +73,7 @@ class _MyInfoState extends State<MyInfo> {
                                     auth: widget.auth,
                                     profile: {
                                       'name': userDocument['name'],
-                                      'userid': userDocument['userid'],
+                                      'username': userDocument['username'],
                                       'phone': userDocument['phone'],
                                       'status': userDocument['status'],
                                     },
@@ -164,7 +164,7 @@ class _MyInfoState extends State<MyInfo> {
                                 onTap: () {},
                                 child: Center(
                                   child: Text(
-                                    userDocument['userid'],
+                                    userDocument['username'],
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: 'Montserrat'),

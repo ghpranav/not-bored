@@ -19,7 +19,7 @@ class _EditProfileState extends State<EditProfile> {
   final _formKey = new GlobalKey<FormState>();
 
   TextEditingController _name;
-  TextEditingController _userid;
+  TextEditingController _username;
   TextEditingController _phone;
   TextEditingController _status;
 
@@ -30,7 +30,7 @@ class _EditProfileState extends State<EditProfile> {
     _isLoading = false;
     super.initState();
     _name = TextEditingController(text: widget.profile['name']);
-    _userid = TextEditingController(text: widget.profile['userid']);
+    _username = TextEditingController(text: widget.profile['username']);
     _phone = TextEditingController(text: widget.profile['phone']);
     _status = TextEditingController(text: widget.profile['status']);
   }
@@ -51,17 +51,17 @@ class _EditProfileState extends State<EditProfile> {
     });
     if (_updateAndSave()) {
       FirebaseUser user = await widget.auth.getCurrentUser();
-      String userId = user.uid;
+      String username = user.uid;
       try {
         Map _profile = {
           'name': _name.text,
-          'userid': _userid.text,
+          'username': _username.text,
           'phone': _phone.text,
           'status': _status.text,
         };
 
         widget.auth.updateProfile(_profile);
-        print(' $userId is updated');
+        print(' $username is updated');
         setState(() {
           _isLoading = false;
         });
@@ -126,11 +126,11 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Widget _showUserId() {
+  Widget _showUsername() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
-        controller: _userid,
+        controller: _username,
         maxLines: 1,
         keyboardType: TextInputType.text,
         autofocus: false,
@@ -150,7 +150,7 @@ class _EditProfileState extends State<EditProfile> {
             setState(() {
               _isLoading = false;
             });
-            return 'Userid can\'t be empty';
+            return 'Username can\'t be empty';
           }
           return null;
         },
@@ -253,7 +253,7 @@ class _EditProfileState extends State<EditProfile> {
                 children: <Widget>[
                   SizedBox(height: 50.0),
                   _showName(),
-                  _showUserId(),
+                  _showUsername(),
                   _showStatus(),
                   _showPhone(),
                   SizedBox(height: 50.0),
@@ -287,7 +287,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void dispose() {
     _name.dispose();
-    _userid.dispose();
+    _username.dispose();
     _phone.dispose();
     _status.dispose();
     super.dispose();

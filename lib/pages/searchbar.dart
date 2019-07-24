@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:not_bored/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:not_bored/pages/users.dart';
 
 class DataSearch extends StatefulWidget {
+  DataSearch({Key key, this.auth, this.userId}) : super(key: key);
+
+  final BaseAuth auth;
+  final String userId;
   @override
   _DataSearchState createState() => _DataSearchState();
 }
@@ -89,6 +94,8 @@ class _DataSearchState extends State<DataSearch> {
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => Users(
+                        auth: widget.auth,
+                        userId: widget.userId,
                         data: data,
                       )));
         },

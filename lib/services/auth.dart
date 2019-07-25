@@ -66,6 +66,9 @@ class Auth implements BaseAuth {
       'req_rec': [],
       'req_sent': [],
     });
+    _ref.collection(user.uid)
+        .document('null')
+        .setData(<String, dynamic>{});
   }
 
   Future<void> uploadProPic(String url) async {

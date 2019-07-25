@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/users.dart';
 
 class DataSearch extends StatefulWidget {
@@ -90,14 +92,23 @@ class _DataSearchState extends State<DataSearch> {
         leading: Icon(Icons.person),
         title: Text(data['name']),
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => Users(
-                        auth: widget.auth,
-                        userId: widget.userId,
-                        data: data,
-                      )));
+          if (widget.userId == data['userid']) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => MyInfo(
+                          userId: widget.userId,
+                          auth: widget.auth,
+                        )));
+          } else
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => Users(
+                          auth: widget.auth,
+                          userId: widget.userId,
+                          data: data,
+                        )));
         },
       ),
       itemCount: tempSearchStore.length,

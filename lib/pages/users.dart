@@ -183,7 +183,7 @@ class _UsersState extends State<Users> {
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return new Text('Loading...');
+                          return new Splash();
                         }
                         var myDocument = snapshot.data;
                         if (myDocument['req_sent']
@@ -249,13 +249,19 @@ class _UsersState extends State<Users> {
                   elevation: 7.0,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => MyFriendsPage(
-                                    userId: widget.data['userid'],
-                                    auth: widget.auth,
-                                  )));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return Scaffold(
+                          appBar: AppBar(
+                            title: Text('Friends'),
+                          ),
+                          body: MyFriendsPage(
+                            userId: widget.userId,
+                            auth: widget.auth,
+                            user: widget.data['userid'],
+                          ),
+                        );
+                      }));
                     },
                     child: Center(
                       child: Text(

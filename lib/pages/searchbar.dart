@@ -10,6 +10,7 @@ class DataSearch extends StatefulWidget {
 
   final BaseAuth auth;
   final String userId;
+
   @override
   _DataSearchState createState() => _DataSearchState();
 }
@@ -41,6 +42,7 @@ class _DataSearchState extends State<DataSearch> {
         if (element['name'].startsWith(capitalizedValue)) {
           setState(() {
             tempSearchStore.add(element);
+          
           });
         }
       });
@@ -49,14 +51,16 @@ class _DataSearchState extends State<DataSearch> {
 
   @override
   Widget build(BuildContext context) {
+    final  TextEditingController _controller = new TextEditingController();
     return Scaffold(
-        body: ListView(children: <Widget>[
+        body: new ListView(children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(10.0),
         child: TextField(
           onChanged: (val) {
             initiateSearch(val);
           },
+          controller: _controller,
           decoration: InputDecoration(
               prefixIcon: IconButton(
                 color: Colors.black,
@@ -64,6 +68,14 @@ class _DataSearchState extends State<DataSearch> {
                 iconSize: 20.0,
                 onPressed: () {
                   Navigator.of(context).pop();
+                },
+              ),
+              suffixIcon: IconButton(
+                color: Colors.black,
+                icon: Icon(Icons.clear),
+                iconSize: 20.0,
+                onPressed: () {
+                  _controller.clear();
                 },
               ),
               contentPadding: EdgeInsets.only(left: 25.0),
@@ -90,12 +102,12 @@ class _DataSearchState extends State<DataSearch> {
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
         leading: CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(data['imageURL']),
-                        ),
+          backgroundImage: NetworkImage(data['imageURL']),
+        ),
         title: Text(data['name']),
         subtitle: Text(data['status']),
         onTap: () {
+          Navigator.of(context).pop();
           if (widget.userId == data['userid']) {
             Navigator.push(
                 context,
@@ -105,14 +117,15 @@ class _DataSearchState extends State<DataSearch> {
                           auth: widget.auth,
                         )));
           } else
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => Users(
-                          auth: widget.auth,
-                          userId: widget.userId,
-                          data: data,
-                        )));
+            Navigator.of(context).pop();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => Users(
+                        auth: widget.auth,
+                        userId: widget.userId,
+                        data: data,
+                      )));
         },
       ),
       itemCount: tempSearchStore.length,

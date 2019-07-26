@@ -1,78 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:not_bored/services/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:not_bored/pages/splash.dart';
+import 'package:not_bored/pages/users.dart';
 
 class MyFriendsPage extends StatefulWidget {
-  static String tag = 'MyFriendsPage';
+  MyFriendsPage({Key key, this.auth, this.userId}) : super(key: key);
+
+  final BaseAuth auth;
+  final String userId;
+
   @override
-   MyFriendsPageState createState() =>  MyFriendsPageState();
+  MyFriendsPageState createState() => MyFriendsPageState();
 }
 
-class  MyFriendsPageState extends State <MyFriendsPage> {
+class MyFriendsPageState extends State<MyFriendsPage> {
+  var myFriends = [];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: getListView(),
-    );
+    return new StreamBuilder(
+        stream: Firestore.instance.collectionGroup(widget.userId).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot snapshot1) {
+          if (snapshot1.connectionState == ConnectionState.waiting)
+            return new Splash();
+          snapshot1.data.documents.forEach((index) {
+            myFriends.add(index.data['userid']);
+            print(myFriends);
+          });
+          for (int i = 0; i < myFriends.length; i++) {
+            return new StreamBuilder(
+                stream: Firestore.instance
+                    .collection('users')
+                    .document(myFriends[i])
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return new Splash();
+                  }
+                  var userDocument = snapshot.data;
+                  return Scaffold(
+                      body: ListView(
+                    children: <Widget>[
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(userDocument['imageURL']),
+                        ),
+                        title: Text(userDocument['name']),
+                        subtitle: Text(userDocument['status']),
+                        onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => Users(
+                                          auth: widget.auth,
+                                          userId: widget.userId,
+                                          data: userDocument,
+                                        )));
+                        },
+                      )
+                    ],
+                  ));
+                });
+          }
+        });
   }
-}
-
-Widget getListView() {
-
-  var listview=ListView(
-    children: <Widget>[
-
-     ListTile(
-       leading:Icon(Icons.person),
-       title: Text("Balu"),
-       subtitle: Text("slaying")
-               ),
-
-       ListTile(
-       leading:Icon(Icons.person),
-       title: Text("pranav"),
-       subtitle: Text("can u give me some pick up code,oops i mean line")
-       ),
-
-       ListTile(
-       leading:Icon(Icons.person),
-       title: Text("Aditya"),
-       subtitle: Text("which one to choose")
-       ),
-
-       ListTile(
-       leading:Icon(Icons.person),
-       title: Text("Rahul"),
-       subtitle: Text("yooooo")
-       ),
-
-       ListTile(
-       leading:Icon(Icons.person),
-       title: Text("shusma"),
-       subtitle: Text("potterhead")
-       ),
-
-       ListTile(
-       leading:Icon(Icons.person),
-       title: Text("Alen"),
-       subtitle: Text("8 times a day")
-       )
-       
-       ,ListTile(
-       leading:Icon(Icons.person),
-       title: Text("chris"),
-       subtitle: Text("im worthy")
-       ),
-
-       ListTile(
-       leading:Icon(Icons.person),
-       title: Text("arvind"),
-       subtitle: Text("maaaal")
-       ),
-   
-
-
-    ],
-
-  );
-
-  return listview;
 }

@@ -120,7 +120,7 @@ class _LandingPageState extends State<LandingPage> {
     var provider = Provider.of<LandingPageProvider>(context);
     var currentTab = [
       HomePage(),
-      MyFriendsPage(),
+      MyFriendsPage(userId: widget.userId,auth: widget.auth,),
     ];
 
     return new StreamBuilder(

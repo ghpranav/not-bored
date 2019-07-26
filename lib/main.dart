@@ -5,7 +5,6 @@ import 'package:not_bored/models/root.dart';
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/login.dart';
 import 'package:not_bored/pages/reg.dart';
-import 'package:not_bored/pages/my_friends.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +13,6 @@ class MyApp extends StatelessWidget {
     LoginPage.tag: (context) => LoginPage(),
     HomePage.tag: (context) => HomePage(),
     RegPage.tag: (context) => RegPage(),
-    MyFriendsPage.tag: (context) => MyFriendsPage(),
   };
 
   @override

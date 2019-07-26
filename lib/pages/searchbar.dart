@@ -89,8 +89,12 @@ class _DataSearchState extends State<DataSearch> {
   Widget buildResultCard(data) {
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
-        leading: Icon(Icons.person),
+        leading: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(data['imageURL']),
+                        ),
         title: Text(data['name']),
+        subtitle: Text(data['status']),
         onTap: () {
           if (widget.userId == data['userid']) {
             Navigator.push(

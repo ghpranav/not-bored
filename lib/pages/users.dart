@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:not_bored/pages/my_friends.dart';
 
 class Users extends StatefulWidget {
   Users({Key key, this.auth, this.userId, this.data}) : super(key: key);
 
   final BaseAuth auth;
   final String userId;
-  final Map data;
+  final data;
   @override
   _UsersState createState() => _UsersState();
 }
@@ -152,13 +154,11 @@ class _UsersState extends State<Users> {
               ),
             ),
             StreamBuilder(
-              stream: Firestore.instance
-                  .collectionGroup(widget.userId)
-                  //.where('userid', isEqualTo: widget.data['userid'])
-                  .snapshots(),
+              stream:
+                  Firestore.instance.collectionGroup(widget.userId).snapshots(),
               builder: (BuildContext context, AsyncSnapshot snapshot1) {
                 if (snapshot1.connectionState == ConnectionState.waiting)
-                  return Text('Loading');
+                  return new Splash();
                 bool flag = false;
                 snapshot1.data.documents.forEach((index) {
                   if (index.data['userid'] == widget.data['userid']) {
@@ -248,7 +248,15 @@ class _UsersState extends State<Users> {
                   color: Colors.deepOrange,
                   elevation: 7.0,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => MyFriendsPage(
+                                    userId: widget.data['userid'],
+                                    auth: widget.auth,
+                                  )));
+                    },
                     child: Center(
                       child: Text(
                         "Friends",

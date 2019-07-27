@@ -42,93 +42,100 @@ class _DataSearchState extends State<DataSearch> {
         if (element['name'].startsWith(capitalizedValue)) {
           setState(() {
             tempSearchStore.add(element);
-          
           });
         }
       });
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final  TextEditingController _controller = new TextEditingController();
-    return Scaffold(
-        body: new ListView(children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: TextField(
-          onChanged: (val) {
-            initiateSearch(val);
-          },
-          controller: _controller,
-          decoration: InputDecoration(
-              prefixIcon: IconButton(
-                color: Colors.black,
-                icon: Icon(Icons.arrow_back),
-                iconSize: 20.0,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              suffixIcon: IconButton(
-                color: Colors.black,
-                icon: Icon(Icons.clear),
-                iconSize: 20.0,
-                onPressed: () {
-                  _controller.clear();
-                },
-              ),
-              contentPadding: EdgeInsets.only(left: 25.0),
-              hintText: 'Search by name',
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(4.0))),
-        ),
-      ),
-      SizedBox(height: 10.0),
-      GridView.count(
-          padding: EdgeInsets.only(left: 10.0, right: 10.0),
-          crossAxisCount: 2,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
-          primary: false,
-          shrinkWrap: true,
-          children: tempSearchStore.map((element) {
-            return buildResultCard(element);
-          }).toList())
-    ]));
+  String clear(value) {
+    value = "";
+    return value;
   }
 
-  Widget buildResultCard(data) {
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(data['imageURL']),
+  final TextEditingController eCtrl = new TextEditingController();
+  _onClear() {
+    setState(() {
+      eCtrl.text = "";
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: new Column(children: <Widget>[
+        SizedBox(height: 30.0),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: TextField(
+            controller: eCtrl,
+            onSubmitted: (text) {
+              eCtrl.clear();
+              setState(() {});
+            },
+            onChanged: (val) {
+              initiateSearch(val);
+            },
+            decoration: InputDecoration(
+                prefixIcon: IconButton(
+                  color: Colors.black,
+                  icon: Icon(Icons.arrow_back),
+                  iconSize: 20.0,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                suffixIcon: IconButton(
+                  color: Colors.black,
+                  icon: Icon(Icons.close),
+                  iconSize: 20.0,
+                  onPressed: () {
+                    _onClear();
+                  },
+                ),
+                hintText: 'Search by name',
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0))),
+          ),
         ),
-        title: Text(data['name']),
-        subtitle: Text(data['status']),
-        onTap: () {
-          Navigator.of(context).pop();
-          if (widget.userId == data['userid']) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => MyInfo(
-                          userId: widget.userId,
-                          auth: widget.auth,
-                        )));
-          } else
-            Navigator.of(context).pop();
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => Users(
-                        auth: widget.auth,
-                        userId: widget.userId,
-                        data: data,
-                      )));
-        },
-      ),
-      itemCount: tempSearchStore.length,
+        new Expanded(
+          child: ListView.builder(
+            itemCount: tempSearchStore.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage:
+                      NetworkImage(tempSearchStore[index]['imageURL']),
+                ),
+                title: Text(tempSearchStore[index]['name']),
+                subtitle: Text(tempSearchStore[index]['status']),
+                onTap: () {
+                  if (widget.userId == tempSearchStore[index]['userid']) {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => MyInfo(
+                                  userId: widget.userId,
+                                  auth: widget.auth,
+                                )));
+                  } else {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => Users(
+                                  auth: widget.auth,
+                                  userId: widget.userId,
+                                  data: tempSearchStore[index],
+                                )));
+                  }
+                },
+              );
+            },
+          ),
+        ),
+      ]),
     );
   }
 }

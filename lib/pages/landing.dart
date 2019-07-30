@@ -72,6 +72,7 @@ class _LandingPageState extends State<LandingPage> {
   void _showVerifyEmailDialog() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
@@ -98,6 +99,7 @@ class _LandingPageState extends State<LandingPage> {
   void _showVerifyEmailSentDialog() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(

@@ -120,7 +120,7 @@ class _UsersState extends State<Users> {
             ),
             Positioned(
                 width: MediaQuery.of(context).size.width,
-                top: MediaQuery.of(context).size.height / 9,
+                top: MediaQuery.of(context).size.height / 7,
                 child: Column(
                   children: <Widget>[
                     Container(

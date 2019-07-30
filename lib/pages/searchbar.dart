@@ -33,7 +33,8 @@ class _DataSearchState extends State<DataSearch> {
     if (queryResultSet.length == 0 && value.length == 1) {
       SearchService().searchByName(value).then((QuerySnapshot docs) {
         for (int i = 0; i < docs.documents.length; ++i) {
-          queryResultSet.add(docs.documents[i].data);
+          if(docs.documents[i].data['isMailVerified']){
+          queryResultSet.add(docs.documents[i].data);}
         }
       });
     } else {

@@ -114,9 +114,13 @@ class _UsersState extends State<Users> {
         ),
         body: new Stack(
           children: <Widget>[
+            ClipPath(
+              child: Container(color: Colors.black.withOpacity(0.8)),
+              clipper: GetClipper(),
+            ),
             Positioned(
                 width: MediaQuery.of(context).size.width,
-                top: MediaQuery.of(context).size.height / 9,
+                top: MediaQuery.of(context).size.height / 7,
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -132,8 +136,8 @@ class _UsersState extends State<Users> {
                   ],
                 )),
             Positioned(
-              bottom: 270.0,
-              left: 70.0,
+              bottom: MediaQuery.of(context).size.height / 3,
+              left: MediaQuery.of(context).size.width / 10,
               child: Text(
                 widget.data['name'],
                 style: TextStyle(
@@ -143,8 +147,8 @@ class _UsersState extends State<Users> {
               ),
             ),
             Positioned(
-              bottom: 215.0,
-              left: 100.0,
+              bottom: MediaQuery.of(context).size.height / 4,
+              left: MediaQuery.of(context).size.width / 10,
               child: Text(
                 widget.data['status'],
                 style: TextStyle(
@@ -167,14 +171,66 @@ class _UsersState extends State<Users> {
                 });
                 if (flag) {
                   return new Positioned(
-                      bottom: 30.0,
-                      left: 20.0,
-                      height: 55.0,
-                      width: 150.0,
-                      child: RaisedButton(
-                        child: Text("Unfriend"),
-                        onPressed: removeFrnd,
-                      ));
+                      child: Stack(children: <Widget>[
+                    Positioned(
+                        bottom: 30.0,
+                        left: 20.0,
+                        height: 55.0,
+                        width: 150.0,
+                        child: MaterialButton(
+                          child: Text(
+                            "Unfriend",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.normal,
+                                fontSize: 20.0),
+                          ),
+                          onPressed: removeFrnd,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(20.0)),
+                          color: Colors.deepOrange,
+                          elevation: 7.0,
+                        )),
+                    Positioned(
+                        bottom: 30.0,
+                        right: 20.0,
+                        height: 55.0,
+                        width: 150.0,
+                        child: Material(
+                          borderRadius: BorderRadius.circular(20.0),
+                          shadowColor: Colors.orangeAccent,
+                          color: Colors.deepOrange,
+                          elevation: 7.0,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return Scaffold(
+                                  appBar: AppBar(
+                                    title: Text('Friends'),
+                                  ),
+                                  body: MyFriendsPage(
+                                    userId: widget.userId,
+                                    auth: widget.auth,
+                                    user: widget.data['userid'],
+                                  ),
+                                );
+                              }));
+                            },
+                            child: Center(
+                              child: Text(
+                                "Friends",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 20.0),
+                              ),
+                            ),
+                          ),
+                        )),
+                  ]));
                 } else {
                   return new StreamBuilder(
                       stream: Firestore.instance
@@ -190,12 +246,24 @@ class _UsersState extends State<Users> {
                             .contains(widget.data['userid'])) {
                           return new Positioned(
                               bottom: 30.0,
-                              left: 20.0,
+                              left: MediaQuery.of(context).size.width / 22,
                               height: 55.0,
-                              width: 150.0,
-                              child: RaisedButton(
-                                child: Text("Cancel Request"),
+                              width: MediaQuery.of(context).size.width / 1.1,
+                              child: MaterialButton(
+                                child: Text(
+                                  "Cancel Request",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 20.0),
+                                ),
                                 onPressed: cancelReq,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(20.0)),
+                                color: Colors.deepOrange,
+                                elevation: 7.0,
                               ));
                         } else if (myDocument['req_rec']
                             .contains(widget.data['userid'])) {
@@ -203,78 +271,94 @@ class _UsersState extends State<Users> {
                               child: Stack(
                             children: <Widget>[
                               Positioned(
-                                  bottom: 100.0,
-                                  left: 20.0,
-                                  height: 55.0,
-                                  width: 150.0,
-                                  child: RaisedButton(
-                                    child: Text("Accept"),
-                                    onPressed: acceptReq,
-                                  )),
-                              Positioned(
                                   bottom: 30.0,
                                   left: 20.0,
                                   height: 55.0,
                                   width: 150.0,
-                                  child: RaisedButton(
+                                  child: MaterialButton(
+                                    child: Text(
+                                      "Accept",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 20.0),
+                                    ),
+                                    onPressed: acceptReq,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(20.0)),
+                                    color: Colors.deepOrange,
+                                    elevation: 7.0,
+                                  )),
+                              Positioned(
+                                  bottom: 30.0,
+                                  right: 20.0,
+                                  height: 55.0,
+                                  width: 150.0,
+                                  child: MaterialButton(
+                                    child: Text(
+                                      'Reject',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 20.0),
+                                    ),
                                     onPressed: rejectReq,
-                                    child: Text('Reject'),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(20.0)),
+                                    color: Colors.deepOrange,
+                                    elevation: 7.0,
                                   ))
                             ],
                           ));
                         } else {
                           return new Positioned(
                               bottom: 30.0,
-                              left: 20.0,
+                              left: MediaQuery.of(context).size.width / 22,
                               height: 55.0,
-                              width: 150.0,
-                              child: RaisedButton(
-                                child: Text("Send Request"),
+                              width: MediaQuery.of(context).size.width / 1.1,
+                              child: MaterialButton(
+                                child: Text(
+                                  "Send Request",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 20.0),
+                                ),
                                 onPressed: sendReq,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(20.0)),
+                                color: Colors.deepOrange,
+                                elevation: 7.0,
                               ));
                         }
                       });
                 }
               },
             ),
-            Positioned(
-                bottom: 30.0,
-                right: 20.0,
-                height: 55.0,
-                width: 150.0,
-                child: Material(
-                  borderRadius: BorderRadius.circular(20.0),
-                  shadowColor: Colors.orangeAccent,
-                  color: Colors.deepOrange,
-                  elevation: 7.0,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return Scaffold(
-                          appBar: AppBar(
-                            title: Text('Friends'),
-                          ),
-                          body: MyFriendsPage(
-                            userId: widget.userId,
-                            auth: widget.auth,
-                            user: widget.data['userid'],
-                          ),
-                        );
-                      }));
-                    },
-                    child: Center(
-                      child: Text(
-                        "Friends",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Montserrat',
-                            fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                )),
           ],
         ));
+  }
+}
+
+class GetClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = new Path();
+
+    path.lineTo(0.0, size.height / 1.9);
+    path.lineTo(size.width + 125, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
   }
 }

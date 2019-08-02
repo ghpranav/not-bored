@@ -117,6 +117,8 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<LandingPageProvider>(context);
@@ -124,7 +126,10 @@ class _LandingPageState extends State<LandingPage> {
       HomePage(),
       MyFriendsPage(
           userId: widget.userId, auth: widget.auth, user: widget.userId),
+      
     ];
+
+    
 
     return new StreamBuilder(
         stream: Firestore.instance

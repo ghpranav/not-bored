@@ -5,14 +5,19 @@ import 'package:not_bored/models/root.dart';
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/login.dart';
 import 'package:not_bored/pages/reg.dart';
+import 'package:not_bored/pages/notifications.dart';
 
-void main() => runApp(MyApp());
+void main(){
+  runApp(NotifPage(auth:new Auth()));
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     LoginPage.tag: (context) => LoginPage(),
     HomePage.tag: (context) => HomePage(),
     RegPage.tag: (context) => RegPage(),
+
   };
 
   @override
@@ -22,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
       ),
-      home: RootPage(auth: new Auth()),
+      home:RootPage(auth: new Auth()),
       routes: routes,
     );
   }

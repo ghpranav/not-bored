@@ -36,8 +36,8 @@ class _UsersState extends State<Users> {
       'req_rec': FieldValue.arrayUnion([widget.userId]),
     });
     _refUrec.setData(<String, dynamic>{
-      'userid': widget.userId,
-      'isBlocked': false,
+      'req_rec': widget.userId,
+      
     });
   }
 

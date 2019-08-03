@@ -1,4 +1,8 @@
 import * as functions from 'firebase-functions';
+
+exports.webhookAsia = functions
+    .region('asia-east2')
+    
 import * as admin from 'firebase-admin';
 admin.initializeApp();
 
@@ -13,8 +17,8 @@ export const sendToDevice = functions.firestore
         const docu = snapshot.data();
         if(docu){
             const querySnapshot = await db
-            .collection('users')
-             .doc(docu.req_rec)
+            .collection('req_rec')
+             .doc(docu.userid)
             .collection('tokens')
             .get();
 

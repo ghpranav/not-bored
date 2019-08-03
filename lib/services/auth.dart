@@ -86,7 +86,7 @@ class Auth implements BaseAuth {
         _ref.collection('req_rec')
         .document('null')
         .setData(<String, dynamic>{
-          
+          'req_rec':'',
         });
   }
 

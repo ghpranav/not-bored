@@ -7,15 +7,15 @@ const fcm = admin.messaging();
 
 export const sendToDevice = functions.firestore
     .document('users/{userId}')
-    .onWrite(async snapshot => {
+    .onCreate(async snapshot => {
 
 
         const docu = snapshot.data();
-
-        const querySnapshot = await db
+        if(docu){
+            const querySnapshot = await db
             .collection('users')
-            .doc(docu.req_rec)
-            .collection(docu.tokens)
+             .doc(docu.req_rec)
+            .collection('tokens')
             .get();
 
         const tokens = querySnapshot.docs.map(snap => snap.id);
@@ -31,4 +31,9 @@ export const sendToDevice = functions.firestore
         };
 
         return fcm.sendToDevice(tokens, payload);
+        }
+        else 
+        return null
+
+       
     });

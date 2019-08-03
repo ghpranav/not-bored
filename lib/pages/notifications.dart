@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:not_bored/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:not_bored/pages/splash.dart';
 
 class NotifPage extends StatefulWidget {
@@ -16,6 +16,7 @@ class NotifPage extends StatefulWidget {
 }
 
 class _NotifPageState extends State<NotifPage> {
+  final Firestore _db = Firestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   @override
@@ -49,8 +50,10 @@ class _NotifPageState extends State<NotifPage> {
       },
     );
 
-    _fcm.getToken().then((token) {});
-    print('hey');
+    _fcm.getToken().then((token) {
+      print("token=");
+      print(token);
+    });
   }
 
   @override
@@ -59,16 +62,19 @@ class _NotifPageState extends State<NotifPage> {
   }
 
   _saveDeviceToken() async {
-    final Firestore _firestore = Firestore.instance;
     FirebaseUser user = await widget.auth.getCurrentUser();
     String uid = user.uid;
     String fcmToken = await _fcm.getToken();
 
     if (fcmToken != null) {
-      DocumentReference _ref = _firestore.collection('users').document(uid);
+      var tokens = _db
+          .collection('users')
+          .document(uid)
+          .collection('tokens')
+          .document(fcmToken);
 
-      await _ref.updateData(<String, dynamic>{
-        'tokens': fcmToken,
+      await tokens.setData({
+        'token': fcmToken,
       });
     }
   }

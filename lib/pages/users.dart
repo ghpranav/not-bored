@@ -24,7 +24,7 @@ class _UsersState extends State<Users> {
         _firestore.collection('users').document(widget.userId);
     DocumentReference _refU =
         _firestore.collection('users').document(widget.data['userid']);
-        DocumentReference _refUrec = _firestore
+    DocumentReference _refUrec = _firestore
         .collection('users')
         .document(widget.data['userid'])
         .collection('req_rec')
@@ -46,7 +46,7 @@ class _UsersState extends State<Users> {
         _firestore.collection('users').document(widget.userId);
     DocumentReference _refU =
         _firestore.collection('users').document(widget.data['userid']);
-         DocumentReference _refUrec = _firestore
+    DocumentReference _refUrec = _firestore
         .collection('users')
         .document(widget.data['userid'])
         .collection('req_rec')
@@ -70,13 +70,19 @@ class _UsersState extends State<Users> {
         .document(widget.userId)
         .collection(widget.userId)
         .document(widget.data['userid']);
-    
+
     DocumentReference _refUF = _firestore
         .collection('users')
         .document(widget.data['userid'])
         .collection(widget.data['userid'])
         .document(widget.userId);
-       
+
+    DocumentReference _refMerec = _firestore
+        .collection('users')
+        .document(widget.userId)
+        .collection('req_rec')
+        .document(widget.data['userid']);
+
     _refMe.updateData({
       'req_rec': FieldValue.arrayRemove([widget.data['userid']]),
     });
@@ -91,6 +97,7 @@ class _UsersState extends State<Users> {
       'userid': widget.userId,
       'isBlocked': false,
     });
+    _refMerec.delete();
   }
 
   void rejectReq() async {
@@ -98,7 +105,7 @@ class _UsersState extends State<Users> {
         _firestore.collection('users').document(widget.userId);
     DocumentReference _refU =
         _firestore.collection('users').document(widget.data['userid']);
-         DocumentReference _refMerec = _firestore
+    DocumentReference _refMerec = _firestore
         .collection('users')
         .document(widget.userId)
         .collection('req_rec')

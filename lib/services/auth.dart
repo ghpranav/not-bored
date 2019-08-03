@@ -75,7 +75,7 @@ class Auth implements BaseAuth {
           'https://firebasestorage.googleapis.com/v0/b/not-bored.appspot.com/o/pro_pics%2Fdefault.jpg?alt=media&token=2b95838b-d7cd-4540-a7a9-f957e7a526ee',
       'isMailVerified': false,
       'searchKey': profile['fname'][0].toString().toUpperCase(),
-      
+       'req_rec': [],
       'req_sent': [],
     });
     _ref.collection(user.uid)

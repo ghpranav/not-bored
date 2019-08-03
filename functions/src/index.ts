@@ -7,7 +7,7 @@ const fcm = admin.messaging();
 
 export const sendToDevice = functions.firestore
     .document('users/{userId}')
-    .onCreate(async snapshot => {
+    .onWrite(async snapshot => {
 
 
         const docu = snapshot.data();
@@ -15,7 +15,7 @@ export const sendToDevice = functions.firestore
         const querySnapshot = await db
             .collection('users')
             .doc(docu.req_rec)
-            .collection('tokens')
+            .collection(docu.tokens)
             .get();
 
         const tokens = querySnapshot.docs.map(snap => snap.id);

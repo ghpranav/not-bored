@@ -1,8 +1,4 @@
 import * as functions from 'firebase-functions';
-
-exports.webhookAsia = functions
-    .region('asia-east2')
-    
 import * as admin from 'firebase-admin';
 admin.initializeApp();
 

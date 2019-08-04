@@ -11,10 +11,10 @@ export const sendToDevice = functions.firestore
 
 
         const docu = snapshot.data();
-
-        const querySnapshot = await db
-            .collection('users')
-            .doc(docu.req_rec)
+        if(docu){
+            const querySnapshot = await db
+            .collection('req_rec')
+             .doc(docu.userid)
             .collection('tokens')
             .get();
 
@@ -31,4 +31,9 @@ export const sendToDevice = functions.firestore
         };
 
         return fcm.sendToDevice(tokens, payload);
+        }
+        else 
+        return null
+
+       
     });

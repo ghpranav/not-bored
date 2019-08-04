@@ -6,16 +6,16 @@ import 'package:not_bored/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:not_bored/pages/splash.dart';
 
-class NotifPage extends StatefulWidget {
-  NotifPage({this.auth});
+class Notifications extends StatefulWidget {
+  Notifications({this.auth});
 
   final BaseAuth auth;
 
   @override
-  _NotifPageState createState() => _NotifPageState();
+  _NotificationsState createState() => _NotificationsState();
 }
 
-class _NotifPageState extends State<NotifPage> {
+class _NotificationsState extends State<Notifications> {
   final Firestore _db = Firestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
 

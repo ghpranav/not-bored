@@ -9,6 +9,7 @@ import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/searchbar.dart';
 import 'package:not_bored/pages/my_friends.dart';
 import 'package:not_bored/pages/splash.dart';
+import 'package:not_bored/pages/notify_page.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({Key key, this.auth, this.userId, this.onSignedOut})
@@ -117,8 +118,6 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<LandingPageProvider>(context);
@@ -126,10 +125,7 @@ class _LandingPageState extends State<LandingPage> {
       HomePage(),
       MyFriendsPage(
           userId: widget.userId, auth: widget.auth, user: widget.userId),
-      
     ];
-
-    
 
     return new StreamBuilder(
         stream: Firestore.instance
@@ -152,7 +148,15 @@ class _LandingPageState extends State<LandingPage> {
                       color: Colors.white,
                     ),
                     tooltip: 'Air it',
-                    onPressed: null,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => NotifPage(
+                                    auth: widget.auth,
+                                    userId: widget.userId,
+                                  )));
+                    },
                   )
                 ]),
             drawer: Theme(

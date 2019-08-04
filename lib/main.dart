@@ -8,7 +8,7 @@ import 'package:not_bored/pages/reg.dart';
 import 'package:not_bored/pages/notifications.dart';
 
 void main(){
-  runApp(NotifPage(auth:new Auth()));
+  runApp(Notifications(auth:new Auth()));
   runApp(MyApp());
 }
 

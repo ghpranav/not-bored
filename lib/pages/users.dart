@@ -36,7 +36,7 @@ class _UsersState extends State<Users> {
       'req_rec': FieldValue.arrayUnion([widget.userId]),
     });
     _refUrec.setData(<String, dynamic>{
-      'req_rec': widget.userId,
+      'userid': widget.userId,
       
     });
   }

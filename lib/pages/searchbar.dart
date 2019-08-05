@@ -58,6 +58,7 @@ class _DataSearchState extends State<DataSearch> {
   _onClear() {
     setState(() {
       eCtrl.text = "";
+      tempSearchStore=[];
     });
   }
 

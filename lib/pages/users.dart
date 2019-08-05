@@ -27,7 +27,7 @@ class _UsersState extends State<Users> {
     DocumentReference _refUrec = _firestore
         .collection('users')
         .document(widget.data['userid'])
-        .collection('req_rec')
+        .collection('req_rec:'+widget.data['userid'])
         .document(widget.userId);
     _refMe.updateData({
       'req_sent': FieldValue.arrayUnion([widget.data['userid']]),
@@ -49,7 +49,7 @@ class _UsersState extends State<Users> {
     DocumentReference _refUrec = _firestore
         .collection('users')
         .document(widget.data['userid'])
-        .collection('req_rec')
+        .collection('req_rec:'+widget.data['userid'])
         .document(widget.userId);
     _refMe.updateData({
       'req_sent': FieldValue.arrayRemove([widget.data['userid']]),
@@ -80,7 +80,7 @@ class _UsersState extends State<Users> {
     DocumentReference _refMerec = _firestore
         .collection('users')
         .document(widget.userId)
-        .collection('req_rec')
+        .collection('req_rec:'+widget.data.userId)
         .document(widget.data['userid']);
 
     _refMe.updateData({
@@ -108,7 +108,7 @@ class _UsersState extends State<Users> {
     DocumentReference _refMerec = _firestore
         .collection('users')
         .document(widget.userId)
-        .collection('req_rec')
+        .collection('req_rec:'+widget.data.userId)
         .document(widget.data['userid']);
     _refMe.updateData({
       'req_rec': FieldValue.arrayRemove([widget.data['userid']]),

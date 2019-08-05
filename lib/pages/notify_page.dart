@@ -14,10 +14,14 @@ class NotifPage extends StatefulWidget {
 }
 
 class _NotifPageState extends State<NotifPage> {
+   final Firestore _firestore = Firestore.instance;
+  
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder(
-        stream: Firestore.instance.collectionGroup('req_rec').snapshots(),
+        stream: Firestore.instance
+            .collectionGroup('req_rec:' + widget.userId)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot1) {
           if (snapshot1.connectionState == ConnectionState.waiting) {
             return new Splash();
@@ -28,40 +32,45 @@ class _NotifPageState extends State<NotifPage> {
               reqRec.add(index.data['userid']);
             }
           });
+          print(reqRec);
           return Scaffold(
-              body: new ListView.builder(
-                  itemCount: reqRec.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return new StreamBuilder(
-                        stream: Firestore.instance
-                            .collection('users')
-                            .document(reqRec[index])
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return new Splash();
-                          }
-                          var userDocument = snapshot.data;
-                          return Dismissible(
-                                key: Key(reqRec[index]),
-                                onDismissed: (direction) {
-                                  setState(() {
-                                    reqRec.removeAt(index);
-                                  });
-                                },
-                                background:
-                                    Container(color: Colors.orangeAccent[900]),
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(userDocument['imageURL']),
-                                  ),
-                                  title: Text(userDocument['name']),
+              body: new Column(
+                mainAxisSize: MainAxisSize.min, children: <Widget>[
+            Expanded(
+                child: ListView.builder(
+                    itemCount: reqRec.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return new StreamBuilder(
+                          stream: Firestore.instance
+                              .collection('users')
+                              .document(reqRec[index])
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return new Splash();
+                            }
+                            var userDocument = snapshot.data;
+
+                            return new Dismissible(
+                              key: Key(reqRec[index]),
+                              onDismissed: (direction) {
+                                setState(() {
+                                  reqRec.removeAt(index);
+                                });
+                              },
+                              background:
+                                  Container(color: Colors.orangeAccent[900]),
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(userDocument['imageURL']),
                                 ),
-                              );
-                          
-                        });
-                  }));
+                                title: Text(userDocument['name']),
+                              ),
+                            );
+                          });
+                    }))
+          ]));
         });
   }
 }

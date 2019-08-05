@@ -219,7 +219,7 @@ class _UsersState extends State<Users> {
                           onPressed: removeFrnd,
                           shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(20.0)),
-                          color: Colors.deepOrange,
+                          color:PrimaryColor,
                           elevation: 7.0,
                         )),
                     Positioned(
@@ -230,7 +230,7 @@ class _UsersState extends State<Users> {
                         child: Material(
                           borderRadius: BorderRadius.circular(20.0),
                           shadowColor: Colors.orangeAccent,
-                          color: Colors.deepOrange,
+                          color:PrimaryColor,
                           elevation: 7.0,
                           child: GestureDetector(
                             onTap: () {
@@ -292,7 +292,7 @@ class _UsersState extends State<Users> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(20.0)),
-                                color: Colors.deepOrange,
+                                color:PrimaryColor,
                                 elevation: 7.0,
                               ));
                         } else if (myDocument['req_rec']
@@ -318,7 +318,7 @@ class _UsersState extends State<Users> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             new BorderRadius.circular(20.0)),
-                                    color: Colors.deepOrange,
+                                    color:PrimaryColor,
                                     elevation: 7.0,
                                   )),
                               Positioned(
@@ -339,7 +339,7 @@ class _UsersState extends State<Users> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             new BorderRadius.circular(20.0)),
-                                    color: Colors.deepOrange,
+                                    color:PrimaryColor,
                                     elevation: 7.0,
                                   ))
                             ],
@@ -363,7 +363,7 @@ class _UsersState extends State<Users> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(20.0)),
-                                color: Colors.deepOrange,
+                                color:PrimaryColor,
                                 elevation: 7.0,
                               ));
                         }

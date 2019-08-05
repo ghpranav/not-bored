@@ -125,7 +125,7 @@ class _MyInfoState extends State<MyInfo> {
                               height: 55.0,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.deepOrange,
+                                color: PrimaryColor,
                               ),
                               child: Icon(
                                 Icons.camera_alt,
@@ -158,7 +158,7 @@ class _MyInfoState extends State<MyInfo> {
                             child: Material(
                               borderRadius: BorderRadius.circular(20.0),
                               shadowColor: Colors.orangeAccent,
-                              color: Colors.deepOrange,
+                              color: PrimaryColor,
                               elevation: 7.0,
                               child: GestureDetector(
                                 onTap: () {},
@@ -179,7 +179,7 @@ class _MyInfoState extends State<MyInfo> {
                             child: Material(
                               borderRadius: BorderRadius.circular(20.0),
                               shadowColor: Colors.orangeAccent,
-                              color: Colors.deepOrange,
+                              color: PrimaryColor,
                               elevation: 7.0,
                               child: GestureDetector(
                                 onTap: () {},
@@ -202,7 +202,7 @@ class _MyInfoState extends State<MyInfo> {
                                 child: Material(
                                   borderRadius: BorderRadius.circular(30.0),
                                   shadowColor: Colors.orangeAccent[700],
-                                  color: Colors.deepOrange,
+                                  color: PrimaryColor,
                                   elevation: 7.0,
                                   child: GestureDetector(
                                     onTap: () {},

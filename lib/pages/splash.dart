@@ -5,7 +5,7 @@ class Splash extends StatefulWidget {
   @override
   _SplashState createState() => _SplashState();
 }
-
+const PrimaryColor = const Color(0xFFf96327);
 class _SplashState extends State<Splash> with TickerProviderStateMixin {
   AnimationController rotationController;
 
@@ -32,7 +32,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
       child: Text(
         'N B',
         style: TextStyle(
-          color: Colors.deepOrange,
+          color: PrimaryColor,
           fontSize: 30,
           fontFamily: "Horizon",
           fontWeight: FontWeight.bold,

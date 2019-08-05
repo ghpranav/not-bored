@@ -22,7 +22,7 @@ class LandingPage extends StatefulWidget {
   @override
   _LandingPageState createState() => _LandingPageState();
 }
-
+const PrimaryColor = const Color(0xFFf96327);
 class _LandingPageState extends State<LandingPage> {
   _signOut() async {
     try {
@@ -220,7 +220,7 @@ class _LandingPageState extends State<LandingPage> {
             floatingActionButton: FloatingActionButton(
               heroTag: 'SearchBtn',
               elevation: 4.0,
-              backgroundColor: Colors.deepOrangeAccent,
+              backgroundColor: PrimaryColor,
               child: const Icon(Icons.search, color: Colors.white),
               onPressed: () {
                 Navigator.push(

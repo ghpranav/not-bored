@@ -11,7 +11,7 @@ void main(){
   runApp(Notifications(auth:new Auth()));
   runApp(MyApp());
 }
-
+const PrimaryColor = const Color(0xFFf96327);
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     LoginPage.tag: (context) => LoginPage(),
@@ -22,10 +22,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primarySwatch:Colors.deepOrange,
+        primaryColor: PrimaryColor,
       ),
       home:RootPage(auth: new Auth()),
       routes: routes,

@@ -13,8 +13,10 @@ export const sendToDevice = functions.firestore
         const docu = snapshot.data();
         if(docu){
             const querySnapshot = await db
-            .collection('req_rec')
-             .doc(docu.userid)
+            .collection('users')
+            .doc('userid')
+            .collection('req_rec:'+docu.userid)
+            .doc(docu.userid)
             .collection('tokens')
             .get();
 

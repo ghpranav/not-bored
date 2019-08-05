@@ -13,9 +13,69 @@ class NotifPage extends StatefulWidget {
   _NotifPageState createState() => _NotifPageState();
 }
 
+const PrimaryColor = const Color(0xFFf96327);
+
 class _NotifPageState extends State<NotifPage> {
-   final Firestore _firestore = Firestore.instance;
-  
+  final Firestore _firestore = Firestore.instance;
+  void acceptReq(data) async {
+    DocumentReference _refMe =
+        _firestore.collection('users').document(widget.userId);
+    DocumentReference _refU =
+        _firestore.collection('users').document(data['userid']);
+    DocumentReference _refMeF = _firestore
+        .collection('users')
+        .document(widget.userId)
+        .collection(widget.userId)
+        .document(data['userid']);
+
+    DocumentReference _refUF = _firestore
+        .collection('users')
+        .document(data['userid'])
+        .collection(data['userid'])
+        .document(widget.userId);
+
+    DocumentReference _refMerec = _firestore
+        .collection('users')
+        .document(widget.userId)
+        .collection('req_rec:' + widget.userId)
+        .document(data['userid']);
+
+    _refMe.updateData({
+      'req_rec': FieldValue.arrayRemove([data['userid']]),
+    });
+    _refU.updateData({
+      'req_sent': FieldValue.arrayRemove([widget.userId]),
+    });
+    _refMeF.setData(<String, dynamic>{
+      'userid': data['userid'],
+      'isBlocked': false,
+    });
+    _refUF.setData(<String, dynamic>{
+      'userid': widget.userId,
+      'isBlocked': false,
+    });
+    _refMerec.delete();
+  }
+
+  void rejectReq(data) async {
+    DocumentReference _refMe =
+        _firestore.collection('users').document(widget.userId);
+    DocumentReference _refU =
+        _firestore.collection('users').document(data['userid']);
+    DocumentReference _refMerec = _firestore
+        .collection('users')
+        .document(widget.userId)
+        .collection('req_rec:' + widget.userId)
+        .document(data['userid']);
+    _refMe.updateData({
+      'req_rec': FieldValue.arrayRemove([data['userid']]),
+    });
+    _refU.updateData({
+      'req_sent': FieldValue.arrayRemove([widget.userId]),
+    });
+    _refMerec.delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder(
@@ -34,8 +94,8 @@ class _NotifPageState extends State<NotifPage> {
           });
           print(reqRec);
           return Scaffold(
-              body: new Column(
-                mainAxisSize: MainAxisSize.min, children: <Widget>[
+              body:
+                  new Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
             Expanded(
                 child: ListView.builder(
                     itemCount: reqRec.length,
@@ -55,18 +115,77 @@ class _NotifPageState extends State<NotifPage> {
                               key: Key(reqRec[index]),
                               onDismissed: (direction) {
                                 setState(() {
-                                  reqRec.removeAt(index);
+                                  rejectReq(userDocument);
                                 });
                               },
-                              background:
-                                  Container(color: Colors.orangeAccent[900]),
+                              background: Container(color: PrimaryColor),
                               child: ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(userDocument['imageURL']),
-                                ),
-                                title: Text(userDocument['name']),
-                              ),
+                                  leading: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(userDocument['imageURL']),
+                                  ),
+                                  title: RichText(
+                                    text: TextSpan(
+                                        text: userDocument['name'],
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                        children: [
+                                          TextSpan(
+                                              text:
+                                                  ' has sent you friend request',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight:
+                                                      FontWeight.normal))
+                                        ]),
+                                  ),
+                                  subtitle: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: const EdgeInsets.fromLTRB(
+                                              0.0, 0.0, 1.0, 0.0),
+                                          child: MaterialButton(
+                                            child: Text(
+                                              "Accept",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 15.0),
+                                            ),
+                                            onPressed: () =>
+                                                acceptReq(userDocument),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        20.0)),
+                                            color: PrimaryColor,
+                                          ),
+                                        ),
+                                        Container(
+                                            margin: const EdgeInsets.fromLTRB(
+                                                3.0, 0.0, 0.0, 0.0),
+                                            child: MaterialButton(
+                                              child: Text(
+                                                "Reject",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontSize: 15.0),
+                                              ),
+                                              onPressed: () =>
+                                                  rejectReq(userDocument),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          20.0)),
+                                              color: Colors.deepOrange[900],
+                                            ))
+                                      ])),
                             );
                           });
                     }))

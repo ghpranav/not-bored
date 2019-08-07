@@ -72,7 +72,7 @@ class Auth implements BaseAuth {
       'phone': profile['phone'],
       'status': 'I am Bored',
       'imageURL':
-          'https://firebasestorage.googleapis.com/v0/b/not-bored.appspot.com/o/pro_pics%2Fdefault.jpg?alt=media&token=2b95838b-d7cd-4540-a7a9-f957e7a526ee',
+          'https://firebasestorage.googleapis.com/v0/b/not-bored-002.appspot.com/o/pro_pics%2Fdefault.jpg?alt=media&token=8198b851-f08e-4bfa-b7b8-64d055c43f2057e7a526ee',
       'isMailVerified': false,
       'searchKey': profile['fname'][0].toString().toUpperCase(),
        'req_rec': [],

@@ -29,18 +29,18 @@ class Auth implements BaseAuth {
   final Firestore _firestore = Firestore.instance;
 
   Future<String> signIn(String email, String password) async {
-    FirebaseUser user = await _firebaseAuth.signInWithEmailAndPassword(
+    AuthResult user = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    return user.uid;
+    return user.user.uid;
   }
 
   Future<String> signUp(Map profile) async {
-    FirebaseUser user = await _firebaseAuth.createUserWithEmailAndPassword(
+    AuthResult user = await _firebaseAuth.createUserWithEmailAndPassword(
         email: profile['email'], password: profile['password']);
-    if (user.uid != null) {
-      createUser(profile, user);
+    if (user.user.uid != null) {
+      createUser(profile, user.user);
     }
-    return user.uid;
+    return user.user.uid;
   }
 
   Future<FirebaseUser> getCurrentUser() async {

@@ -6,7 +6,7 @@ const db = admin.firestore();
 const fcm = admin.messaging();
 
 export const sendToDevice = functions.firestore
-    .document('users/{userId}')
+    .document('users/{userId}/{req_rec}/{userId}')
     .onCreate(async snapshot => {
 
 
@@ -14,8 +14,6 @@ export const sendToDevice = functions.firestore
         if(docu){
             const querySnapshot = await db
             .collection('users')
-            .doc('userid')
-            .collection('req_rec:'+docu.userid)
             .doc(docu.userid)
             .collection('tokens')
             .get();

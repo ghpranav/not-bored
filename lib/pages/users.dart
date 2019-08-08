@@ -179,13 +179,15 @@ class _UsersState extends State<Users> {
             Positioned(
               bottom: MediaQuery.of(context).size.height / 4,
               left: MediaQuery.of(context).size.width / 10,
-              child: Text(
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+               children:<Widget>[Text(
                 widget.data['status'],
                 style: TextStyle(
                     fontSize: 22.0,
                     fontStyle: FontStyle.italic,
                     fontFamily: 'Montserrat'),
-              ),
+              ),],),
             ),
             StreamBuilder(
               stream:

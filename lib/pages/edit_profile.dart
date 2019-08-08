@@ -166,6 +166,7 @@ class _EditProfileState extends State<EditProfile> {
         maxLines: 1,
         keyboardType: TextInputType.text,
         autofocus: false,
+        maxLength: 35,
         decoration: new InputDecoration(
             hintText: 'Status',
             errorStyle: TextStyle(

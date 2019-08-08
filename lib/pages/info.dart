@@ -88,32 +88,31 @@ class _MyInfoState extends State<MyInfo> {
                   icon: Icon(Icons.arrow_back),
                   onPressed: () => Navigator.pop(context, false),
                 )),
-            body: new Stack(
+            body:  Stack(
               children: <Widget>[
                 ClipPath(
                   child: Container(color: Colors.black.withOpacity(0.8)),
                   clipper: GetClipper(),
                 ),
                 Positioned(
-                    width: MediaQuery.of(context).size.width,
-                    top: MediaQuery.of(context).size.height / 5,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                            width: 150.0,
-                            height: 150.0,
-                            decoration: BoxDecoration(
-                                color: Colors.red,
-                                image: DecorationImage(
-                                    image:
-                                        NetworkImage(userDocument['imageURL']),
-                                    fit: BoxFit.cover),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(75.0)),
-                                boxShadow: [
+                width: MediaQuery.of(context).size.width,
+                top: MediaQuery.of(context).size.height /7,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                        width: 150.0,
+                        height: 150.0,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          image: DecorationImage(
+                              image: NetworkImage(userDocument['imageURL']),
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                          boxShadow: [
                                   BoxShadow(
                                       blurRadius: 7.0, color: Colors.black)
-                                ])),
+                                ]
+                        )),
                         Container(
                           transform:
                               Matrix4.translationValues(50.0, -50.0, 0.0),
@@ -135,27 +134,38 @@ class _MyInfoState extends State<MyInfo> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 40.0),
-                        Text(
-                          userDocument['name'],
-                          style: TextStyle(
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Montserrat'),
-                        ),
-                        SizedBox(height: 15.0),
-                        Text(
-                          userDocument['status'],
-                          style: TextStyle(
-                              fontSize: 17.0,
-                              fontStyle: FontStyle.italic,
-                              fontFamily: 'Montserrat'),
-                        ),
-                        SizedBox(height: 25.0),
-                        Container(
+                  ],
+                )),
+              Positioned(
+              bottom: MediaQuery.of(context).size.height / 3,
+              right: MediaQuery.of(context).size.width / 7,
+              child: Text(
+                userDocument['name'],
+                style: TextStyle(
+                    fontSize: 35.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat'),
+              ),
+            ),
+            Positioned(
+              bottom: MediaQuery.of(context).size.height / 3.8,
+              right: MediaQuery.of(context).size.width /3,
+              
+               child:Text(
+                userDocument['status'],
+                style: TextStyle(
+                    fontSize: 22.0,
+                    fontStyle: FontStyle.italic,
+                    fontFamily: 'Montserrat'),
+              ),
+            ),
+            Positioned(
+              bottom: MediaQuery.of(context).size.height/5.5,
+              right: MediaQuery.of(context).size.width / 4,
+              child:Container(
                             height: 35.0,
                             width: 200.0,
-                            child: Material(
+              child: Material(
                               borderRadius: BorderRadius.circular(20.0),
                               shadowColor: Colors.orangeAccent,
                               color: PrimaryColor,
@@ -171,9 +181,12 @@ class _MyInfoState extends State<MyInfo> {
                                   ),
                                 ),
                               ),
-                            )),
-                        SizedBox(height: 25.0),
-                        Container(
+                            ),),
+            ),
+            Positioned(
+               bottom: MediaQuery.of(context).size.height/9,
+              right: MediaQuery.of(context).size.width / 4,
+              child: Container(
                             height: 35.0,
                             width: 200.0,
                             child: Material(
@@ -193,8 +206,11 @@ class _MyInfoState extends State<MyInfo> {
                                 ),
                               ),
                             )),
-                        SizedBox(height: 25.0),
-                        Container(
+            ),
+            Positioned(
+               bottom: MediaQuery.of(context).size.height/25,
+              right: MediaQuery.of(context).size.width / 4,
+              child:  Container(
                             height: 35.0,
                             width: 200.0,
                             child: Align(
@@ -215,9 +231,9 @@ class _MyInfoState extends State<MyInfo> {
                                       ),
                                     ),
                                   ),
-                                )))
-                      ],
-                    ))
+                                ))),
+            )
+            
               ],
             ),
           );

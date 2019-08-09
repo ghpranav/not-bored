@@ -229,7 +229,7 @@ class _RegPageState extends State<RegPage> {
             hintText: 'Password',
             suffixIcon: IconButton(
               icon: Icon(
-                passwordHidden ? Icons.visibility : Icons.visibility_off,
+                passwordHidden ? Icons.visibility_off : Icons.visibility,
                 color: Colors.black54,
               ),
               onPressed: () {

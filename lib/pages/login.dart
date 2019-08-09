@@ -68,7 +68,41 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
           _errorMessage = e.message;
         });
+         
       }
+    }
+  }
+
+  void _forgotPassword() {
+    
+    try{
+    if (_email.text == "") {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = "Please enter valid Email address";
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          setState(() {
+            _errorMessage = "";
+          });
+        });
+      });
+      
+    } else {
+      widget.auth.resetPassword(_email.text);
+      
+    }}
+    catch(e){
+      print('Error: $e');
+        setState(() {
+          _isLoading = false;
+          _errorMessage = e.message;
+        });
+         Future.delayed(const Duration(milliseconds: 1000), () {
+          setState(() {
+            _errorMessage = "";
+          });
+        });
+
     }
   }
 
@@ -135,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
             hintText: 'Password',
             suffixIcon: IconButton(
               icon: Icon(
-                passwordHidden ? Icons.visibility : Icons.visibility_off,
+                passwordHidden ? Icons.visibility_off : Icons.visibility,
                 color: Colors.black54,
               ),
               onPressed: () {
@@ -163,6 +197,16 @@ class _LoginPageState extends State<LoginPage> {
           return null;
         },
       ),
+    );
+  }
+
+  Widget _showForgotPassword() {
+    return FlatButton(
+      child: Text(
+        'Forgot password?',
+        style: TextStyle(color: Colors.black54),
+      ),
+      onPressed: _forgotPassword,
     );
   }
 
@@ -235,6 +279,7 @@ class _LoginPageState extends State<LoginPage> {
                   _showLogo(),
                   _showEmailInput(),
                   _showPasswordInput(),
+                  _showForgotPassword(),
                   _showLoginButton(),
                   _showRegButton(),
                   _showErrorMessage(),

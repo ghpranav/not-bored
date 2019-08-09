@@ -68,7 +68,11 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
           _errorMessage = e.message;
         });
-         
+         Future.delayed(const Duration(milliseconds: 1000), () {
+          setState(() {
+            _errorMessage = "";
+          });
+        });
       }
     }
   }

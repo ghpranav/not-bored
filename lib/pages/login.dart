@@ -23,9 +23,11 @@ class _LoginPageState extends State<LoginPage> {
   String _errorMessage;
 
   bool _isLoading;
+  bool passwordVisible;
 
   @override
   void initState() {
+    passwordVisible = false;
     _errorMessage = "";
     _isLoading = false;
     super.initState();
@@ -72,18 +74,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _showLogo() {
     return Center(
-      child: TyperAnimatedTextKit(
-        text: ["NOT BORED"],
-        isRepeatingAnimation: false,
-        duration: Duration(milliseconds: 3000),
-        textStyle: TextStyle(
-          color: Colors.black,
-          fontSize: 30,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 3.0,
-        ),
-        textAlign: TextAlign.start,
-        alignment: AlignmentDirectional.topStart));
+        child: TyperAnimatedTextKit(
+            text: ["NOT BORED"],
+            isRepeatingAnimation: false,
+            duration: Duration(milliseconds: 3000),
+            textStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 3.0,
+            ),
+            textAlign: TextAlign.start,
+            alignment: AlignmentDirectional.topStart));
   }
 
   Widget _showEmailInput() {
@@ -127,10 +129,21 @@ class _LoginPageState extends State<LoginPage> {
       child: new TextFormField(
         controller: _password,
         maxLines: 1,
-        obscureText: true,
+        obscureText:  passwordVisible,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Password',
+            suffixIcon: IconButton(
+              icon: Icon(
+                passwordVisible ? Icons.visibility : Icons.visibility_off,
+                color: Theme.of(context).primaryColorDark,
+              ),
+              onPressed: () {
+                setState(() {
+                  passwordVisible = !passwordVisible;
+                });
+              },
+            ),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white70)),
             errorStyle: TextStyle(

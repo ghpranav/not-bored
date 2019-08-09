@@ -24,9 +24,11 @@ class _RegPageState extends State<RegPage> {
   String _errorMessage;
 
   bool _isLoading;
+  bool passwordVisible;
 
   @override
   void initState() {
+    passwordVisible = false;
     _errorMessage = "";
     _isLoading = false;
     super.initState();
@@ -221,10 +223,21 @@ class _RegPageState extends State<RegPage> {
       child: new TextFormField(
         controller: _password,
         maxLines: 1,
-        obscureText: true,
+        obscureText:  passwordVisible,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Password',
+            suffixIcon: IconButton(
+              icon: Icon(
+                passwordVisible ? Icons.visibility : Icons.visibility_off,
+                color: Theme.of(context).primaryColorDark,
+              ),
+              onPressed: () {
+                setState(() {
+                  passwordVisible = !passwordVisible;
+                });
+              },
+            ),
             errorStyle: TextStyle(
               color: Colors.blue[900],
             ),

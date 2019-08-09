@@ -96,7 +96,7 @@ class _MyInfoState extends State<MyInfo> {
                 ),
                 Positioned(
                 width: MediaQuery.of(context).size.width,
-                top: MediaQuery.of(context).size.height /7,
+                top: MediaQuery.of(context).size.height /5,
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -149,15 +149,20 @@ class _MyInfoState extends State<MyInfo> {
             ),
             Positioned(
               bottom: MediaQuery.of(context).size.height / 3.8,
-              right: MediaQuery.of(context).size.width /3,
+              left: MediaQuery.of(context).size.width/4 ,
+             
               
-               child:Text(
+               child:
+               Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+
+                 children:<Widget>[Text(
                 userDocument['status'],
                 style: TextStyle(
                     fontSize: 22.0,
                     fontStyle: FontStyle.italic,
                     fontFamily: 'Montserrat'),
-              ),
+              ),],),
             ),
             Positioned(
               bottom: MediaQuery.of(context).size.height/5.5,

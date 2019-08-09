@@ -23,11 +23,11 @@ class _LoginPageState extends State<LoginPage> {
   String _errorMessage;
 
   bool _isLoading;
-  bool passwordVisible;
+  bool passwordHidden;
 
   @override
   void initState() {
-    passwordVisible = false;
+    passwordHidden = true;
     _errorMessage = "";
     _isLoading = false;
     super.initState();
@@ -129,18 +129,18 @@ class _LoginPageState extends State<LoginPage> {
       child: new TextFormField(
         controller: _password,
         maxLines: 1,
-        obscureText:  passwordVisible,
+        obscureText: passwordHidden,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Password',
             suffixIcon: IconButton(
               icon: Icon(
-                passwordVisible ? Icons.visibility : Icons.visibility_off,
-                color: Theme.of(context).primaryColorDark,
+                passwordHidden ? Icons.visibility : Icons.visibility_off,
+                color: Colors.black54,
               ),
               onPressed: () {
                 setState(() {
-                  passwordVisible = !passwordVisible;
+                  passwordHidden = !passwordHidden;
                 });
               },
             ),

@@ -33,7 +33,7 @@ class MyFriendsPageState extends State<MyFriendsPage> {
             }
           });
           return Scaffold(
-              body:new ListView.builder(
+              body: new ListView.builder(
             itemCount: myFriends.length,
             itemBuilder: (BuildContext context, int index) {
               return new StreamBuilder(

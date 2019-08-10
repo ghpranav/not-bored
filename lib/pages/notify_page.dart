@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -93,7 +94,12 @@ class _NotifPageState extends State<NotifPage> {
             }
           });
           print(reqRec);
+          if(reqRec.length!=0){
+
           return Scaffold(
+            appBar: AppBar(
+              title: Text('Notifications'),
+            ),
               body:
                   new Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
             Expanded(
@@ -189,7 +195,20 @@ class _NotifPageState extends State<NotifPage> {
                             );
                           });
                     }))
-          ]));
+          ]));}
+          else return Scaffold(
+            appBar: AppBar(
+              title: Text('Notifications'),
+            ),
+            body:Center(child: TyperAnimatedTextKit(
+              text:['You have no pending requests'],
+              textStyle: TextStyle(
+                fontSize: 25.0,
+                color: PrimaryColor,
+              ),
+              textAlign: TextAlign.start,
+              alignment: AlignmentDirectional.topStart,),
+          ));
         });
   }
 }

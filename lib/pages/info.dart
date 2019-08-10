@@ -88,31 +88,32 @@ class _MyInfoState extends State<MyInfo> {
                   icon: Icon(Icons.arrow_back),
                   onPressed: () => Navigator.pop(context, false),
                 )),
-            body:  Stack(
+            body: Stack(
               children: <Widget>[
                 ClipPath(
                   child: Container(color: Colors.black.withOpacity(0.8)),
                   clipper: GetClipper(),
                 ),
                 Positioned(
-                width: MediaQuery.of(context).size.width,
-                top: MediaQuery.of(context).size.height /5,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                        width: 150.0,
-                        height: 150.0,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          image: DecorationImage(
-                              image: NetworkImage(userDocument['imageURL']),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.all(Radius.circular(75.0)),
-                          boxShadow: [
+                    width: MediaQuery.of(context).size.width,
+                    top: MediaQuery.of(context).size.height / 5,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                            width: 150.0,
+                            height: 150.0,
+                            decoration: BoxDecoration(
+                                color: Colors.red,
+                                image: DecorationImage(
+                                    image:
+                                        NetworkImage(userDocument['imageURL']),
+                                    fit: BoxFit.cover),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(75.0)),
+                                boxShadow: [
                                   BoxShadow(
                                       blurRadius: 7.0, color: Colors.black)
-                                ]
-                        )),
+                                ])),
                         Container(
                           transform:
                               Matrix4.translationValues(50.0, -50.0, 0.0),
@@ -134,111 +135,109 @@ class _MyInfoState extends State<MyInfo> {
                             ),
                           ),
                         ),
-                  ],
-                )),
-              Positioned(
-              bottom: MediaQuery.of(context).size.height / 3,
-              right: MediaQuery.of(context).size.width / 7,
-              child: Text(
-                userDocument['name'],
-                style: TextStyle(
-                    fontSize: 35.0,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat'),
-              ),
-            ),
-            Positioned(
-              bottom: MediaQuery.of(context).size.height / 3.8,
-              left: MediaQuery.of(context).size.width/4 ,
-             
-              
-               child:
-               Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-
-                 children:<Widget>[Text(
-                userDocument['status'],
-                style: TextStyle(
-                    fontSize: 22.0,
-                    fontStyle: FontStyle.italic,
-                    fontFamily: 'Montserrat'),
-              ),],),
-            ),
-            Positioned(
-              bottom: MediaQuery.of(context).size.height/5.5,
-              right: MediaQuery.of(context).size.width / 4,
-              child:Container(
-                            height: 35.0,
-                            width: 200.0,
-              child: Material(
-                              borderRadius: BorderRadius.circular(20.0),
-                              shadowColor: Colors.orangeAccent,
-                              color: PrimaryColor,
-                              elevation: 7.0,
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: Center(
-                                  child: Text(
-                                    userDocument['username'],
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Montserrat'),
-                                  ),
+                      ],
+                    )),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height / 3,
+                  right: MediaQuery.of(context).size.width / 7,
+                  child: Text(
+                    userDocument['name'],
+                    style: TextStyle(
+                        fontSize: 35.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat'),
+                  ),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height / 3.8,
+                  left: MediaQuery.of(context).size.width / 4,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        userDocument['status'],
+                        style: TextStyle(
+                            fontSize: 22.0,
+                            fontStyle: FontStyle.italic,
+                            fontFamily: 'Montserrat'),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height / 5.5,
+                  right: MediaQuery.of(context).size.width / 4,
+                  child: Container(
+                    height: 35.0,
+                    width: 200.0,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(20.0),
+                      shadowColor: Colors.orangeAccent,
+                      color: PrimaryColor,
+                      elevation: 7.0,
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Center(
+                          child: Text(
+                            userDocument['username'],
+                            style: TextStyle(
+                                color: Colors.white, fontFamily: 'Montserrat'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height / 9,
+                  right: MediaQuery.of(context).size.width / 4,
+                  child: Container(
+                      height: 35.0,
+                      width: 200.0,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(20.0),
+                        shadowColor: Colors.orangeAccent,
+                        color: PrimaryColor,
+                        elevation: 7.0,
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Center(
+                            child: Text(
+                              userDocument['email'],
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Montserrat'),
+                            ),
+                          ),
+                        ),
+                      )),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height / 25,
+                  right: MediaQuery.of(context).size.width / 4,
+                  child: Container(
+                      height: 35.0,
+                      width: 200.0,
+                      child: Align(
+                          alignment: Alignment(-3.20, -1.40),
+                          child: Material(
+                            borderRadius: BorderRadius.circular(30.0),
+                            shadowColor: Colors.orangeAccent[700],
+                            color: PrimaryColor,
+                            elevation: 7.0,
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Center(
+                                child: Text(
+                                  userDocument['phone'].toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Montserrat'),
                                 ),
                               ),
-                            ),),
-            ),
-            Positioned(
-               bottom: MediaQuery.of(context).size.height/9,
-              right: MediaQuery.of(context).size.width / 4,
-              child: Container(
-                            height: 35.0,
-                            width: 200.0,
-                            child: Material(
-                              borderRadius: BorderRadius.circular(20.0),
-                              shadowColor: Colors.orangeAccent,
-                              color: PrimaryColor,
-                              elevation: 7.0,
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: Center(
-                                  child: Text(
-                                    userDocument['email'],
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Montserrat'),
-                                  ),
-                                ),
-                              ),
-                            )),
-            ),
-            Positioned(
-               bottom: MediaQuery.of(context).size.height/25,
-              right: MediaQuery.of(context).size.width / 4,
-              child:  Container(
-                            height: 35.0,
-                            width: 200.0,
-                            child: Align(
-                                alignment: Alignment(-3.20, -1.40),
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  shadowColor: Colors.orangeAccent[700],
-                                  color: PrimaryColor,
-                                  elevation: 7.0,
-                                  child: GestureDetector(
-                                    onTap: () {},
-                                    child: Center(
-                                      child: Text(
-                                        userDocument['phone'].toString(),
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Montserrat'),
-                                      ),
-                                    ),
-                                  ),
-                                ))),
-            )
-            
+                            ),
+                          ))),
+                )
               ],
             ),
           );

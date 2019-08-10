@@ -201,6 +201,7 @@ class _NotifPageState extends State<NotifPage> {
               title: Text('Notifications'),
             ),
             body:Center(child: TyperAnimatedTextKit(
+              duration: const Duration(seconds: 3),
               text:['You have no pending requests'],
               textStyle: TextStyle(
                 fontSize: 25.0,

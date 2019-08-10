@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:not_bored/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,12 +17,26 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final Firestore _db = Firestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   @override
   void initState() {
     super.initState();
+    void configLocalNotification() {
+      var initializationSettingsAndroid =
+          new AndroidInitializationSettings('app_icon');
+      var initializationSettingsIOS = new IOSInitializationSettings();
+      var initializationSettings = new InitializationSettings(
+          initializationSettingsAndroid, initializationSettingsIOS);
+      flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+      flutterLocalNotificationsPlugin.initialize(
+        initializationSettings,
+      );
+    }
+
     _saveDeviceToken();
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) {
@@ -53,6 +68,7 @@ class _NotificationsState extends State<Notifications> {
     _fcm.getToken().then((token) {
       print("token=");
       print(token);
+      configLocalNotification();
     });
   }
 

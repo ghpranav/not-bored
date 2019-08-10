@@ -68,41 +68,65 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
           _errorMessage = e.message;
         });
-        
       }
     }
   }
 
+  void _showforgotpassEmailSentDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Reset your password"),
+          content: new Text(
+              "Link to reset your password has been sent to your email Id"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Dismiss"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _forgotPassword() {
-    
-    try{
-    if (_email.text == "") {
-      setState(() {
-        _isLoading = false;
-        _errorMessage = "Please enter valid Email address";
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          setState(() {
-            _errorMessage = "";
-          });
-        });
-      });
-      
-    } else {
-      widget.auth.resetPassword(_email.text);
-      
-    }}
-    catch(e){
-      print('Error: $e');
+    try {
+      if (_email.text == "") {
         setState(() {
           _isLoading = false;
-          _errorMessage = e.message;
-        });
-         Future.delayed(const Duration(milliseconds: 1000), () {
-          setState(() {
-            _errorMessage = "";
+          _errorMessage = "Please enter valid Email address";
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            setState(() {
+              _errorMessage = "";
+            });
           });
         });
+      } else {
+        widget.auth.resetPassword(_email.text);
+        _showforgotpassEmailSentDialog();
+      }
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        _isLoading = false;
+        _errorMessage = e.message;
+      });
+      //later when error message catch is fixed enable this;)
+      //  if (_errorMessage == "")
+      //  {
+      //       _showforgotpassEmailSentDialog();
+      // }
 
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        setState(() {
+          _errorMessage = "";
+        });
+      });
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:not_bored/models/root.dart';
 import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,7 +28,7 @@ class _UsersState extends State<Users> {
     DocumentReference _refUrec = _firestore
         .collection('users')
         .document(widget.data['userid'])
-        .collection('req_rec:'+widget.data['userid'])
+        .collection('req_rec:' + widget.data['userid'])
         .document(widget.userId);
     _refMe.updateData({
       'req_sent': FieldValue.arrayUnion([widget.data['userid']]),
@@ -37,7 +38,6 @@ class _UsersState extends State<Users> {
     });
     _refUrec.setData(<String, dynamic>{
       'userid': widget.userId,
-      
     });
   }
 
@@ -49,7 +49,7 @@ class _UsersState extends State<Users> {
     DocumentReference _refUrec = _firestore
         .collection('users')
         .document(widget.data['userid'])
-        .collection('req_rec:'+widget.data['userid'])
+        .collection('req_rec:' + widget.data['userid'])
         .document(widget.userId);
     _refMe.updateData({
       'req_sent': FieldValue.arrayRemove([widget.data['userid']]),
@@ -80,7 +80,7 @@ class _UsersState extends State<Users> {
     DocumentReference _refMerec = _firestore
         .collection('users')
         .document(widget.userId)
-        .collection('req_rec:'+widget.data.userId)
+        .collection('req_rec:' + widget.data.userId)
         .document(widget.data['userid']);
 
     _refMe.updateData({
@@ -108,7 +108,7 @@ class _UsersState extends State<Users> {
     DocumentReference _refMerec = _firestore
         .collection('users')
         .document(widget.userId)
-        .collection('req_rec:'+widget.data.userId)
+        .collection('req_rec:' + widget.data.userId)
         .document(widget.data['userid']);
     _refMe.updateData({
       'req_rec': FieldValue.arrayRemove([widget.data['userid']]),
@@ -138,10 +138,25 @@ class _UsersState extends State<Users> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: AppBar(
-          backgroundColor: PrimaryColor,
-          automaticallyImplyLeading: true,
-          title: Text(widget.data['username']),
-        ),
+            backgroundColor: PrimaryColor,
+            automaticallyImplyLeading: true,
+            title: Text(widget.data['username']),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                tooltip: 'Home',
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              RootPage(auth: widget.auth)),
+                      (Route<dynamic> route) => false);
+                },
+              )
+            ]),
         body: new Stack(
           children: <Widget>[
             ClipPath(
@@ -179,15 +194,18 @@ class _UsersState extends State<Users> {
             Positioned(
               bottom: MediaQuery.of(context).size.height / 4,
               left: MediaQuery.of(context).size.width / 10,
-              child:Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-               children:<Widget>[Text(
-                widget.data['status'],
-                style: TextStyle(
-                    fontSize: 22.0,
-                    fontStyle: FontStyle.italic,
-                    fontFamily: 'Montserrat'),
-              ),],),
+                children: <Widget>[
+                  Text(
+                    widget.data['status'],
+                    style: TextStyle(
+                        fontSize: 22.0,
+                        fontStyle: FontStyle.italic,
+                        fontFamily: 'Montserrat'),
+                  ),
+                ],
+              ),
             ),
             StreamBuilder(
               stream:
@@ -221,7 +239,7 @@ class _UsersState extends State<Users> {
                           onPressed: removeFrnd,
                           shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(20.0)),
-                          color:PrimaryColor,
+                          color: PrimaryColor,
                           elevation: 7.0,
                         )),
                     Positioned(
@@ -232,7 +250,7 @@ class _UsersState extends State<Users> {
                         child: Material(
                           borderRadius: BorderRadius.circular(20.0),
                           shadowColor: Colors.orangeAccent,
-                          color:PrimaryColor,
+                          color: PrimaryColor,
                           elevation: 7.0,
                           child: GestureDetector(
                             onTap: () {
@@ -294,7 +312,7 @@ class _UsersState extends State<Users> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(20.0)),
-                                color:PrimaryColor,
+                                color: PrimaryColor,
                                 elevation: 7.0,
                               ));
                         } else if (myDocument['req_rec']
@@ -320,7 +338,7 @@ class _UsersState extends State<Users> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             new BorderRadius.circular(20.0)),
-                                    color:PrimaryColor,
+                                    color: PrimaryColor,
                                     elevation: 7.0,
                                   )),
                               Positioned(
@@ -341,7 +359,7 @@ class _UsersState extends State<Users> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             new BorderRadius.circular(20.0)),
-                                    color:PrimaryColor,
+                                    color: PrimaryColor,
                                     elevation: 7.0,
                                   ))
                             ],
@@ -365,7 +383,7 @@ class _UsersState extends State<Users> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(20.0)),
-                                color:PrimaryColor,
+                                color: PrimaryColor,
                                 elevation: 7.0,
                               ));
                         }

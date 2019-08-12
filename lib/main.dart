@@ -5,10 +5,8 @@ import 'package:not_bored/models/root.dart';
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/login.dart';
 import 'package:not_bored/pages/reg.dart';
-import 'package:not_bored/pages/notifications.dart';
 
 void main() {
-  runApp(Notifications(auth: new Auth()));
   runApp(MyApp());
 }
 

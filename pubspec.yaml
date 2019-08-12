@@ -25,7 +25,6 @@ dependencies:
   cupertino_icons: ^0.1.2
   firebase_messaging:
   flutter_local_notifications:
-  firebase_database:
   firebase_core: 
   firebase_auth:
   firebase_storage:

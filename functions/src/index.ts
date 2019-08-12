@@ -6,34 +6,42 @@ const db = admin.firestore();
 const fcm = admin.messaging();
 
 export const sendToDevice = functions.firestore
-    .document('users/{userId}/{req_rec}/{userId}')
-    .onCreate(async snapshot => {
+    .document('users/{userId}/req_rec/{frndId}')
+    .onCreate(async (snapshot, context) => {
 
+        const frnd = snapshot.data;
+        const frndid = context.params.frndId;
+        const userid = context.params.userId;
 
-        const docu = snapshot.data();
-        if(docu){
+        if (frnd) {
             const querySnapshot = await db
-            .collection('users')
-            .doc(docu.userid)
-            .collection('tokens')
-            .get();
+                .collection('users')
+                .doc(userid)
+                .collection('tokens')
+                .get();
 
-        const tokens = querySnapshot.docs.map(snap => snap.id);
+            const frndSnapshot = await db
+                .collection('users')
+                .doc(frndid)
+                .get();
+            const name = frndSnapshot.get('name');
 
-        const payload: admin.messaging.MessagingPayload = {
-            notification: {
-                title: 'Friend Request',
-                body: `{docu.name} sent you a friend request}`,
-                icon: 'your-icon-url',
-                click_action: 'FLUTTER_NOTIFICATION_CLICK',
-		sound : 'default'
-            }
-        };
+            const tokens = querySnapshot.docs.map(snap => snap.id);
 
-        return fcm.sendToDevice(tokens, payload);
+            const payload: admin.messaging.MessagingPayload = {
+                notification: {
+                    title: 'Friend Request',
+                    body: `${name} sent you a friend request`,
+                    icon: 'your-icon-url',
+                    click_action: 'FLUTTER_NOTIFICATION_CLICK',
+                    sound: 'default'
+                }
+            };
+
+            return fcm.sendToDevice(tokens, payload);
         }
-        else 
-        return null
-
-       
-    });
+        else {
+            return null
+        }
+    },
+    );

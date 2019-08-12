@@ -1,6 +1,9 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 
 import 'package:not_bored/pages/home.dart';
@@ -9,7 +12,7 @@ import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/searchbar.dart';
 import 'package:not_bored/pages/my_friends.dart';
 import 'package:not_bored/pages/splash.dart';
-import 'package:not_bored/pages/notify_page.dart';
+import 'package:not_bored/pages/notifications.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({Key key, this.auth, this.userId, this.onSignedOut})
@@ -22,7 +25,9 @@ class LandingPage extends StatefulWidget {
   @override
   _LandingPageState createState() => _LandingPageState();
 }
+
 const PrimaryColor = const Color(0xFFf96327);
+
 class _LandingPageState extends State<LandingPage> {
   _signOut() async {
     try {
@@ -44,10 +49,44 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   bool _isEmailVerified = false;
+  StreamSubscription iosSubscription;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
 
   @override
   void initState() {
     super.initState();
+    if (Platform.isIOS) {
+      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {});
+
+      _fcm.requestNotificationPermissions(IosNotificationSettings());
+    }
+
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Text(message['notification']['title']),
+              subtitle: Text(message['notification']['body']),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
 
     _checkEmailVerification();
   }
@@ -254,6 +293,12 @@ class _LandingPageState extends State<LandingPage> {
             ),
           );
         });
+  }
+
+  @override
+  void dispose() {
+    iosSubscription.cancel();
+    super.dispose();
   }
 }
 

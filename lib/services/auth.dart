@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 abstract class BaseAuth {
   Future<String> signIn(String email, String password);
@@ -25,6 +27,7 @@ abstract class BaseAuth {
 
   Future<void> resetPassword(String email);
 
+  Future<void> saveDeviceToken();
 }
 
 class Auth implements BaseAuth {
@@ -34,6 +37,7 @@ class Auth implements BaseAuth {
   Future<String> signIn(String email, String password) async {
     AuthResult user = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
+    saveDeviceToken();
     return user.user.uid;
   }
 
@@ -58,10 +62,10 @@ class Auth implements BaseAuth {
 
   Future<void> signOut() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
+    final FirebaseMessaging _fcm = FirebaseMessaging();
+    String fcmToken = await _fcm.getToken();
     DocumentReference _ref = _firestore.collection('users').document(user.uid);
-    _ref.updateData(<String, dynamic>{
-      'tokens': null,
-    });
+    _ref.collection('tokens').document(fcmToken).delete();
     return _firebaseAuth.signOut();
   }
 
@@ -78,18 +82,11 @@ class Auth implements BaseAuth {
           'https://firebasestorage.googleapis.com/v0/b/not-bored-002.appspot.com/o/pro_pics%2Fdefault.jpg?alt=media&token=8198b851-f08e-4bfa-b7b8-64d055c43f20',
       'isMailVerified': false,
       'searchKey': profile['fname'][0].toString().toUpperCase(),
-       'req_rec': [],
+      'req_rec': [],
       'req_sent': [],
     });
-    _ref.collection(user.uid)
-        .document('null')
-        .setData(<String, dynamic>{
-          
-        });
-        _ref.collection('req_rec:'+user.uid)
-        .document('null')
-        .setData(<String, dynamic>{
-        });
+    _ref.collection(user.uid).document('null').setData(<String, dynamic>{});
+    _ref.collection('req_rec').document('null').setData(<String, dynamic>{});
   }
 
   Future<void> uploadProPic(String url) async {
@@ -120,9 +117,28 @@ class Auth implements BaseAuth {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user.isEmailVerified;
   }
-  
+
   Future<void> resetPassword(String email) async {
-    
-     await _firebaseAuth.sendPasswordResetEmail(email: email);
-}
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> saveDeviceToken() async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    final FirebaseMessaging _fcm = FirebaseMessaging();
+    String fcmToken = await _fcm.getToken();
+
+    if (fcmToken != null) {
+      var tokens = _firestore
+          .collection('users')
+          .document(user.uid)
+          .collection('tokens')
+          .document(fcmToken);
+
+      await tokens.setData({
+        'token': fcmToken,
+        'createdAt': FieldValue.serverTimestamp(), // optional
+        'platform': Platform.operatingSystem // optional
+      });
+    }
+  }
 }

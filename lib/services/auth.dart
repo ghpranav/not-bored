@@ -81,12 +81,26 @@ class Auth implements BaseAuth {
       'imageURL':
           'https://firebasestorage.googleapis.com/v0/b/not-bored-002.appspot.com/o/pro_pics%2Fdefault.jpg?alt=media&token=8198b851-f08e-4bfa-b7b8-64d055c43f20',
       'isMailVerified': false,
-      'searchKey': profile['fname'][0].toString().toUpperCase(),
       'req_rec': [],
       'req_sent': [],
     });
     _ref.collection(user.uid).document('null').setData(<String, dynamic>{});
     _ref.collection('req_rec').document('null').setData(<String, dynamic>{});
+    _ref
+        .collection(profile['fname'][0].toString().toUpperCase())
+        .document('null')
+        .setData(<String, dynamic>{
+      'userid': user.uid.toString(),
+    });
+    if (profile['fname'][0].toString().toUpperCase() !=
+        profile['lname'][0].toString().toUpperCase()) {
+      _ref
+          .collection(profile['lname'][0].toString().toUpperCase())
+          .document('null')
+          .setData(<String, dynamic>{
+        'userid': user.uid.toString(),
+      });
+    }
   }
 
   Future<void> uploadProPic(String url) async {
@@ -99,6 +113,7 @@ class Auth implements BaseAuth {
 
   Future<void> updateProfile(Map profile) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
+    
     DocumentReference _ref = _firestore.collection('users').document(user.uid);
     _ref.updateData(<String, dynamic>{
       'name': profile['name'],

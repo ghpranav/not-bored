@@ -31,10 +31,15 @@ class _DataSearchState extends State<DataSearch> {
         value.substring(0, 1).toUpperCase() + value.substring(1);
 
     if (queryResultSet.length == 0 && value.length == 1) {
-      SearchService().searchByName(value).then((QuerySnapshot docs) {
+      SearchService().searchByName(value).then((QuerySnapshot docs) async {
         for (int i = 0; i < docs.documents.length; ++i) {
-          if(docs.documents[i].data['isMailVerified']){
-          queryResultSet.add(docs.documents[i].data);}
+          DocumentSnapshot user = await Firestore.instance
+              .collection('users')
+              .document(docs.documents[i].data['userid'])
+              .get();
+          if (user['isMailVerified']) {
+            queryResultSet.add(user);
+          }
         }
       });
     } else {
@@ -58,7 +63,7 @@ class _DataSearchState extends State<DataSearch> {
   _onClear() {
     setState(() {
       eCtrl.text = "";
-      tempSearchStore=[];
+      tempSearchStore = [];
     });
   }
 
@@ -145,9 +150,7 @@ class _DataSearchState extends State<DataSearch> {
 class SearchService {
   searchByName(String searchField) {
     return Firestore.instance
-        .collection('users')
-        .where('searchKey',
-            isEqualTo: searchField.substring(0, 1).toUpperCase())
+        .collectionGroup(searchField.substring(0, 1).toUpperCase())
         .getDocuments();
   }
 }

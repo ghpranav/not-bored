@@ -4,10 +4,12 @@ import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:not_bored/pages/my_friends.dart';
+import 'package:not_bored/services/friends.dart';
 
 class Users extends StatefulWidget {
-  Users({Key key, this.auth, this.userId, this.data}) : super(key: key);
-
+  Users({Key key, this.auth, this.userId, this.data, this.request})
+      : super(key: key);
+  final FriendRequest request;
   final BaseAuth auth;
   final String userId;
   final data;
@@ -18,101 +20,6 @@ class Users extends StatefulWidget {
 const PrimaryColor = const Color(0xFFf96327);
 
 class _UsersState extends State<Users> {
-  final Firestore _firestore = Firestore.instance;
-
-  void sendReq() async {
-    DocumentReference _refMe =
-        _firestore.collection('users').document(widget.userId);
-    DocumentReference _refU =
-        _firestore.collection('users').document(widget.data['userid']);
-    _refMe.updateData({
-      'req_sent': FieldValue.arrayUnion([widget.data['userid']]),
-    });
-    _refU.updateData({
-      'req_rec': FieldValue.arrayUnion([widget.userId]),
-    });
-    _refU.collection('req_rec').document(widget.userId).setData({
-      'userid': widget.userId,
-    });
-  }
-
-  void cancelReq() async {
-    DocumentReference _refMe =
-        _firestore.collection('users').document(widget.userId);
-    DocumentReference _refU =
-        _firestore.collection('users').document(widget.data['userid']);
-    _refMe.updateData({
-      'req_sent': FieldValue.arrayRemove([widget.data['userid']]),
-    });
-    _refU.updateData({
-      'req_rec': FieldValue.arrayRemove([widget.userId]),
-    });
-    _refU.collection('req_rec').document(widget.data['userid']).delete();
-  }
-
-  void acceptReq() async {
-    DocumentReference _refMe =
-        _firestore.collection('users').document(widget.userId);
-    DocumentReference _refU =
-        _firestore.collection('users').document(widget.data['userid']);
-    DocumentReference _refMeF = _firestore
-        .collection('users')
-        .document(widget.userId)
-        .collection(widget.userId)
-        .document(widget.data['userid']);
-
-    DocumentReference _refUF = _firestore
-        .collection('users')
-        .document(widget.data['userid'])
-        .collection(widget.data['userid'])
-        .document(widget.userId);
-
-    _refMe.updateData({
-      'req_rec': FieldValue.arrayRemove([widget.data['userid']]),
-    });
-    _refU.updateData({
-      'req_sent': FieldValue.arrayRemove([widget.userId]),
-    });
-    _refMe.collection('req_rec').document(widget.data['userid']).delete();
-    _refMeF.setData(<String, dynamic>{
-      'userid': widget.data['userid'],
-      'isBlocked': false,
-    });
-    _refUF.setData(<String, dynamic>{
-      'userid': widget.userId,
-      'isBlocked': false,
-    });
-  }
-
-  void rejectReq() async {
-    DocumentReference _refMe =
-        _firestore.collection('users').document(widget.userId);
-    DocumentReference _refU =
-        _firestore.collection('users').document(widget.data['userid']);
-    _refMe.updateData({
-      'req_rec': FieldValue.arrayRemove([widget.data['userid']]),
-    });
-    _refMe.collection('req_rec').document(widget.data['userid']).delete();
-    _refU.updateData({
-      'req_sent': FieldValue.arrayRemove([widget.userId]),
-    });
-  }
-
-  void removeFrnd() async {
-    DocumentReference _refMeF = _firestore
-        .collection('users')
-        .document(widget.userId)
-        .collection(widget.userId)
-        .document(widget.data['userid']);
-    DocumentReference _refUF = _firestore
-        .collection('users')
-        .document(widget.data['userid'])
-        .collection(widget.data['userid'])
-        .document(widget.userId);
-    _refMeF.delete();
-    _refUF.delete();
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -215,7 +122,10 @@ class _UsersState extends State<Users> {
                                 fontWeight: FontWeight.normal,
                                 fontSize: 20.0),
                           ),
-                          onPressed: removeFrnd,
+                          onPressed: () {
+                            widget.request.removeFrnd(
+                                widget.userId, widget.data['userid']);
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(20.0)),
                           color: PrimaryColor,
@@ -287,7 +197,10 @@ class _UsersState extends State<Users> {
                                       fontWeight: FontWeight.normal,
                                       fontSize: 20.0),
                                 ),
-                                onPressed: cancelReq,
+                                onPressed: ()=>
+                                  widget.request.cancelReq(
+                                      widget.userId, widget.data['userid']),
+                              
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(20.0)),
@@ -313,7 +226,10 @@ class _UsersState extends State<Users> {
                                           fontWeight: FontWeight.normal,
                                           fontSize: 20.0),
                                     ),
-                                    onPressed: acceptReq,
+                                    onPressed: () =>
+                                      widget.request.acceptReq(
+                                          widget.userId, widget.data['userid']),
+                                  
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             new BorderRadius.circular(20.0)),
@@ -334,7 +250,10 @@ class _UsersState extends State<Users> {
                                           fontWeight: FontWeight.normal,
                                           fontSize: 20.0),
                                     ),
-                                    onPressed: rejectReq,
+                                    onPressed: () {
+                                      widget.request.rejectReq(
+                                          widget.userId, widget.data['userid']);
+                                    },
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             new BorderRadius.circular(20.0)),
@@ -358,7 +277,10 @@ class _UsersState extends State<Users> {
                                       fontWeight: FontWeight.normal,
                                       fontSize: 20.0),
                                 ),
-                                onPressed: sendReq,
+                                onPressed: () {
+                                  widget.request.sendReq(
+                                      widget.userId, widget.data['userid']);
+                                },
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(20.0)),

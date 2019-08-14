@@ -2,13 +2,14 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:not_bored/services/friends.dart';
 import 'package:not_bored/pages/splash.dart';
 
 class NotifPage extends StatefulWidget {
-  NotifPage({Key key, this.auth, this.userId}) : super(key: key);
+  NotifPage({Key key, this.auth, this.userId, this.request}) : super(key: key);
 
   final BaseAuth auth;
+  final FriendRequest request;
   final String userId;
   @override
   _NotifPageState createState() => _NotifPageState();
@@ -17,55 +18,6 @@ class NotifPage extends StatefulWidget {
 const PrimaryColor = const Color(0xFFf96327);
 
 class _NotifPageState extends State<NotifPage> {
-  final Firestore _firestore = Firestore.instance;
-  void acceptReq(data) async {
-    DocumentReference _refMe =
-        _firestore.collection('users').document(widget.userId);
-    DocumentReference _refU =
-        _firestore.collection('users').document(data['userid']);
-    DocumentReference _refMeF = _firestore
-        .collection('users')
-        .document(widget.userId)
-        .collection(widget.userId)
-        .document(data['userid']);
-
-    DocumentReference _refUF = _firestore
-        .collection('users')
-        .document(data['userid'])
-        .collection(data['userid'])
-        .document(widget.userId);
-
-    _refMe.updateData({
-      'req_rec': FieldValue.arrayRemove([data['userid']]),
-    });
-    _refU.updateData({
-      'req_sent': FieldValue.arrayRemove([widget.userId]),
-    });
-    _refMe.collection('req_rec').document(data['userid']).delete();
-    _refMeF.setData(<String, dynamic>{
-      'userid': data['userid'],
-      'isBlocked': false,
-    });
-    _refUF.setData(<String, dynamic>{
-      'userid': widget.userId,
-      'isBlocked': false,
-    });
-  }
-
-  void rejectReq(data) async {
-    DocumentReference _refMe =
-        _firestore.collection('users').document(widget.userId);
-    DocumentReference _refU =
-        _firestore.collection('users').document(data['userid']);
-    _refMe.updateData({
-      'req_rec': FieldValue.arrayRemove([data['userid']]),
-    });
-    _refU.updateData({
-      'req_sent': FieldValue.arrayRemove([widget.userId]),
-    });
-    _refMe.collection('req_rec').document(data['userid']).delete();
-  }
-
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder(
@@ -121,7 +73,8 @@ class _NotifPageState extends State<NotifPage> {
                                 key: Key(userDocument['req_rec'][index]),
                                 onDismissed: (direction) {
                                   setState(() async {
-                                    rejectReq(friendDocument);
+                                    widget.request.rejectReq(widget.userId,
+                                        friendDocument['userid']);
                                   });
                                 },
                                 background: Container(color: PrimaryColor),
@@ -161,8 +114,9 @@ class _NotifPageState extends State<NotifPage> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 15.0),
                                           ),
-                                          onPressed: () =>
-                                              acceptReq(friendDocument),
+                                          onPressed: () => widget.request
+                                              .acceptReq(widget.userId,
+                                                  friendDocument['userid']),
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   new BorderRadius.circular(
@@ -182,8 +136,9 @@ class _NotifPageState extends State<NotifPage> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 15.0),
                                           ),
-                                          onPressed: () =>
-                                              rejectReq(friendDocument),
+                                          onPressed: () => widget.request
+                                              .rejectReq(widget.userId,
+                                                  friendDocument['userid']),
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   new BorderRadius.circular(

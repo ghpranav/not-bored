@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -72,6 +74,8 @@ class Auth implements BaseAuth {
   Future<void> createUser(Map profile, FirebaseUser user) async {
     DocumentReference _ref = _firestore.collection('users').document(user.uid);
     _ref.setData(<String, dynamic>{
+      'fname': profile['fname'],
+      'lname': profile['lname'],
       'name': profile['fname'] + ' ' + profile['lname'],
       'email': profile['email'],
       'username': profile['username'],
@@ -115,12 +119,40 @@ class Auth implements BaseAuth {
     FirebaseUser user = await _firebaseAuth.currentUser();
 
     DocumentReference _ref = _firestore.collection('users').document(user.uid);
+    _ref
+        .collection(profile['fname'][0].toString().toUpperCase())
+        .document(user.uid)
+        .delete();
+    if (profile['fname'][0].toString().toUpperCase() !=
+        profile['lname'][0].toString().toUpperCase()) {
+      _ref
+          .collection(profile['lname'][0].toString().toUpperCase())
+          .document(user.uid)
+          .delete();
+    }
     _ref.updateData(<String, dynamic>{
-      'name': profile['name'],
+      'fname': profile['fname'],
+      'lname': profile['lname'],
       'userid': profile['userid'],
       'phone': profile['phone'],
       'status': profile['status'],
+      'name': profile['fname'] + profile['lname'],
     });
+    _ref
+        .collection(profile['fname'][0].toString().toUpperCase())
+        .document('null')
+        .setData(<String, dynamic>{
+      'userid': user.uid.toString(),
+    });
+    if (profile['fname'][0].toString().toUpperCase() !=
+        profile['lname'][0].toString().toUpperCase()) {
+      _ref
+          .collection(profile['lname'][0].toString().toUpperCase())
+          .document('null')
+          .setData(<String, dynamic>{
+        'userid': user.uid.toString(),
+      });
+    }
   }
 
   Future<void> sendEmailVerification() async {

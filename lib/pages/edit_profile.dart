@@ -19,7 +19,8 @@ const PrimaryColor = const Color(0xFFf96327);
 class _EditProfileState extends State<EditProfile> {
   final _formKey = new GlobalKey<FormState>();
 
-  TextEditingController _name;
+  TextEditingController _fname;
+  TextEditingController _lname;
   TextEditingController _username;
   TextEditingController _phone;
   TextEditingController _status;
@@ -30,7 +31,8 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     _isLoading = false;
     super.initState();
-    _name = TextEditingController(text: widget.profile['name']);
+    _fname = TextEditingController(text: widget.profile['fname']);
+    _lname = TextEditingController(text: widget.profile['lname']);
     _username = TextEditingController(text: widget.profile['username']);
     _phone = TextEditingController(text: widget.profile['phone']);
     _status = TextEditingController(text: widget.profile['status']);
@@ -55,7 +57,8 @@ class _EditProfileState extends State<EditProfile> {
       String username = user.uid;
       try {
         Map _profile = {
-          'name': _name.text,
+          'fname': _fname.text,
+          'lname':_lname.text,
           'username': _username.text,
           'phone': _phone.text,
           'status': _status.text,
@@ -95,11 +98,11 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-  Widget _showName() {
+  Widget _showFirstName() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
       child: new TextFormField(
-        controller: _name,
+        controller: _fname,
         maxLines: 1,
         keyboardType: TextInputType.text,
         autofocus: false,
@@ -119,7 +122,40 @@ class _EditProfileState extends State<EditProfile> {
             setState(() {
               _isLoading = false;
             });
-            return 'Name can\'t be empty';
+            return 'First Name can\'t be empty';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+
+  Widget _showLastName() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: new TextFormField(
+        controller: _lname,
+        maxLines: 1,
+        keyboardType: TextInputType.text,
+        autofocus: false,
+        decoration: new InputDecoration(
+            hintText: 'Last Name',
+            errorStyle: TextStyle(
+              color: Colors.blue[900],
+            ),
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: PrimaryColor)),
+            icon: new Icon(
+              Icons.person,
+              color: Colors.black,
+            )),
+        validator: (value) {
+          if (value.isEmpty) {
+            setState(() {
+              _isLoading = false;
+            });
+            return 'Last Name can\'t be empty';
           }
           return null;
         },
@@ -254,7 +290,8 @@ class _EditProfileState extends State<EditProfile> {
                 shrinkWrap: true,
                 children: <Widget>[
                   SizedBox(height: 50.0),
-                  _showName(),
+                  _showFirstName(),
+                  _showLastName(),
                   _showUsername(),
                   _showStatus(),
                   _showPhone(),
@@ -288,7 +325,8 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   void dispose() {
-    _name.dispose();
+    _fname.dispose();
+    _lname.dispose();
     _username.dispose();
     _phone.dispose();
     _status.dispose();

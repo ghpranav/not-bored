@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:not_bored/services/auth.dart';
 
 class RegPage extends StatefulWidget {

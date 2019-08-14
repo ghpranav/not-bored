@@ -113,7 +113,7 @@ class Auth implements BaseAuth {
 
   Future<void> updateProfile(Map profile) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
-    
+
     DocumentReference _ref = _firestore.collection('users').document(user.uid);
     _ref.updateData(<String, dynamic>{
       'name': profile['name'],

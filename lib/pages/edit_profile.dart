@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:not_bored/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:not_bored/services/auth.dart';
 
 class EditProfile extends StatefulWidget {
   static String tag = 'Edit';
@@ -108,7 +109,7 @@ class _EditProfileState extends State<EditProfile> {
               color: Colors.blue[900],
             ),
             focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color:PrimaryColor)),
+                borderSide: BorderSide(color: PrimaryColor)),
             icon: new Icon(
               Icons.person,
               color: Colors.black,
@@ -140,7 +141,7 @@ class _EditProfileState extends State<EditProfile> {
               color: Colors.blue[900],
             ),
             focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color:PrimaryColor)),
+                borderSide: BorderSide(color: PrimaryColor)),
             icon: new Icon(
               Icons.verified_user,
               color: Colors.black,
@@ -173,7 +174,7 @@ class _EditProfileState extends State<EditProfile> {
               color: Colors.blue[900],
             ),
             focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color:PrimaryColor)),
+                borderSide: BorderSide(color: PrimaryColor)),
             icon: new Icon(
               Icons.label_outline,
               color: Colors.black,
@@ -205,7 +206,7 @@ class _EditProfileState extends State<EditProfile> {
               color: Colors.blue[900],
             ),
             focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color:PrimaryColor)),
+                borderSide: BorderSide(color: PrimaryColor)),
             icon: new Icon(
               Icons.phone,
               color: Colors.black,

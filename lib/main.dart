@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:not_bored/services/auth.dart';
+
 import 'package:not_bored/models/root.dart';
+
+import 'package:not_bored/services/auth.dart';
 
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/login.dart';

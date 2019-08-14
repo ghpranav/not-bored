@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+
 import 'package:not_bored/models/root.dart';
-import 'package:not_bored/pages/splash.dart';
+
 import 'package:not_bored/services/auth.dart';
+import 'package:not_bored/services/friends.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:not_bored/pages/my_friends.dart';
-import 'package:not_bored/services/friends.dart';
+import 'package:not_bored/pages/splash.dart';
 
 class Users extends StatefulWidget {
   Users({Key key, this.auth, this.userId, this.data, this.request})
@@ -197,10 +200,8 @@ class _UsersState extends State<Users> {
                                       fontWeight: FontWeight.normal,
                                       fontSize: 20.0),
                                 ),
-                                onPressed: ()=>
-                                  widget.request.cancelReq(
-                                      widget.userId, widget.data['userid']),
-                              
+                                onPressed: () => widget.request.cancelReq(
+                                    widget.userId, widget.data['userid']),
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(20.0)),
@@ -226,10 +227,8 @@ class _UsersState extends State<Users> {
                                           fontWeight: FontWeight.normal,
                                           fontSize: 20.0),
                                     ),
-                                    onPressed: () =>
-                                      widget.request.acceptReq(
-                                          widget.userId, widget.data['userid']),
-                                  
+                                    onPressed: () => widget.request.acceptReq(
+                                        widget.userId, widget.data['userid']),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             new BorderRadius.circular(20.0)),

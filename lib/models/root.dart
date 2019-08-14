@@ -5,6 +5,7 @@ import 'package:not_bored/services/auth.dart';
 
 import 'package:not_bored/pages/login.dart';
 import 'package:not_bored/pages/landing.dart';
+import 'package:not_bored/pages/splash.dart';
 
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
@@ -57,24 +58,11 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
-  Widget _buildWaitingScreen() {
-    return Scaffold(
-      body: Container(
-          alignment: Alignment.center,
-          child: Stack(
-            children: <Widget>[
-              CircularProgressIndicator(),
-              Text("Not Bored Loading")
-            ],
-          )),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     switch (authStatus) {
       case AuthStatus.NOT_DETERMINED:
-        return _buildWaitingScreen();
+        return Splash();
         break;
       case AuthStatus.NOT_LOGGED_IN:
         return new LoginPage(
@@ -93,10 +81,10 @@ class _RootPageState extends State<RootPage> {
             builder: (BuildContext context) => LandingPageProvider(),
           );
         } else
-          return _buildWaitingScreen();
+          return Splash();
         break;
       default:
-        return _buildWaitingScreen();
+        return Splash();
     }
   }
 }

@@ -20,6 +20,7 @@ class _RegPageState extends State<RegPage> {
   TextEditingController _lname;
   TextEditingController _email;
   TextEditingController _password;
+  TextEditingController _repassword;
   TextEditingController _username;
   TextEditingController _phone;
   String _errorMessage;
@@ -224,7 +225,7 @@ class _RegPageState extends State<RegPage> {
       child: new TextFormField(
         controller: _password,
         maxLines: 1,
-        obscureText:  passwordHidden,
+        obscureText: passwordHidden,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Password',
@@ -255,6 +256,47 @@ class _RegPageState extends State<RegPage> {
             });
             return 'Password can\'t be empty';
           }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _rePasswordInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: new TextFormField(
+        controller: _repassword,
+        maxLines: 1,
+        obscureText: passwordHidden,
+        autofocus: false,
+        decoration: new InputDecoration(
+            hintText: 'Retype Password',
+            suffixIcon: IconButton(
+              icon: Icon(
+                passwordHidden ? Icons.visibility_off : Icons.visibility,
+                color: Colors.black54,
+              ),
+              onPressed: () {
+                setState(() {
+                  passwordHidden = !passwordHidden;
+                });
+              },
+            ),
+            errorStyle: TextStyle(
+              color: Colors.blue[900],
+            ),
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white70)),
+            icon: new Icon(
+              Icons.lock,
+              color: Colors.black,
+            )),
+        validator: (value) {
+          if (value != _password.text) {
+            return 'Password is not matching';
+          }
+
           return null;
         },
       ),
@@ -375,6 +417,7 @@ class _RegPageState extends State<RegPage> {
                   _showLastName(),
                   _showEmailInput(),
                   _showPasswordInput(),
+                  _rePasswordInput(),
                   _showUsername(),
                   _showPhone(),
                   SizedBox(height: 50.0),

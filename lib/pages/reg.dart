@@ -27,10 +27,12 @@ class _RegPageState extends State<RegPage> {
 
   bool _isLoading;
   bool passwordHidden;
+  bool repasswordHidden;
 
   @override
   void initState() {
     passwordHidden = true;
+    repasswordHidden = true;
     _errorMessage = "";
     _isLoading = false;
     super.initState();
@@ -268,18 +270,18 @@ class _RegPageState extends State<RegPage> {
       child: new TextFormField(
         controller: _repassword,
         maxLines: 1,
-        obscureText: passwordHidden,
+        obscureText: repasswordHidden,
         autofocus: false,
         decoration: new InputDecoration(
             hintText: 'Retype Password',
             suffixIcon: IconButton(
               icon: Icon(
-                passwordHidden ? Icons.visibility_off : Icons.visibility,
+                repasswordHidden ? Icons.visibility_off : Icons.visibility,
                 color: Colors.black54,
               ),
               onPressed: () {
                 setState(() {
-                  passwordHidden = !passwordHidden;
+                  repasswordHidden = !repasswordHidden;
                 });
               },
             ),

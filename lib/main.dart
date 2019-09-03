@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:not_bored/models/root.dart';
 
@@ -9,6 +10,10 @@ import 'package:not_bored/pages/login.dart';
 import 'package:not_bored/pages/reg.dart';
 
 void main() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(MyApp());
 }
 

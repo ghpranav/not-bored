@@ -45,3 +45,45 @@ export const sendToDevice = functions.firestore
         }
     },
     );
+
+export const sendToDevice2 = functions.firestore
+    .document('users/{userId}/{user}/{frndId}')
+    .onCreate(async (snapshot, context) => {
+
+        const frnd = snapshot.data;
+        const frndid = context.params.frndId;
+        const user = context.params.user;
+        const userid = context.params.userId;
+
+        if (frnd && user == userid) {
+            const querySnapshot = await db
+                .collection('users')
+                .doc(userid)
+                .collection('tokens')
+                .get();
+
+            const frndSnapshot = await db
+                .collection('users')
+                .doc(frndid)
+                .get();
+            const name = frndSnapshot.get('name');
+
+            const tokens = querySnapshot.docs.map(snap => snap.id);
+
+            const payload: admin.messaging.MessagingPayload = {
+                notification: {
+                    title: 'New Friend',
+                    body: `${name} is now your friend!`,
+                    icon: 'your-icon-url',
+                    click_action: 'FLUTTER_NOTIFICATION_CLICK',
+                    sound: 'default'
+                }
+            };
+
+            return fcm.sendToDevice(tokens, payload);
+        }
+        else {
+            return null
+        }
+    },
+    );

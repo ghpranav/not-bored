@@ -315,7 +315,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _showCircularProgress() {
     if (_isLoading) {
-      return Center(child: CircularProgressIndicator());
+      return Center(
+          child: CircularProgressIndicator(backgroundColor: Colors.blueAccent));
     }
     return Container(
       height: 0.0,

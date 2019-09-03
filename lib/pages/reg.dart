@@ -432,7 +432,8 @@ class _RegPageState extends State<RegPage> {
 
   Widget _showCircularProgress() {
     if (_isLoading) {
-      return Center(child: CircularProgressIndicator());
+      return Center(
+          child: CircularProgressIndicator(backgroundColor: Colors.blueAccent));
     }
     return Container(
       height: 0.0,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:not_bored/services/auth.dart';
+import 'package:not_bored/services/friends.dart';
 
 import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/pages/info.dart';
@@ -75,6 +76,7 @@ class MyFriendsPageState extends State<MyFriendsPage> {
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 Users(
+                                                  request: new Friends(),
                                                   auth: widget.auth,
                                                   userId: widget.userId,
                                                   data: userDocument,

@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart' as geo;
+import 'package:not_bored/pages/splash.dart';
 
 import 'package:not_bored/services/auth.dart';
 
@@ -27,8 +28,10 @@ var currentLocation = LocationData;
 var location = new Location();
 
 class _HomePageState extends State<HomePage> {
-  LocationData _startLocation;
   LocationData _currentLocation;
+  static LatLng _initialPosition;
+
+  CameraPosition _currentCameraPosition;
 
   StreamSubscription<LocationData> _locationSubscription;
 
@@ -39,19 +42,12 @@ class _HomePageState extends State<HomePage> {
   bool currentWidget = true;
 
   Completer<GoogleMapController> _controller = Completer();
-  static final CameraPosition _initialCamera = CameraPosition(
-    target: LatLng(0, 0),
-    zoom: 12,
-  );
-
-  CameraPosition _currentCameraPosition;
 
   GoogleMap googleMap;
 
   @override
   void initState() {
     super.initState();
-
     initPlatformState();
   }
 
@@ -59,8 +55,12 @@ class _HomePageState extends State<HomePage> {
   initPlatformState() async {
     await _locationService.changeSettings(
         accuracy: LocationAccuracy.HIGH, interval: 1000);
-
+    geo.Position position = await geo.Geolocator()
+        .getCurrentPosition(desiredAccuracy: geo.LocationAccuracy.high);
     LocationData location;
+    setState(() {
+      _initialPosition = LatLng(position.latitude, position.longitude);
+    });
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       bool serviceStatus = await _locationService.serviceEnabled();
@@ -105,9 +105,6 @@ class _HomePageState extends State<HomePage> {
       location = null;
     }
 
-    setState(() {
-      _startLocation = location;
-    });
   }
 
   slowRefresh() async {
@@ -121,26 +118,22 @@ class _HomePageState extends State<HomePage> {
           _currentLocation = result;
         });
       }
-      if (result != null)
-              widget.auth.updateLocation(result);
+      if (result != null) widget.auth.updateLocation(_currentLocation);
     });
   }
-
-  Marker me = Marker(
-      markerId: MarkerId('me'),
-      position: LatLng(0, 0),
-      infoWindow: InfoWindow(title: 'Me'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          _googlemap(context),
-          
-        ],
-      ),
+      body: _initialPosition == null
+          ? Splash()
+          : Container(
+              child: Stack(
+                children: <Widget>[
+                  _googlemap(context),
+                ],
+              ),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
         height: 180.0,
@@ -169,13 +162,12 @@ class _HomePageState extends State<HomePage> {
       child: GoogleMap(
         mapType: MapType.normal,
         myLocationEnabled: true,
-        initialCameraPosition: _initialCamera,
+        initialCameraPosition:
+            CameraPosition(target: _initialPosition, zoom: 16),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
-        markers: {
-          me,
-        },
+        markers: {},
       ),
     );
   }

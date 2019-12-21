@@ -168,7 +168,9 @@ class Auth implements BaseAuth {
 
     _ref.updateData(<String, dynamic>{
       'position': geo.point(latitude: position.latitude, longitude: position.longitude),
+      
     });
+    print("Success");
   }
 
   Future<void> sendEmailVerification() async {

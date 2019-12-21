@@ -1,15 +1,20 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:not_bored/pages/splash.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 
+
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:not_bored/services/auth.dart';
+
 
 class HomePage extends StatefulWidget {
   static String tag = 'home-page';
@@ -29,7 +34,9 @@ var currentLocation = LocationData;
 var location = new Location();
 
 class _HomePageState extends State<HomePage> {
-  LocationData _currentLocation;
+  
+  GoogleMapController mapController;
+
   static LatLng _initialPosition;
 
   CameraPosition _currentCameraPosition;
@@ -50,7 +57,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     initPlatformState();
-    widget.auth.updateLocation();
+    updateLocation();
+ 
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -78,16 +86,11 @@ class _HomePageState extends State<HomePage> {
               .listen((LocationData result) async {
             _currentCameraPosition = CameraPosition(
                 target: LatLng(result.latitude, result.longitude), zoom: 16);
-
             final GoogleMapController controller = await _controller.future;
             controller.animateCamera(
                 CameraUpdate.newCameraPosition(_currentCameraPosition));
 
-            if (mounted) {
-              setState(() {
-                _currentLocation = result;
-              });
-            }
+            
           });
         }
       } else {
@@ -115,15 +118,24 @@ class _HomePageState extends State<HomePage> {
         accuracy: LocationAccuracy.BALANCED, interval: 10000);
     _locationSubscription =
         _locationService.onLocationChanged().listen((LocationData result) {
-      if (mounted) {
-        setState(() {
-          _currentLocation = result;
-        });
-      }
+      
+      
+    });
+  }
+  Future<void> updateLocation() async{
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    DocumentReference _ref = Firestore.instance.collection('users').document(user.uid);
+    Geoflutterfire geo = Geoflutterfire();
+    var pos=await location.getLocation();
+    GeoFirePoint point=geo.point(latitude: pos.latitude,longitude: pos.longitude);
+
+    return _ref.updateData(<String, dynamic>{
+      'position': point.data,
       
     });
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,7 +162,8 @@ class _HomePageState extends State<HomePage> {
             ),
             backgroundColor: const Color(0xFFf96327),
             foregroundColor: Colors.white54,
-            onPressed: () {},
+            onPressed: () {
+            },
           ),
         ),
       ),
@@ -174,3 +187,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

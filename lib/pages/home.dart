@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -49,6 +50,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     initPlatformState();
+    widget.auth.updateLocation();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -57,9 +59,10 @@ class _HomePageState extends State<HomePage> {
         accuracy: LocationAccuracy.HIGH, interval: 1000);
     geo.Position position = await geo.Geolocator()
         .getCurrentPosition(desiredAccuracy: geo.LocationAccuracy.high);
-    LocationData location;
+    
     setState(() {
       _initialPosition = LatLng(position.latitude, position.longitude);
+      
     });
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
@@ -69,7 +72,6 @@ class _HomePageState extends State<HomePage> {
         _permission = await _locationService.requestPermission();
         print("Permission: $_permission");
         if (_permission) {
-          location = await _locationService.getLocation();
 
           _locationSubscription = _locationService
               .onLocationChanged()
@@ -118,7 +120,7 @@ class _HomePageState extends State<HomePage> {
           _currentLocation = result;
         });
       }
-      if (result != null) widget.auth.updateLocation(_currentLocation);
+      
     });
   }
 

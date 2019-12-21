@@ -6,8 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
-import 'package:location/location.dart'
-;
+import 'package:location/location.dart';
+import 'package:not_bored/pages/home.dart';
 abstract class BaseAuth {
   Future<String> signIn(String email, String password);
 
@@ -25,7 +25,7 @@ abstract class BaseAuth {
 
   Future<void> updateProfile(Map profile);
 
-  Future<void> updateLocation(LocationData position);
+  Future<void> updateLocation();
 
   Future<void> sendEmailVerification();
 
@@ -77,7 +77,7 @@ class Auth implements BaseAuth {
 
   Future<void> createUser(Map profile, FirebaseUser user) async {
     DocumentReference _ref = _firestore.collection('users').document(user.uid);
-    Geoflutterfire geo = Geoflutterfire();
+
     _ref.setData(<String, dynamic>{
       'fname': profile['fname'],
       'lname': profile['lname'],
@@ -92,7 +92,6 @@ class Auth implements BaseAuth {
       'isMailVerified': false,
       'req_rec': [],
       'req_sent': [],
-      'position': geo.point(latitude: 0, longitude: 0),
     });
     _ref.collection(user.uid).document('null').setData(<String, dynamic>{});
     _ref.collection('req_rec').document('null').setData(<String, dynamic>{});
@@ -111,6 +110,8 @@ class Auth implements BaseAuth {
         'userid': user.uid.toString(),
       });
     }
+
+
   }
 
   Future<void> uploadProPic(String url) async {
@@ -161,13 +162,15 @@ class Auth implements BaseAuth {
     }
   }
 
-  Future<void> updateLocation(LocationData position) async {
+  Future<void> updateLocation() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     DocumentReference _ref = _firestore.collection('users').document(user.uid);
     Geoflutterfire geo = Geoflutterfire();
+    var pos=await location.getLocation();
+    GeoFirePoint point=geo.point(latitude: pos.latitude,longitude: pos.longitude);
 
     _ref.updateData(<String, dynamic>{
-      'position': geo.point(latitude: position.latitude, longitude: position.longitude),
+      'position': point.data,
       
     });
     print("Success");

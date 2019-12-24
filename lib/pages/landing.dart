@@ -164,7 +164,9 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     var provider = Provider.of<LandingPageProvider>(context);
     var currentTab = [
-      HomePage(),
+      HomePage(
+        userId: widget.userId, auth: widget.auth, user: widget.userId
+      ),
       MyFriendsPage(
           userId: widget.userId, auth: widget.auth, user: widget.userId),
     ];

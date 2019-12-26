@@ -45,9 +45,10 @@ class MyFriendsPageState extends State<MyFriendsPage> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return new Splash();
+                      return Container();
                     }
                     var userDocument = snapshot.data;
+
                     return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[

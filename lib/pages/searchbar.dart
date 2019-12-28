@@ -7,6 +7,7 @@ import 'package:not_bored/services/friends.dart';
 import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/users.dart';
 
+
 class DataSearch extends StatefulWidget {
   DataSearch({Key key, this.auth, this.userId}) : super(key: key);
 

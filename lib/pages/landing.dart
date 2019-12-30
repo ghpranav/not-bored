@@ -8,12 +8,13 @@ import 'package:provider/provider.dart';
 
 import 'package:not_bored/services/friends.dart';
 import 'package:not_bored/services/auth.dart';
+import 'package:not_bored/services/serve.dart';
 
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/about.dart';
 import 'package:not_bored/pages/info.dart';
-//import 'package:not_bored/pages/searchbar.dart';
-import 'package:not_bored/pages/searchbarTest.dart';
+
+import 'package:not_bored/pages/searchbar.dart';
 import 'package:not_bored/pages/my_friends.dart';
 import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/pages/notifications.dart';
@@ -31,10 +32,7 @@ class LandingPage extends StatefulWidget {
 }
 
 const PrimaryColor = const Color(0xFFf96327);
-var list;
-Map<String, dynamic> friendTest = new Map<String, dynamic>();
 
-var finalList=[];
 
 class _LandingPageState extends State<LandingPage> {
   _signOut() async {
@@ -63,7 +61,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     super.initState();
-    addFriend();
+    search();
     if (Platform.isIOS) {
       iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {});
 
@@ -166,27 +164,6 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  void addFriend() async {
-   
-   
-    list = Firestore.instance.collection('users').snapshots();
-    list.forEach((index) {
-     // print(index);
-      if (index != null) {
-        index.documents.forEach((index1) {
-         // print(index1.data);
-          if (index1.documentID != null) {
-            friendTest[index1.documentID] = index1.data;
-            finalList.add(index1.data);
-           // print(finalList);
-          }
-        });
-      }
-    });
-
-    //print(friendTest);
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -294,27 +271,6 @@ class _LandingPageState extends State<LandingPage> {
               backgroundColor: PrimaryColor,
               child: const Icon(Icons.search, color: Colors.white),
               onPressed: () {
-          
-                 
-                //  Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (BuildContext context) => SearchBar(
-                //               auth: widget.auth,
-                //               userId: widget.userId,
-                //             )));
-                
-                // if(finalList.length!=0){
-                //  showSearch(context: context, delegate: DataSearch(
-                //   widget.auth,
-                //   widget.userId,
-                //  friendTest,
-                //   finalList,
-                //  ));
-                // }
-              //  for(var i=0;i<finalList.length;i++){
-              //    print(finalList[i]['name']);
-              //  }
                 if(finalList.length!=0)
                 Navigator.push(
                     context,
@@ -322,7 +278,6 @@ class _LandingPageState extends State<LandingPage> {
                         builder: (BuildContext context) => SearchBar(
                               auth: widget.auth,
                               userId: widget.userId,
-                            map:friendTest,
                              list: finalList,
                             )));
               },

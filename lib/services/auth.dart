@@ -5,8 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
-import 'package:not_bored/pages/home.dart';
+
 abstract class BaseAuth {
   Future<String> signIn(String email, String password);
 
@@ -24,7 +23,7 @@ abstract class BaseAuth {
 
   Future<void> updateProfile(Map profile);
 
-  Future<void> updateLocation();
+
 
   Future<void> sendEmailVerification();
 
@@ -161,18 +160,7 @@ class Auth implements BaseAuth {
     }
   }
 
-  Future<void> updateLocation() async{
-    FirebaseUser user = await _firebaseAuth.currentUser();
-    DocumentReference _ref = _firestore.collection('users').document(user.uid);
-    Geoflutterfire geo = Geoflutterfire();
-    var pos=await location.getLocation();
-    GeoFirePoint point=geo.point(latitude: pos.latitude,longitude: pos.longitude);
 
-    return _ref.updateData(<String, dynamic>{
-      'position': point.data,
-      
-    });
-  }
 
   Future<void> sendEmailVerification() async {
     FirebaseUser user = await _firebaseAuth.currentUser();

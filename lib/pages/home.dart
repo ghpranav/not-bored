@@ -8,11 +8,10 @@ import 'package:location/location.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:not_bored/pages/splash.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:not_bored/services/auth.dart';
+import 'package:not_bored/services/serve.dart';
 
 class HomePage extends StatefulWidget {
   static String tag = 'home-page';
@@ -29,8 +28,6 @@ class HomePage extends StatefulWidget {
 }
 
 const PrimaryColor = const Color(0xFFf96327);
-var currentLocation = LocationData;
-var location = new Location();
 
 class _HomePageState extends State<HomePage> {
   GoogleMapController mapController;
@@ -51,6 +48,7 @@ class _HomePageState extends State<HomePage> {
 
   GoogleMap googleMap;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+
 
   /// Set of displayed markers and cluster markers on the map
 
@@ -115,20 +113,6 @@ class _HomePageState extends State<HomePage> {
         _locationService.onLocationChanged().listen((LocationData result) {});
   }
 
-  Future<void> updateLocation() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    DocumentReference _ref =
-        Firestore.instance.collection('users').document(user.uid);
-    Geoflutterfire geo = Geoflutterfire();
-    var pos = await location.getLocation();
-    GeoFirePoint point =
-        geo.point(latitude: pos.latitude, longitude: pos.longitude);
-
-    return _ref.updateData(<String, dynamic>{
-      'position': point.data,
-    });
-  }
-
   void _text() async {
     var _friendList =
         Firestore.instance.collectionGroup(widget.user).snapshots();
@@ -149,18 +133,15 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }
-  void accept(){
-    
-  }
- void _showBoredMessage() {
+
+  void _showBoredMessage() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Message Bored"),
-          content:
-              new Text("One of your friend is bored.Do you wanna chat?"),
+          content: new Text("One of your friend is bored.Do you wanna chat?"),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Accept"),
@@ -181,6 +162,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
   /// updates state.
 
@@ -193,9 +175,7 @@ class _HomePageState extends State<HomePage> {
           return new Splash();
         }
         snapshot1.data.documents.forEach((index) {
-          print(index.data['userid']);
           if (index.data['userid'] != null) {
-            print("THIS IS SY+UCCESFUL");
             Firestore.instance
                 .collection('users')
                 .where('userid', isEqualTo: index.data['userid'])
@@ -236,13 +216,13 @@ class _HomePageState extends State<HomePage> {
                 foregroundColor: Colors.white54,
                 onPressed: () {
                   //_text();
-                   Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Chat(
-                                    user: widget.user,
-                                    friend: "v25Su3BCrWUYZwl7Lp5pqaTk7rv1",
-                                  )));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Chat(
+                                user: widget.user,
+                                friend: "v25Su3BCrWUYZwl7Lp5pqaTk7rv1",
+                              )));
                 },
               ),
             ),
@@ -290,6 +270,7 @@ class _HomePageState extends State<HomePage> {
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
+        markers: Set<Marker>.of(markers.values),
       ),
     );
   }

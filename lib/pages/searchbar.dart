@@ -1,60 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:not_bored/services/auth.dart';
-import 'package:not_bored/services/friends.dart';
-
 import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/users.dart';
+import 'package:not_bored/services/friends.dart';
 
-
-class DataSearch extends StatefulWidget {
-  DataSearch({Key key, this.auth, this.userId}) : super(key: key);
+class SearchBar extends StatefulWidget {
+  SearchBar(
+      {Key key, this.auth, this.userId, this.onSignedOut, this.list})
+      : super(key: key);
 
   final BaseAuth auth;
+  final VoidCallback onSignedOut;
   final String userId;
 
+
+  final list;
   @override
-  _DataSearchState createState() => _DataSearchState();
+  _SearchBarState createState() => _SearchBarState();
 }
 
-class _DataSearchState extends State<DataSearch> {
-  var queryResultSet = [];
+class _SearchBarState extends State<SearchBar> {
+ var queryResultSet = [];
   var tempSearchStore = [];
 
   initiateSearch(value) {
-    if (value.length == 0) {
+  
       setState(() {
-        queryResultSet = [];
         tempSearchStore = [];
       });
-    }
 
-    var capitalizedValue =
-        value.substring(0, 1).toUpperCase() + value.substring(1);
-
-    if (queryResultSet.length == 0 && value.length == 1) {
-      SearchService().searchByName(value).then((QuerySnapshot docs) async {
-        for (int i = 0; i < docs.documents.length; ++i) {
-          DocumentSnapshot user = await Firestore.instance
-              .collection('users')
-              .document(docs.documents[i].data['userid'])
-              .get();
-          if (user['isMailVerified']) {
-            queryResultSet.add(user);
-          }
-        }
-      });
-    } else {
-      tempSearchStore = [];
-      queryResultSet.forEach((element) {
-        if (element['name'].startsWith(capitalizedValue)) {
+      
+        widget.list.forEach((element) {
+        if (element['name'].toString().toLowerCase().replaceAll(new RegExp(r"\s+\b|\b\s"), "").contains(value.toString().replaceAll(new RegExp(r"\s+\b|\b\s"), "").toLowerCase())&& !tempSearchStore.contains(element)) {
           setState(() {
             tempSearchStore.add(element);
+           
           });
         }
       });
-    }
+
+ 
+    
   }
 
   String clear(value) {
@@ -110,7 +97,7 @@ class _DataSearchState extends State<DataSearch> {
         ),
         new Expanded(
           child: ListView.builder(
-            itemCount: tempSearchStore.length,
+            itemCount: (tempSearchStore.length)~/2,
             itemBuilder: (context, index) {
               return ListTile(
                 leading: CircleAvatar(
@@ -151,10 +138,4 @@ class _DataSearchState extends State<DataSearch> {
   }
 }
 
-class SearchService {
-  searchByName(String searchField) {
-    return Firestore.instance
-        .collectionGroup(searchField.substring(0, 1).toUpperCase())
-        .getDocuments();
-  }
-}
+

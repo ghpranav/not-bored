@@ -128,6 +128,7 @@ class _LandingPageState extends State<LandingPage> {
                 FlatButton(
                   child: Text('Accept'),
                   onPressed: () => {
+                    Navigator.of(context).pop(),
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -135,7 +136,6 @@ class _LandingPageState extends State<LandingPage> {
                                   user: widget.userId,
                                   friend: message['data']['frndid'],
                                 ))),
-                    Navigator.of(context).pop(),
                   },
                 ),
                 FlatButton(

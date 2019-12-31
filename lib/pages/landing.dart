@@ -71,7 +71,7 @@ class _LandingPageState extends State<LandingPage> {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        if (message['notification']['title'] == 'Friend Request') {
+        if (message['data']['id'] == '2') {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -81,18 +81,25 @@ class _LandingPageState extends State<LandingPage> {
               ),
               actions: <Widget>[
                 FlatButton(
-                    child: Text('Accept'),
-                    onPressed: () => widget.request.acceptReq(
-                        widget.userId, message['notification']['frndid'])),
+                  child: Text('Accept'),
+                  onPressed: () => {
+                    widget.request
+                        .acceptReq(widget.userId, message['data']['frndid']),
+                    Navigator.of(context).pop(),
+                  },
+                ),
                 FlatButton(
                   child: Text('Reject'),
-                  onPressed: () => widget.request.rejectReq(
-                      widget.userId, message['notification']['frndid']),
+                  onPressed: () => {
+                    widget.request
+                        .rejectReq(widget.userId, message['data']['frndid']),
+                    Navigator.of(context).pop(),
+                  },
                 ),
               ],
             ),
           );
-        } else if (message['notification']['title'] == 'New Friend') {
+        } else if (message['data']['is'] == '1') {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -108,7 +115,7 @@ class _LandingPageState extends State<LandingPage> {
               ],
             ),
           );
-        } else if (message['notification']['title'] == 'Bored?') {
+        } else if (message['data']['id'] == '3') {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(

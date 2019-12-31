@@ -23,8 +23,6 @@ abstract class BaseAuth {
 
   Future<void> updateProfile(Map profile);
 
-
-
   Future<void> sendEmailVerification();
 
   Future<bool> isEmailVerified();
@@ -93,23 +91,7 @@ class Auth implements BaseAuth {
     });
     _ref.collection(user.uid).document('null').setData(<String, dynamic>{});
     _ref.collection('req_rec').document('null').setData(<String, dynamic>{});
-    _ref
-        .collection(profile['fname'][0].toString().toUpperCase())
-        .document('null')
-        .setData(<String, dynamic>{
-      'userid': user.uid.toString(),
-    });
-    if (profile['fname'][0].toString().toUpperCase() !=
-        profile['lname'][0].toString().toUpperCase()) {
-      _ref
-          .collection(profile['lname'][0].toString().toUpperCase())
-          .document('null')
-          .setData(<String, dynamic>{
-        'userid': user.uid.toString(),
-      });
-    }
-
-
+    _ref.collection('nb_msg').document('null').setData(<String, dynamic>{});
   }
 
   Future<void> uploadProPic(String url) async {

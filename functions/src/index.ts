@@ -9,11 +9,10 @@ export const sendToDevice = functions.firestore
     .document('users/{userId}/req_rec/{frndId}')
     .onCreate(async (snapshot, context) => {
 
-        const frnd = snapshot.data;
         const frndid = context.params.frndId;
         const userid = context.params.userId;
 
-        if (frnd) {
+        
             const querySnapshot = await db
                 .collection('users')
                 .doc(userid)
@@ -39,10 +38,7 @@ export const sendToDevice = functions.firestore
             };
 
             return fcm.sendToDevice(tokens, payload);
-        }
-        else {
-            return null
-        }
+        
     },
     );
 
@@ -85,5 +81,34 @@ export const sendToDevice2 = functions.firestore
         else {
             return null
         }
+    },
+    );
+
+    export const nbMsg = functions.firestore
+    .document('users/{userId}/nb_msg/{frndId}')
+    .onCreate(async (snapshot, context) => {
+
+        const userid = context.params.userId;
+
+            const querySnapshot = await db
+                .collection('users')
+                .doc(userid)
+                .collection('tokens')
+                .get();
+
+            const tokens = querySnapshot.docs.map(snap => snap.id);
+
+            const payload: admin.messaging.MessagingPayload = {
+                notification: {
+                    title: 'Bored?',
+                    body: `Wanna chat?`,
+                    icon: 'your-icon-url',
+                    click_action: 'FLUTTER_NOTIFICATION_CLICK',
+                    sound: 'default'
+                }
+            };
+
+            return fcm.sendToDevice(tokens, payload);
+      
     },
     );

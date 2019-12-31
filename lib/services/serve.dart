@@ -32,3 +32,19 @@ void search() async {
       await Firestore.instance.collection("users").getDocuments();
   finalList = querySnapshot.documents;
 }
+
+Future<void> sendNBmsg() async {
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  QuerySnapshot querySnapshot =
+      await Firestore.instance.collection("users").document(user.uid).collection(user.uid).getDocuments();
+
+  var frndList = querySnapshot.documents;
+
+  frndList.forEach((doc) {
+      var frndId = doc['userid'];
+
+      Firestore.instance.collection("users").document(frndId).collection("nb_msg").document(user.uid).setData({
+      'userid': user.uid,
+    });
+  });
+}

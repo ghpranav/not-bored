@@ -129,59 +129,6 @@ initialLocation() async{
         _locationService.onLocationChanged().listen((LocationData result) {});
   }
 
-  void _text() async {
-    var _friendList =
-        Firestore.instance.collectionGroup(widget.user).snapshots();
-    _friendList.forEach((index) {
-      index.documents.forEach((index1) {
-        if (index1.documentID != null) {
-          DocumentReference _refU = Firestore.instance
-              .collection('users')
-              .document(index1.documentID);
-          DocumentReference _refMe =
-              Firestore.instance.collection('users').document(widget.user);
-          if (index1.data['bored_message'].length == 0) {
-            _refU.updateData({
-              'bored_message': FieldValue.arrayUnion([widget.user])
-            });
-          }
-        }
-      });
-    });
-  }
-
-  void _showBoredMessage() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Message Bored"),
-          content: new Text("One of your friend is bored.Do you wanna chat?"),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Accept"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text("Reject"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  /// Gets the markers and clusters to be displayed on the map for the current zoom level and
-  /// updates state.
-
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder(
@@ -232,14 +179,15 @@ initialLocation() async{
                 backgroundColor: const Color(0xFFf96327),
                 foregroundColor: Colors.white54,
                 onPressed: () {
+                  sendNBmsg();                  
                   //_text();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Chat(
-                                user: widget.user,
-                                friend: "v25Su3BCrWUYZwl7Lp5pqaTk7rv1",
-                              )));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (BuildContext context) => Chat(
+                  //               user: widget.user,
+                  //               friend: "v25Su3BCrWUYZwl7Lp5pqaTk7rv1",
+                  //             )));
                 },
               ),
             ),

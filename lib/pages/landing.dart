@@ -24,6 +24,7 @@ class LandingPage extends StatefulWidget {
       : super(key: key);
   static String tag = 'landing-page';
   final BaseAuth auth;
+  final FriendRequest request = new Friends();
   final VoidCallback onSignedOut;
   final String userId;
 
@@ -33,9 +34,7 @@ class LandingPage extends StatefulWidget {
 
 const PrimaryColor = const Color(0xFFf96327);
 
-
 class _LandingPageState extends State<LandingPage> {
-  
   _signOut() async {
     try {
       await widget.auth.signOut();
@@ -61,7 +60,6 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   void initState() {
-    
     super.initState();
     search();
     if (Platform.isIOS) {
@@ -73,21 +71,60 @@ class _LandingPageState extends State<LandingPage> {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: ListTile(
-              title: Text(message['notification']['title']),
-              subtitle: Text(message['notification']['body']),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () => Navigator.of(context).pop(),
+        if (message['notification']['title'] == 'Friend Request') {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: ListTile(
+                title: Text(message['notification']['title']),
+                subtitle: Text(message['notification']['body']),
               ),
-            ],
-          ),
-        );
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('Accept'),
+                    onPressed: () => widget.request.acceptReq(
+                        widget.userId, message['notification']['frndid'])),
+                FlatButton(
+                  child: Text('Reject'),
+                  onPressed: () => widget.request.rejectReq(
+                      widget.userId, message['notification']['frndid']),
+                ),
+              ],
+            ),
+          );
+        } else if (message['notification']['title'] == 'New Friend') {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: ListTile(
+                title: Text(message['notification']['title']),
+                subtitle: Text(message['notification']['body']),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          );
+        } else if (message['notification']['title'] == 'Bored?') {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: ListTile(
+                title: Text(message['notification']['title']),
+                subtitle: Text(message['notification']['body']),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          );
+        }
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
@@ -166,7 +203,6 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<LandingPageProvider>(context);
@@ -204,7 +240,7 @@ class _LandingPageState extends State<LandingPage> {
                               builder: (BuildContext context) => NotifPage(
                                     auth: widget.auth,
                                     userId: widget.userId,
-                                    request: new Friends(),
+                                    request: widget.request,
                                   )));
                     },
                   )
@@ -237,7 +273,7 @@ class _LandingPageState extends State<LandingPage> {
                         ),
                       ),
                       onDetailsPressed: () {
-                       Navigator.of(context).pop();
+                        Navigator.of(context).pop();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -273,16 +309,16 @@ class _LandingPageState extends State<LandingPage> {
               backgroundColor: PrimaryColor,
               child: const Icon(Icons.search, color: Colors.white),
               onPressed: () {
-                provider._currentIndex=0;
-               
+                provider._currentIndex = 0;
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => SearchBar(
                               auth: widget.auth,
                               userId: widget.userId,
-                             list: finalList,
-                             onSignedOut: widget.onSignedOut,
+                              list: finalList,
+                              onSignedOut: widget.onSignedOut,
                             )));
               },
             ),

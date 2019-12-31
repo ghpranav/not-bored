@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:not_bored/pages/messages.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -64,8 +63,9 @@ class _HomePageState extends State<HomePage> {
 
     updateLocation();
   }
-initialLocation() async{
-   await _locationService.changeSettings(
+
+  initialLocation() async {
+    await _locationService.changeSettings(
         accuracy: LocationAccuracy.HIGH, interval: 1000);
     geo.Position position = await geo.Geolocator()
         .getCurrentPosition(desiredAccuracy: geo.LocationAccuracy.high);
@@ -73,7 +73,7 @@ initialLocation() async{
     setState(() {
       _initialPosition = LatLng(position.latitude, position.longitude);
     });
-}
+  }
 
   // Platform messages are asynchronous, so we initialize in an async method.
   initPlatformState() async {
@@ -154,7 +154,7 @@ initialLocation() async{
           }
         });
         return Scaffold(
-          body: (_initialPosition == null && markerTest.length==0)
+          body: (_initialPosition == null && markerTest.length == 0)
               ? Splash()
               : Container(
                   child: Stack(
@@ -179,7 +179,7 @@ initialLocation() async{
                 backgroundColor: const Color(0xFFf96327),
                 foregroundColor: Colors.white54,
                 onPressed: () {
-                  sendNBmsg();                  
+                  sendNBmsg();
                   //_text();
                   // Navigator.push(
                   //     context,

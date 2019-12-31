@@ -13,6 +13,7 @@ import 'package:not_bored/services/serve.dart';
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/about.dart';
 import 'package:not_bored/pages/info.dart';
+import 'package:not_bored/pages/messages.dart';
 
 import 'package:not_bored/pages/searchbar.dart';
 import 'package:not_bored/pages/my_friends.dart';
@@ -125,9 +126,21 @@ class _LandingPageState extends State<LandingPage> {
               ),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Ok'),
-                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Accept'),
+                  onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => Chat(
+                                  user: widget.userId,
+                                  friend: message['data']['frndid'],
+                                ))),
+                    Navigator.of(context).pop(),
+                  },
                 ),
+                FlatButton(
+                    child: Text('Reject'),
+                    onPressed: () => Navigator.of(context).pop()),
               ],
             ),
           );

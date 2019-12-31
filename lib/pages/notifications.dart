@@ -19,18 +19,18 @@ class NotifPage extends StatefulWidget {
 
 const PrimaryColor = const Color(0xFFf96327);
 
-
 class _NotifPageState extends State<NotifPage> {
-  nbMsgLen() async{
-    var nbMsgLen;
-        await Firestore.instance
-          .collection('users')
-          .document(widget.userId).collection('nb_msg')
-          .getDocuments().then((docs) {
-           nbMsgLen = docs.documents.length;
-          });
-          return nbMsgLen;
-}
+  nbMsgLen() async {
+    await Firestore.instance
+        .collection('users')
+        .document(widget.userId)
+        .collection('nb_msg')
+        .getDocuments()
+        .then((docs) {
+      return docs.documents.length;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder(
@@ -43,8 +43,8 @@ class _NotifPageState extends State<NotifPage> {
           return new Splash();
         }
         var userDocument = snapshot.data;
-       
-        if (userDocument['req_rec'].length == 0 && nbMsgLen() == 0) {
+
+        if (userDocument['req_rec'].length == 0) {
           return Scaffold(
               appBar: AppBar(
                 title: Text('Notifications'),
@@ -69,202 +69,6 @@ class _NotifPageState extends State<NotifPage> {
             body: new Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: userDocument['req_rec'].length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new StreamBuilder(
-                            stream: Firestore.instance
-                                .collection('users')
-                                .document(userDocument['req_rec'][index])
-                                .snapshots(),
-                            builder: (context, snapshot1) {
-                              if (!snapshot1.hasData) {
-                                return new Splash();
-                              }
-                              var friendDocument = snapshot1.data;
-                              return Dismissible(
-                                key: Key(userDocument['req_rec'][index]),
-                                onDismissed: (direction) {
-                                  setState(() async {
-                                    widget.request.rejectReq(widget.userId,
-                                        friendDocument['userid']);
-                                  });
-                                },
-                                background: Container(color: PrimaryColor),
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        friendDocument['imageURL']),
-                                  ),
-                                  title: RichText(
-                                    text: TextSpan(
-                                        text: friendDocument['name'],
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                        children: [
-                                          TextSpan(
-                                              text:
-                                                  ' has sent you friend request',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight:
-                                                      FontWeight.normal))
-                                        ]),
-                                  ),
-                                  subtitle: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                            0.0, 0.0, 1.0, 0.0),
-                                        child: MaterialButton(
-                                          child: Text(
-                                            "Accept",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 15.0),
-                                          ),
-                                          onPressed: () => widget.request
-                                              .acceptReq(widget.userId,
-                                                  friendDocument['userid']),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      20.0)),
-                                          color: PrimaryColor,
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                            3.0, 0.0, 0.0, 0.0),
-                                        child: MaterialButton(
-                                          child: Text(
-                                            "Reject",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 15.0),
-                                          ),
-                                          onPressed: () => widget.request
-                                              .rejectReq(widget.userId,
-                                                  friendDocument['userid']),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      20.0)),
-                                          color: Colors.deepOrange[900],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
-                      }),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: userDocument['req_rec'].length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new StreamBuilder(
-                            stream: Firestore.instance
-                                .collection('users')
-                                .document(userDocument['req_rec'][index])
-                                .snapshots(),
-                            builder: (context, snapshot1) {
-                              if (!snapshot1.hasData) {
-                                return new Splash();
-                              }
-                              var friendDocument = snapshot1.data;
-                              return Dismissible(
-                                key: Key(userDocument['req_rec'][index]),
-                                onDismissed: (direction) {
-                                  setState(() async {
-                                    widget.request.rejectReq(widget.userId,
-                                        friendDocument['userid']);
-                                  });
-                                },
-                                background: Container(color: PrimaryColor),
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        friendDocument['imageURL']),
-                                  ),
-                                  title: RichText(
-                                    text: TextSpan(
-                                        text: friendDocument['name'],
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                        children: [
-                                          TextSpan(
-                                              text:
-                                                  ' has sent you friend request',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight:
-                                                      FontWeight.normal))
-                                        ]),
-                                  ),
-                                  subtitle: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                            0.0, 0.0, 1.0, 0.0),
-                                        child: MaterialButton(
-                                          child: Text(
-                                            "Accept",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 15.0),
-                                          ),
-                                          onPressed: () => widget.request
-                                              .acceptReq(widget.userId,
-                                                  friendDocument['userid']),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      20.0)),
-                                          color: PrimaryColor,
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                            3.0, 0.0, 0.0, 0.0),
-                                        child: MaterialButton(
-                                          child: Text(
-                                            "Reject",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 15.0),
-                                          ),
-                                          onPressed: () => widget.request
-                                              .rejectReq(widget.userId,
-                                                  friendDocument['userid']),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      20.0)),
-                                          color: Colors.deepOrange[900],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
-                      }),
-                ),
                 Expanded(
                   child: ListView.builder(
                       itemCount: userDocument['req_rec'].length,

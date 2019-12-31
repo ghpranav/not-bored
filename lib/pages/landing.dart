@@ -22,7 +22,7 @@ import 'package:not_bored/pages/notifications.dart';
 class LandingPage extends StatefulWidget {
   LandingPage({Key key, this.auth, this.userId, this.onSignedOut})
       : super(key: key);
-
+  static String tag = 'landing-page';
   final BaseAuth auth;
   final VoidCallback onSignedOut;
   final String userId;
@@ -35,6 +35,7 @@ const PrimaryColor = const Color(0xFFf96327);
 
 
 class _LandingPageState extends State<LandingPage> {
+  
   _signOut() async {
     try {
       await widget.auth.signOut();
@@ -60,6 +61,7 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   void initState() {
+    
     super.initState();
     search();
     if (Platform.isIOS) {
@@ -235,7 +237,7 @@ class _LandingPageState extends State<LandingPage> {
                         ),
                       ),
                       onDetailsPressed: () {
-                        Navigator.of(context).pop();
+                       Navigator.of(context).pop();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -271,7 +273,8 @@ class _LandingPageState extends State<LandingPage> {
               backgroundColor: PrimaryColor,
               child: const Icon(Icons.search, color: Colors.white),
               onPressed: () {
-                if(finalList.length!=0)
+                provider._currentIndex=0;
+               
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -279,6 +282,7 @@ class _LandingPageState extends State<LandingPage> {
                               auth: widget.auth,
                               userId: widget.userId,
                              list: finalList,
+                             onSignedOut: widget.onSignedOut,
                             )));
               },
             ),

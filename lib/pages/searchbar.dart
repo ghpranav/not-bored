@@ -4,6 +4,8 @@ import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/users.dart';
 import 'package:not_bored/services/friends.dart';
+import 'package:not_bored/pages/landing.dart';
+
 
 class SearchBar extends StatefulWidget {
   SearchBar(
@@ -21,6 +23,10 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
+   final routes = <String, WidgetBuilder>{
+    LandingPage.tag: (context) => LandingPage(),
+    
+  };
  var queryResultSet = [];
   var tempSearchStore = [];
 
@@ -39,6 +45,7 @@ class _SearchBarState extends State<SearchBar> {
           });
         }
       });
+    print(tempSearchStore);
 
  
     
@@ -46,6 +53,7 @@ class _SearchBarState extends State<SearchBar> {
 
   String clear(value) {
     value = "";
+    tempSearchStore=[];
     return value;
   }
 
@@ -60,6 +68,7 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+  
       body: new Column(children: <Widget>[
         SizedBox(height: 30.0),
         Padding(
@@ -80,6 +89,8 @@ class _SearchBarState extends State<SearchBar> {
                   iconSize: 20.0,
                   onPressed: () {
                     Navigator.of(context).pop();
+                    
+      
                   },
                 ),
                 suffixIcon: IconButton(
@@ -97,7 +108,7 @@ class _SearchBarState extends State<SearchBar> {
         ),
         new Expanded(
           child: ListView.builder(
-            itemCount: (tempSearchStore.length)~/2,
+            itemCount: ((tempSearchStore.length)/2).floor(),
             itemBuilder: (context, index) {
               return ListTile(
                 leading: CircleAvatar(

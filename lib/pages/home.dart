@@ -47,17 +47,33 @@ class _HomePageState extends State<HomePage> {
   Completer<GoogleMapController> _controller = Completer();
 
   GoogleMap googleMap;
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-
+  Map<MarkerId, Marker> markers = new Map<MarkerId, Marker>();
+  List<Marker> markerTest = [];
 
   /// Set of displayed markers and cluster markers on the map
-
+  BitmapDescriptor myIcon;
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(0, 0)), 'lib/assests/person.jpg')
+        .then((onValue) {
+      myIcon = onValue;
+    });
+//initialLocation();
+
     updateLocation();
   }
+initialLocation() async{
+   await _locationService.changeSettings(
+        accuracy: LocationAccuracy.HIGH, interval: 1000);
+    geo.Position position = await geo.Geolocator()
+        .getCurrentPosition(desiredAccuracy: geo.LocationAccuracy.high);
+
+    setState(() {
+      _initialPosition = LatLng(position.latitude, position.longitude);
+    });
+}
 
   // Platform messages are asynchronous, so we initialize in an async method.
   initPlatformState() async {
@@ -183,14 +199,15 @@ class _HomePageState extends State<HomePage> {
                 .then((docs) {
               if (docs.documents.isNotEmpty) {
                 for (int i = 0; i < docs.documents.length; i++) {
-                  initMarker(docs.documents[i], docs.documents[i].documentID);
+                  initMarker(docs.documents[i], docs.documents[i].documentID,
+                      docs.documents.length);
                 }
               }
             });
           }
         });
         return Scaffold(
-          body: _initialPosition == null
+          body: (_initialPosition == null && markerTest.length==0)
               ? Splash()
               : Container(
                   child: Stack(
@@ -232,7 +249,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void initMarker(lugar, lugaresid) {
+  void initMarker(lugar, lugaresid, length) {
     var markerIdVal = lugaresid;
 
     final MarkerId markerId = MarkerId(markerIdVal);
@@ -250,9 +267,10 @@ class _HomePageState extends State<HomePage> {
 
     // adding a new marker to map
 
-    markers[markerId] = marker;
+    markerTest.add(marker);
+    if (markerTest.length == length) initialLocation();
 
-    print(markers.values);
+    print(markerTest);
   }
 
   Widget _googlemap(BuildContext context) {
@@ -270,7 +288,7 @@ class _HomePageState extends State<HomePage> {
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
-        markers: Set<Marker>.of(markers.values),
+        markers: Set<Marker>.of(markerTest),
       ),
     );
   }

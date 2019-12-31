@@ -1,7 +1,10 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:not_bored/models/root.dart';
+import 'package:not_bored/pages/landing.dart';
 
 import 'package:not_bored/services/auth.dart';
 
@@ -25,6 +28,7 @@ class MyApp extends StatelessWidget {
     LoginPage.tag: (context) => LoginPage(),
     HomePage.tag: (context) => HomePage(),
     RegPage.tag: (context) => RegPage(),
+    LandingPage.tag:(context)=>LandingPage(),
   };
 
   @override

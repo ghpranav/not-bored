@@ -6,16 +6,13 @@ import 'package:not_bored/pages/users.dart';
 import 'package:not_bored/services/friends.dart';
 import 'package:not_bored/pages/landing.dart';
 
-
 class SearchBar extends StatefulWidget {
-  SearchBar(
-      {Key key, this.auth, this.userId, this.onSignedOut, this.list})
+  SearchBar({Key key, this.auth, this.userId, this.onSignedOut, this.list})
       : super(key: key);
 
   final BaseAuth auth;
   final VoidCallback onSignedOut;
   final String userId;
-
 
   final list;
   @override
@@ -23,37 +20,38 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-   final routes = <String, WidgetBuilder>{
+  final routes = <String, WidgetBuilder>{
     LandingPage.tag: (context) => LandingPage(),
-    
   };
- var queryResultSet = [];
+  var queryResultSet = [];
   var tempSearchStore = [];
 
   initiateSearch(value) {
-  
-      setState(() {
-        tempSearchStore = [];
-      });
+    setState(() {
+      tempSearchStore = [];
+    });
 
-      
-        widget.list.forEach((element) {
-        if (element['name'].toString().toLowerCase().replaceAll(new RegExp(r"\s+\b|\b\s"), "").contains(value.toString().replaceAll(new RegExp(r"\s+\b|\b\s"), "").toLowerCase())&& !tempSearchStore.contains(element)) {
-          setState(() {
-            tempSearchStore.add(element);
-           
-          });
-        }
-      });
+    widget.list.forEach((element) {
+      if (element['name']
+              .toString()
+              .toLowerCase()
+              .replaceAll(new RegExp(r"\s+\b|\b\s"), "")
+              .contains(value
+                  .toString()
+                  .replaceAll(new RegExp(r"\s+\b|\b\s"), "")
+                  .toLowerCase()) &&
+          !tempSearchStore.contains(element)) {
+        setState(() {
+          tempSearchStore.add(element);
+        });
+      }
+    });
     print(tempSearchStore);
-
- 
-    
   }
 
   String clear(value) {
     value = "";
-    tempSearchStore=[];
+    tempSearchStore = [];
     return value;
   }
 
@@ -68,7 +66,6 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  
       body: new Column(children: <Widget>[
         SizedBox(height: 30.0),
         Padding(
@@ -89,8 +86,6 @@ class _SearchBarState extends State<SearchBar> {
                   iconSize: 20.0,
                   onPressed: () {
                     Navigator.of(context).pop();
-                    
-      
                   },
                 ),
                 suffixIcon: IconButton(
@@ -108,7 +103,7 @@ class _SearchBarState extends State<SearchBar> {
         ),
         new Expanded(
           child: ListView.builder(
-            itemCount: ((tempSearchStore.length)/2).floor(),
+            itemCount: tempSearchStore.length,
             itemBuilder: (context, index) {
               return ListTile(
                 leading: CircleAvatar(
@@ -148,5 +143,3 @@ class _SearchBarState extends State<SearchBar> {
     );
   }
 }
-
-

@@ -56,6 +56,7 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   bool _isEmailVerified = false;
+  bool showNotification = false;
   StreamSubscription iosSubscription;
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
@@ -117,40 +118,146 @@ class _LandingPageState extends State<LandingPage> {
             ),
           );
         } else if (message['data']['id'] == '3') {
+          var frndid = await getNBmsg();
           showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-              content: ListTile(
-                title: Text(message['notification']['title']),
-                subtitle: Text(message['notification']['body']),
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Accept'),
-                  onPressed: () => {
-                    Navigator.of(context).pop(),
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => Chat(
-                                  user: widget.userId,
-                                  friend: message['data']['frndid'],
-                                ))),
-                  },
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                content: ListTile(
+                  title: Text("Bored?"),
+                  subtitle: Text("Wanna Chat?"),
                 ),
-                FlatButton(
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Accept'),
+                    onPressed: () => {
+                      acceptNBmsg(widget.userId, frndid.toString()),
+                      Navigator.of(context).pop(),
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => Chat(
+                                    user: frndid.toString(),
+                                    friend: widget.userId,
+                                  ))),
+                    },
+                  ),
+                  FlatButton(
                     child: Text('Reject'),
-                    onPressed: () => Navigator.of(context).pop()),
-              ],
-            ),
+                    onPressed: () => {
+                      rejectNBmsg(widget.userId, frndid.toString()),
+                      Navigator.of(context).pop(),
+                    },
+                  ),
+                ],
+              );
+            },
           );
         }
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
+        if (message['data']['id'] == '2') {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => NotifPage(
+                        auth: widget.auth,
+                        userId: widget.userId,
+                        request: widget.request,
+                      )));
+        } else if (message['data']['id'] == '3') {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              String frndid = getNBmsg().toString();
+              return AlertDialog(
+                content: ListTile(
+                  title: Text("Bored?"),
+                  subtitle: Text("Wanna Chat?"),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Accept'),
+                    onPressed: () => {
+                      acceptNBmsg(widget.userId, frndid),
+                      Navigator.of(context).pop(),
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => Chat(
+                                    user: frndid,
+                                    friend: widget.userId,
+                                  ))),
+                    },
+                  ),
+                  FlatButton(
+                    child: Text('Reject'),
+                    onPressed: () => {
+                      rejectNBmsg(widget.userId, frndid),
+                      Navigator.of(context).pop(),
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        if (message['data']['id'] == '2') {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => NotifPage(
+                        auth: widget.auth,
+                        userId: widget.userId,
+                        request: widget.request,
+                      )));
+        } else if (message['data']['id'] == '3') {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              String frndid = getNBmsg().toString();
+              return AlertDialog(
+                content: ListTile(
+                  title: Text("Bored?"),
+                  subtitle: Text("Wanna Chat?"),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Accept'),
+                    onPressed: () => {
+                      acceptNBmsg(widget.userId, frndid),
+                      Navigator.of(context).pop(),
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => Chat(
+                                    user: frndid,
+                                    friend: widget.userId,
+                                  ))),
+                    },
+                  ),
+                  FlatButton(
+                    child: Text('Reject'),
+                    onPressed: () => {
+                      rejectNBmsg(widget.userId, frndid),
+                      Navigator.of(context).pop(),
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
       },
     );
 

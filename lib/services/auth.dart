@@ -88,6 +88,7 @@ class Auth implements BaseAuth {
       'isMailVerified': false,
       'req_rec': [],
       'req_sent': [],
+      'connectedTo': null,
     });
     _ref.collection(user.uid).document('null').setData(<String, dynamic>{});
     _ref.collection('req_rec').document('null').setData(<String, dynamic>{});
@@ -142,8 +143,6 @@ class Auth implements BaseAuth {
     }
   }
 
-
-
   Future<void> sendEmailVerification() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     user.sendEmailVerification();
@@ -172,8 +171,8 @@ class Auth implements BaseAuth {
 
       await tokens.setData({
         'token': fcmToken,
-        'createdAt': FieldValue.serverTimestamp(), 
-        'platform': Platform.operatingSystem 
+        'createdAt': FieldValue.serverTimestamp(),
+        'platform': Platform.operatingSystem
       });
     }
   }

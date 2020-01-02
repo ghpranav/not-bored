@@ -12,6 +12,7 @@ import 'package:not_bored/services/serve.dart';
 
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/about.dart';
+import 'package:not_bored/pages/misc.dart';
 import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/messages.dart';
 
@@ -419,6 +420,17 @@ class _LandingPageState extends State<LandingPage> {
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     AboutPage()));
+                      },
+                    ),
+                    ListTile(
+                      title: Text('Misc'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    MiscPage()));
                       },
                     ),
                     ListTile(

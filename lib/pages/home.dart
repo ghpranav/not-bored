@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:not_bored/pages/splash.dart';
@@ -23,6 +24,7 @@ class HomePage extends StatefulWidget {
   final VoidCallback onSignedOut;
   final String userId;
   final String user;
+ 
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -38,8 +40,12 @@ class _HomePageState extends State<HomePage> {
   Location _locationService = new Location();
 
   String error;
+  String _darkmapStyle;
+  String _stndrdmapStyle;
+
 
   bool currentWidget = true;
+  bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
   Completer<GoogleMapController> _controller = Completer();
 
@@ -52,6 +58,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    rootBundle.loadString('lib/assests/mapdark.txt').then((string) {
+    _darkmapStyle = string;
+  });
+  rootBundle.loadString('lib/assests/mapstndrd.txt').then((string) {
+     _stndrdMapStyle = string;
+  });
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration(size: Size(0, 0)), 'lib/assests/person.jpg')
         .then((onValue) {
@@ -177,7 +189,17 @@ class _HomePageState extends State<HomePage> {
         initialCameraPosition:
             CameraPosition(target: _initialPosition, zoom: 16),
         onMapCreated: (GoogleMapController controller) {
+          if (mapController != null ) 
+          {
+               if (isDark) {
+                            mapController.setMapStyle(_darkmapStyle);
+                           }
+               else {
+                     mapController.setMapStyle(_stndrdmapStyle);
+                    }
+          }
           _controller.complete(controller);
+         
         },
         markers: Set<Marker>.of(markerTest),
       ),

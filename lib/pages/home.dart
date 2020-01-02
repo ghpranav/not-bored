@@ -122,17 +122,17 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: const Color(0xFFf96327),
             foregroundColor: Colors.white54,
             onPressed: () async {
-              await sendNBmsg();
-              var connectedTo = await waitNBmsg();
-              if (connectedTo != "null") {
+              // await sendNBmsg();
+              // var connectedTo = await waitNBmsg();
+              // if (connectedTo != "null") {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => Chat(
                               user: widget.userId,
-                              friend: connectedTo.toString(),
+                              friend: "vjdhbbbbbbbbbbb",
                             )));
-              }
+             //  }
             },
           ),
         ),

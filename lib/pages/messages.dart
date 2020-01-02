@@ -1,44 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-class CustomButton extends StatelessWidget {
-  final VoidCallback callback;
-  final String text;
-
-  const CustomButton({Key key, this.callback, this.text}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: Material(
-        color: Colors.blueGrey,
-        elevation: 6.0,
-        borderRadius: BorderRadius.circular(30.0),
-        child: MaterialButton(
-          onPressed: callback,
-          minWidth: 200.0,
-          height: 45.0,
-          child: Text(text),
-        ),
-      ),
-    );
-  }
-}
-
 
 class Chat extends StatefulWidget {
   static const String id = "CHAT";
+
+  const Chat({Key key, this.user, this.friend}) : super(key: key);
   final String user;
   final String friend;
-
-  const Chat({Key key, this.user,this.friend}) : super(key: key);
   @override
   _ChatState createState() => _ChatState();
 }
 
+List<Widget> messages;
+
 class _ChatState extends State<Chat> {
-  //final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _firestore = Firestore.instance;
 
   TextEditingController messageController = TextEditingController();
@@ -49,7 +26,7 @@ class _ChatState extends State<Chat> {
       await _firestore.collection('messages').add({
         'text': messageController.text,
         'from': widget.user,
-        'to':widget.friend,
+        'to': widget.friend,
         'date': DateTime.now().toIso8601String().toString(),
       });
       messageController.clear();
@@ -77,8 +54,8 @@ class _ChatState extends State<Chat> {
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
-             
-              Navigator.of(context).canPop();
+              _auth.signOut();
+              Navigator.of(context).popUntil((route) => route.isFirst);
             },
           )
         ],
@@ -90,30 +67,31 @@ class _ChatState extends State<Chat> {
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: _firestore
-                    .collection('messages').where('from', isEqualTo: widget.user).where('to',isEqualTo:widget.friend)
+                    .collection('messages')
                     .orderBy('date')
                     .snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    return Center(
-                      
-                    );
+                  if (!snapshot.hasData) return Container();
 
                   List<DocumentSnapshot> docs = snapshot.data.documents;
 
-                  List<Widget> messages = docs
-                      .map((doc) => Message(
-                            from: doc.data['from'],
-                            text: doc.data['text'],
-                            to:doc.data['to'],
-                            me: widget.user == doc.data['from'],
-                          ))
-                      .toList();
+                 // docs.forEach((doc) {
+                   // if (doc.data['from'] == widget.user &&
+                     //   doc.data['to'] == widget.friend) {
+                      messages = docs
+                          .map((doc) => Message(
+                                from: doc.data['from'],
+                                text: doc.data['text'],
+                                me: widget.user == doc.data['from'],
+                              ))
+                          .toList();
+                  //  }
+                 // });
 
                   return ListView(
                     controller: scrollController,
                     children: <Widget>[
-                      ...messages
+                      ...messages,
                     ],
                   );
                 },
@@ -164,10 +142,10 @@ class SendButton extends StatelessWidget {
 class Message extends StatelessWidget {
   final String from;
   final String text;
-  final String to;
+
   final bool me;
 
-  const Message({Key key, this.from, this.text, this.me,this.to}) : super(key: key);
+  const Message({Key key, this.from, this.text, this.me}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

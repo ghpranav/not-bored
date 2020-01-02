@@ -1,0 +1,16 @@
+[
+  {
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "color": "#ff8000"
+      },
+      {
+        "saturation": -5
+      },
+      {
+        "visibility": "simplified"
+      }
+    ]
+  }
+]

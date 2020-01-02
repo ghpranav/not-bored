@@ -88,7 +88,7 @@ class Auth implements BaseAuth {
       'isMailVerified': false,
       'req_rec': [],
       'req_sent': [],
-      'connectedTo': null,
+      'connectedTo': "null",
     });
     _ref.collection(user.uid).document('null').setData(<String, dynamic>{});
     _ref.collection('req_rec').document('null').setData(<String, dynamic>{});

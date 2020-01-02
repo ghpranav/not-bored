@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:not_bored/pages/splash.dart';
+// import 'package:not_bored/pages/splash.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +14,8 @@ var location = new Location();
 Map<String, dynamic> friendTest = new Map<String, dynamic>();
 
 var finalList = [];
+
+Future pause(Duration d) => new Future.delayed(d);
 
 Future<void> updateLocation() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -70,12 +71,12 @@ getNBmsg() async {
       .getDocuments();
 
   var frndList = querySnapshot.documents;
-  var mofo;
+  var connectedTo;
 
   frndList.forEach((doc) {
-    if (doc.data["userid"] != null) mofo = doc.data["userid"];
+    if (doc.data["userid"] != null) connectedTo = doc.data["userid"];
   });
-  return mofo;
+  return connectedTo;
 }
 
 Future<void> acceptNBmsg(userid, frndid) async {
@@ -97,26 +98,24 @@ Future<void> rejectNBmsg(userid, frndid) async {
 }
 
 Future<String> waitNBmsg() async {
-  var counter = 0;
+  int counter = 0;
 
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  String connectedTo;
 
-  while (counter < 60) {
-    // Splash();
+  while (counter < 30) {
     DocumentSnapshot querySnapshot =
         await Firestore.instance.collection("users").document(user.uid).get();
-    var connectedTo = querySnapshot.data['connectedTo'].toString();
+    connectedTo = querySnapshot.data['connectedTo'];
 
-    if (connectedTo != null) {
-      await deleteNBmsg();
-      return connectedTo;
-    }
-    sleep(const Duration(seconds: 1));
+    if (connectedTo != "null") break;
+
+    await pause(const Duration(seconds: 1));
     counter++;
   }
 
   await deleteNBmsg();
-  return null;
+  return connectedTo;
 }
 
 Future<void> deleteNBmsg() async {

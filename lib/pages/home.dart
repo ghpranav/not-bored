@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async {
               await sendNBmsg();
               var connectedTo = await waitNBmsg();
-              if (connectedTo != null) {
+              if (connectedTo != "null") {
                 Navigator.push(
                     context,
                     MaterialPageRoute(

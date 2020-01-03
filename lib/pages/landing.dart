@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:not_bored/services/friends.dart';
 import 'package:not_bored/services/auth.dart';
@@ -36,6 +38,14 @@ class LandingPage extends StatefulWidget {
 const PrimaryColor = const Color(0xFFf96327);
 
 class _LandingPageState extends State<LandingPage> {
+  hasNbMsg() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    DocumentSnapshot querySnapshot =
+        await Firestore.instance.collection("users").document(user.uid).get();
+    var connectedTo = querySnapshot.data['connectedTo'];
+    return connectedTo;
+  }
+
   _signOut() async {
     try {
       await widget.auth.signOut();
@@ -119,6 +129,7 @@ class _LandingPageState extends State<LandingPage> {
           );
         } else if (message['data']['id'] == '3') {
           var frndid = await getNBmsg();
+
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -155,6 +166,9 @@ class _LandingPageState extends State<LandingPage> {
               );
             },
           );
+
+          await pause(const Duration(seconds: 15));
+          if (await hasNbMsg() == "null") Navigator.of(context).pop();
         }
       },
       onLaunch: (Map<String, dynamic> message) async {
@@ -169,43 +183,70 @@ class _LandingPageState extends State<LandingPage> {
                         request: widget.request,
                       )));
         } else if (message['data']['id'] == '3') {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              // return object of type Dialog
-              String frndid = getNBmsg().toString();
-              return AlertDialog(
-                content: ListTile(
-                  title: Text("Bored?"),
-                  subtitle: Text("Wanna Chat?"),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Accept'),
-                    onPressed: () => {
-                      acceptNBmsg(widget.userId, frndid),
-                      Navigator.of(context).pop(),
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Chat(
-                                    peerId: frndid,
-                                    userId: widget.userId,
-                                  ))),
-                    },
+          var frndid = await getNBmsg();
+          if (frndid != null) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                // return object of type Dialog
+                return AlertDialog(
+                  content: ListTile(
+                    title: Text("Bored?"),
+                    subtitle: Text("Wanna Chat?"),
                   ),
-                  FlatButton(
-                    child: Text('Reject'),
-                    onPressed: () => {
-                      rejectNBmsg(widget.userId, frndid),
-                      Navigator.of(context).pop(),
-                    },
-                  ),
-                ],
-              );
-            },
-          );
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Accept'),
+                      onPressed: () async => {
+                        frndid = await getNBmsg(),
+                        Navigator.of(context).pop(),
+                        if (frndid != null)
+                          {
+                            acceptNBmsg(widget.userId, frndid.toString()),
+                            
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => Chat(
+                                          peerId: frndid.toString(),
+                                          userId: widget.userId,
+                                        ))),
+                          }
+                        else
+                          {
+                            Fluttertoast.showToast(
+                                msg: "Your Friend is no longer bored",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIos: 1,
+                                backgroundColor: PrimaryColor,
+                                textColor: Colors.white,
+                                fontSize: 16.0),
+                          }
+                      },
+                    ),
+                    FlatButton(
+                      child: Text('Reject'),
+                      onPressed: () => {
+                        rejectNBmsg(widget.userId, frndid.toString()),
+                        Navigator.of(context).pop(),
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          } else {
+            Fluttertoast.showToast(
+                msg: "Your Friend is no longer bored",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 1,
+                backgroundColor: PrimaryColor,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }
         }
       },
       onResume: (Map<String, dynamic> message) async {
@@ -220,43 +261,70 @@ class _LandingPageState extends State<LandingPage> {
                         request: widget.request,
                       )));
         } else if (message['data']['id'] == '3') {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              // return object of type Dialog
-              String frndid = getNBmsg().toString();
-              return AlertDialog(
-                content: ListTile(
-                  title: Text("Bored?"),
-                  subtitle: Text("Wanna Chat?"),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Accept'),
-                    onPressed: () => {
-                      acceptNBmsg(widget.userId, frndid),
-                      Navigator.of(context).pop(),
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Chat(
-                                    peerId: frndid,
-                                    userId: widget.userId,
-                                  ))),
-                    },
+          var frndid = await getNBmsg();
+          if (frndid != null) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                // return object of type Dialog
+                return AlertDialog(
+                  content: ListTile(
+                    title: Text("Bored?"),
+                    subtitle: Text("Wanna Chat?"),
                   ),
-                  FlatButton(
-                    child: Text('Reject'),
-                    onPressed: () => {
-                      rejectNBmsg(widget.userId, frndid),
-                      Navigator.of(context).pop(),
-                    },
-                  ),
-                ],
-              );
-            },
-          );
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Accept'),
+                      onPressed: () async => {
+                        frndid = await getNBmsg(),
+                        Navigator.of(context).pop(),
+                        if (frndid != null)
+                          {
+                            acceptNBmsg(widget.userId, frndid.toString()),
+                            
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => Chat(
+                                          peerId: frndid.toString(),
+                                          userId: widget.userId,
+                                        ))),
+                          }
+                        else
+                          {
+                            Fluttertoast.showToast(
+                                msg: "Your Friend is no longer bored",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIos: 1,
+                                backgroundColor: PrimaryColor,
+                                textColor: Colors.white,
+                                fontSize: 16.0),
+                          }
+                      },
+                    ),
+                    FlatButton(
+                      child: Text('Reject'),
+                      onPressed: () => {
+                        rejectNBmsg(widget.userId, frndid.toString()),
+                        Navigator.of(context).pop(),
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          } else {
+            Fluttertoast.showToast(
+                msg: "Your Friend is no longer bored",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 1,
+                backgroundColor: PrimaryColor,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }
         }
       },
     );

@@ -58,6 +58,7 @@ Future<void> sendNBmsg() async {
         .document(user.uid)
         .setData({
       'userid': user.uid,
+      'time':new DateTime.now().millisecondsSinceEpoch,
     });
   });
 }
@@ -77,6 +78,23 @@ getNBmsg() async {
     if (doc.data["userid"] != null) connectedTo = doc.data["userid"];
   });
   return connectedTo;
+}
+getNBmsgTime() async {
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  QuerySnapshot querySnapshot = await Firestore.instance
+      .collection("users")
+      .document(user.uid)
+      .collection("nb_msg")
+      .getDocuments();
+
+  var frndList = querySnapshot.documents;
+  var time;
+
+  frndList.forEach((doc) {
+    if (doc.data["userid"] != null) time = doc.data["time"];
+  });
+  return time;
+
 }
 
 Future<void> acceptNBmsg(userid, frndid) async {
@@ -103,7 +121,7 @@ Future<String> waitNBmsg() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   String connectedTo;
 
-  while (counter < 30) {
+  while (counter < 15) {
     DocumentSnapshot querySnapshot =
         await Firestore.instance.collection("users").document(user.uid).get();
     connectedTo = querySnapshot.data['connectedTo'];

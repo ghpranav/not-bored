@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+
 admin.initializeApp();
 
 const db = admin.firestore();
@@ -72,11 +73,14 @@ export const sendToDevice2 = functions.firestore
           body: `${name} is now your friend!`,
           icon: "your-icon-url",
           click_action: "FLUTTER_NOTIFICATION_CLICK",
-          sound: "default"
+          sound: "default",
+      
         },
         data: {
           id: "1"
+          
         }
+
       };
 
       return fcm.sendToDevice(tokens, payload);

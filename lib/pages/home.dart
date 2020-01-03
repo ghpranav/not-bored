@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/pages/chat.dart';
@@ -39,6 +40,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Location _locationService = new Location();
 
   String error;
+  String _darkmapStyle;
+  String _stndrdmapStyle;
 
   bool currentWidget = true;
 
@@ -56,6 +59,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+        rootBundle.loadString('lib/assests/mapdark.txt').then((string) {
+    _darkmapStyle = string;
+  });
+  rootBundle.loadString('lib/assests/mapstndrd.txt').then((string) {
+     _stndrdmapStyle = string;
+  });
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration(size: Size(0, 0)), 'lib/assests/person.jpg')
         .then((onValue) {
@@ -197,7 +206,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget _googlemap(BuildContext context) {
-    return Container(
+ return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: GoogleMap(
@@ -209,7 +218,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         initialCameraPosition:
             CameraPosition(target: _initialPosition, zoom: 16),
         onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
+             bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+               if (isDark) {
+                            controller.setMapStyle(_darkmapStyle);
+                           }
+               else {
+                     controller.setMapStyle(_stndrdmapStyle);
+                    }
+            _controller.complete(controller);
         },
         markers: Set<Marker>.of(markerTest),
       ),

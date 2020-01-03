@@ -59,14 +59,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-        rootBundle.loadString('lib/assests/mapdark.txt').then((string) {
-    _darkmapStyle = string;
-  });
-  rootBundle.loadString('lib/assests/mapstndrd.txt').then((string) {
-     _stndrdmapStyle = string;
-  });
+    rootBundle.loadString('lib/assests/mapdark.txt').then((string) {
+      _darkmapStyle = string;
+    });
+    rootBundle.loadString('lib/assests/mapstndrd.txt').then((string) {
+      _stndrdmapStyle = string;
+    });
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(0, 0)), 'lib/assests/person.jpg')
+            ImageConfiguration(size: Size(0, 0)), 'images/mimi8.gif')
         .then((onValue) {
       myIcon = onValue;
     });
@@ -135,22 +135,26 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           child: FittedBox(
             child: FloatingActionButton(
               heroTag: 'MainBtn',
-              child: new Icon(
-                Icons.sentiment_dissatisfied,
-                size: 50.0,
-                color: Colors.white54,
-              ),
+              child: _isLoading
+                  ? new Icon(
+                      Icons.sentiment_very_satisfied,
+                      size: 50.0,
+                      color: Colors.white54,
+                    )
+                  : new Icon(
+                      Icons.sentiment_dissatisfied,
+                      size: 50.0,
+                      color: Colors.white54,
+                    ),
               backgroundColor: const Color(0xFFf96327),
               foregroundColor: Colors.white54,
               onPressed: () async {
-                
                 setState(() {
                   _isLoading = true;
                 });
                 await sendNBmsg();
 
                 var connectedTo = await waitNBmsg();
-                
 
                 if (connectedTo != "null") {
                   Navigator.push(
@@ -192,7 +196,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final Marker marker = Marker(
       markerId: markerId,
       position: LatLng(g.latitude, g.longitude),
-      icon: BitmapDescriptor.defaultMarker,
+      icon: myIcon,
       visible: true,
       flat: true,
     );
@@ -206,7 +210,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget _googlemap(BuildContext context) {
- return Container(
+    return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: GoogleMap(
@@ -218,14 +222,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         initialCameraPosition:
             CameraPosition(target: _initialPosition, zoom: 16),
         onMapCreated: (GoogleMapController controller) {
-             bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-               if (isDark) {
-                            controller.setMapStyle(_darkmapStyle);
-                           }
-               else {
-                     controller.setMapStyle(_stndrdmapStyle);
-                    }
-            _controller.complete(controller);
+          bool isDark =
+              MediaQuery.of(context).platformBrightness == Brightness.dark;
+          if (isDark) {
+            controller.setMapStyle(_darkmapStyle);
+          } else {
+            controller.setMapStyle(_stndrdmapStyle);
+          }
+          _controller.complete(controller);
         },
         markers: Set<Marker>.of(markerTest),
       ),

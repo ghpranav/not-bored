@@ -50,15 +50,15 @@ Future<void> sendNBmsg() async {
   frndList.forEach((doc) {
     if (doc['userid'] == null) return null;
     var frndId = doc.data['userid'];
+    var frnd = Firestore.instance.collection("users").document(frndId);
 
-    Firestore.instance
-        .collection("users")
-        .document(frndId)
-        .collection("nb_msg")
-        .document(user.uid)
-        .setData({
-      'userid': user.uid,
-      'time':new DateTime.now().millisecondsSinceEpoch,
+    frnd.get().then((doc) {
+      if (doc.data['connectedTo'] == 'null') {
+        frnd.collection("nb_msg").document(user.uid).setData({
+          'userid': user.uid,
+          'time': new DateTime.now().millisecondsSinceEpoch,
+        });
+      }
     });
   });
 }
@@ -79,6 +79,7 @@ getNBmsg() async {
   });
   return connectedTo;
 }
+
 getNBmsgTime() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   QuerySnapshot querySnapshot = await Firestore.instance
@@ -94,7 +95,6 @@ getNBmsgTime() async {
     if (doc.data["userid"] != null) time = doc.data["time"];
   });
   return time;
-
 }
 
 Future<void> acceptNBmsg(userid, frndid) async {

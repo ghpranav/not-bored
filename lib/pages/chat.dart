@@ -102,6 +102,17 @@ class ChatScreenState extends State<ChatScreen> {
         .document(userId)
         .updateData({'connectedTo': peerId});
 
+    Firestore.instance
+        .collection('messages')
+        .document(groupChatId)
+        .collection(groupChatId)
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        ds.reference.delete();
+      }
+    });
+
     setState(() {});
   }
 
@@ -270,30 +281,6 @@ class ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                isLastMessageLeft(index)
-                    ? Material(
-                        child: CachedNetworkImage(
-                          placeholder: (context, url) => Container(
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1.0,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.deepOrange),
-                            ),
-                            width: 35.0,
-                            height: 35.0,
-                            padding: EdgeInsets.all(10.0),
-                          ),
-                          imageUrl: "",
-                          width: 35.0,
-                          height: 35.0,
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(18.0),
-                        ),
-                        clipBehavior: Clip.hardEdge,
-                      )
-                    : Container(width: 35.0),
                 document['type'] == 0
                     ? Container(
                         child: Text(
@@ -429,7 +416,21 @@ class ChatScreenState extends State<ChatScreen> {
           .collection('users')
           .document(userId)
           .updateData({'connectedTo': "null"});
+      Firestore.instance
+          .collection('users')
+          .document(peerId)
+          .updateData({'connectedTo': "null"});
       Navigator.pop(context);
+      Firestore.instance
+          .collection('messages')
+          .document(groupChatId)
+          .collection(groupChatId)
+          .getDocuments()
+          .then((snapshot) {
+        for (DocumentSnapshot ds in snapshot.documents) {
+          ds.reference.delete();
+        }
+      });
     }
 
     return Future.value(false);

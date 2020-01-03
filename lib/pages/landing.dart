@@ -204,7 +204,6 @@ class _LandingPageState extends State<LandingPage> {
                         if (frndid != null)
                           {
                             acceptNBmsg(widget.userId, frndid.toString()),
-                            
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -282,7 +281,6 @@ class _LandingPageState extends State<LandingPage> {
                         if (frndid != null)
                           {
                             acceptNBmsg(widget.userId, frndid.toString()),
-                            
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -330,6 +328,8 @@ class _LandingPageState extends State<LandingPage> {
     );
 
     _checkEmailVerification();
+
+    _resetConnected();
   }
 
   void _checkEmailVerification() async {
@@ -396,6 +396,14 @@ class _LandingPageState extends State<LandingPage> {
         );
       },
     );
+  }
+
+  void _resetConnected() async {
+    DocumentReference _ref =
+        Firestore.instance.collection('users').document(widget.userId);
+    _ref.updateData(<String, dynamic>{
+      'connectedTo': "null",
+    });
   }
 
   @override

@@ -329,9 +329,27 @@ class _LandingPageState extends State<LandingPage> {
 
     _checkEmailVerification();
 
-    _resetConnected();
+   // _resetConnected();
+   _checkConnectedTo();
   }
 
+  void _checkConnectedTo() async{
+  
+    DocumentSnapshot querySnapshot =
+    await Firestore.instance.collection("users").document(widget.userId).get();
+    var connectedTo = querySnapshot.data['connectedTo'];
+    if(connectedTo!='null')
+    {
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Chat(
+                                userId: widget.userId,
+                                peerId: connectedTo.toString(),
+                              )));
+    }
+
+  }
   void _checkEmailVerification() async {
     DocumentReference _ref =
         Firestore.instance.collection('users').document(widget.userId);

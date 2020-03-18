@@ -21,7 +21,6 @@ class _EditProfileState extends State<EditProfile> {
 
   TextEditingController _fname;
   TextEditingController _lname;
-  TextEditingController _username;
   TextEditingController _phone;
   TextEditingController _status;
 
@@ -33,7 +32,6 @@ class _EditProfileState extends State<EditProfile> {
     super.initState();
     _fname = TextEditingController(text: widget.profile['fname']);
     _lname = TextEditingController(text: widget.profile['lname']);
-    _username = TextEditingController(text: widget.profile['username']);
     _phone = TextEditingController(text: widget.profile['phone']);
     _status = TextEditingController(text: widget.profile['status']);
   }
@@ -59,7 +57,6 @@ class _EditProfileState extends State<EditProfile> {
         Map _profile = {
           'fname': _fname.text,
           'lname':_lname.text,
-          'username': _username.text,
           'phone': _phone.text,
           'status': _status.text,
         };
@@ -163,7 +160,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Widget _showUsername() {
+ /*Widget _showUsername() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
@@ -193,7 +190,7 @@ class _EditProfileState extends State<EditProfile> {
         },
       ),
     );
-  }
+  }*/
 
   Widget _showStatus() {
     return Padding(
@@ -292,7 +289,7 @@ class _EditProfileState extends State<EditProfile> {
                   SizedBox(height: 50.0),
                   _showFirstName(),
                   _showLastName(),
-                  _showUsername(),
+                 // _showUsername(),
                   _showStatus(),
                   _showPhone(),
                   SizedBox(height: 50.0),
@@ -327,7 +324,7 @@ class _EditProfileState extends State<EditProfile> {
   void dispose() {
     _fname.dispose();
     _lname.dispose();
-    _username.dispose();
+   // _username.dispose();
     _phone.dispose();
     _status.dispose();
     super.dispose();

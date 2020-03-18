@@ -29,7 +29,7 @@ class _UsersState extends State<Users> {
         appBar: AppBar(
             backgroundColor: PrimaryColor,
             automaticallyImplyLeading: true,
-            title: Text(widget.data['username']),
+            title: Text("Profile"),
             actions: <Widget>[
               IconButton(
                 icon: Icon(

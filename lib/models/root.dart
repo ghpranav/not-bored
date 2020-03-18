@@ -3,13 +3,15 @@ import 'package:provider/provider.dart';
 
 import 'package:not_bored/services/auth.dart';
 
-import 'package:not_bored/pages/login.dart';
+import 'package:not_bored/pages/welcome.dart';
+
+import 'package:not_bored/pages/newlogin.dart';
 import 'package:not_bored/pages/landing.dart';
 import 'package:not_bored/pages/splash.dart';
 
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
-
+  method() => _RootPageState()._onLoggedIn();
   final BaseAuth auth;
 
   @override
@@ -65,7 +67,7 @@ class _RootPageState extends State<RootPage> {
         return Splash();
         break;
       case AuthStatus.NOT_LOGGED_IN:
-        return new LoginPage(
+        return new WelcomePage(
           auth: widget.auth,
           onSignedIn: _onLoggedIn,
         );

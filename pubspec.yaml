@@ -25,10 +25,12 @@ dependencies:
   fluster:
   clustering_google_maps:
   flutter_cache_manager:
+  bezier_chart:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  google_fonts:
   firebase_messaging:
   flutter_local_notifications:
   firebase_core:
@@ -60,6 +62,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assests/person.jpg
+    - lib/assests/logo.png
     - images/img_not_available.jpeg
     - images/mimi1.gif
     - images/mimi2.gif

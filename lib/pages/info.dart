@@ -75,7 +75,6 @@ class _MyInfoState extends State<MyInfo> {
                                     auth: widget.auth,
                                     profile: {
                                       'name': userDocument['name'],
-                                      'username': userDocument['username'],
                                       'phone': userDocument['phone'],
                                       'status': userDocument['status'],
                                     },
@@ -166,7 +165,7 @@ class _MyInfoState extends State<MyInfo> {
                     ],
                   ),
                 ),
-                Positioned(
+               /* Positioned(
                   bottom: MediaQuery.of(context).size.height / 5.5,
                   right: MediaQuery.of(context).size.width / 4,
                   child: Container(
@@ -189,7 +188,7 @@ class _MyInfoState extends State<MyInfo> {
                       ),
                     ),
                   ),
-                ),
+                ),*/
                 Positioned(
                   bottom: MediaQuery.of(context).size.height / 9,
                   right: MediaQuery.of(context).size.width / 4,

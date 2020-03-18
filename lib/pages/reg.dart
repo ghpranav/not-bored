@@ -21,7 +21,6 @@ class _RegPageState extends State<RegPage> {
   TextEditingController _email;
   TextEditingController _password;
   TextEditingController _repassword;
-  TextEditingController _username;
   TextEditingController _phone;
   String _errorMessage;
 
@@ -40,7 +39,6 @@ class _RegPageState extends State<RegPage> {
     _lname = TextEditingController(text: "");
     _email = TextEditingController(text: "");
     _password = TextEditingController(text: "");
-    _username = TextEditingController(text: "");
     _phone = TextEditingController(text: "");
   }
 
@@ -90,7 +88,6 @@ class _RegPageState extends State<RegPage> {
           'fname': _fname.text,
           'lname': _lname.text,
           'email': _email.text,
-          'username': _username.text,
           'phone': _phone.text,
           'password': _password.text,
         };
@@ -305,7 +302,7 @@ class _RegPageState extends State<RegPage> {
     );
   }
 
-  Widget _showUsername() {
+ /* Widget _showUsername() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
@@ -335,7 +332,7 @@ class _RegPageState extends State<RegPage> {
         },
       ),
     );
-  }
+  }*/
 
   Widget _showPhone() {
     return Padding(
@@ -420,7 +417,6 @@ class _RegPageState extends State<RegPage> {
                   _showEmailInput(),
                   _showPasswordInput(),
                   _rePasswordInput(),
-                  _showUsername(),
                   _showPhone(),
                   SizedBox(height: 50.0),
                   _showSignupButton(),
@@ -458,7 +454,6 @@ class _RegPageState extends State<RegPage> {
     _lname.dispose();
     _email.dispose();
     _password.dispose();
-    _username.dispose();
     _phone.dispose();
     super.dispose();
   }

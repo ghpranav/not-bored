@@ -79,7 +79,6 @@ class Auth implements BaseAuth {
       'lname': profile['lname'],
       'name': profile['fname'] + ' ' + profile['lname'],
       'email': profile['email'],
-      'username': profile['username'],
       'userid': user.uid.toString(),
       'phone': profile['phone'],
       'status': 'I am Bored',

@@ -5,10 +5,10 @@ import 'package:not_bored/widgets/bezierContainer.dart';
 
 import 'package:not_bored/services/auth.dart';
 
-import 'package:not_bored/pages/reg.dart';
+import 'package:not_bored/pages/newreg.dart';
 
 class LoginPage extends StatefulWidget {
- // static String tag = 'login-page';
+  static String tag = 'login-page';
   LoginPage({this.auth, this.onsignedIn});
 
   final BaseAuth auth;
@@ -19,7 +19,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-    final _formKey = new GlobalKey<FormState>();
+  final _formKey = new GlobalKey<FormState>();
   TextEditingController _email;
   TextEditingController _password;
   String _errorMessage;
@@ -38,7 +38,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool _validateAndSave() {
-       
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
@@ -61,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _isLoading = false;
         });
- print("hi2222222222222222222222222222222222");
+        print("hi2222222222222222222222222222222222");
 
         if (userId != null && userId.length > 0) {
           widget.onsignedIn();
@@ -161,6 +160,9 @@ class _LoginPageState extends State<LoginPage> {
             height: 10,
           ),
           TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+            ),
             controller: _password,
             obscureText: passwordHidden,
             decoration: InputDecoration(
@@ -178,10 +180,9 @@ class _LoginPageState extends State<LoginPage> {
                   });
                 },
               ),
-              
-            errorStyle: TextStyle(
-              color: Colors.black,
-            ),
+              errorStyle: TextStyle(
+                color: Colors.black,
+              ),
             ),
             validator: (value) {
               if (value.isEmpty) {
@@ -212,17 +213,20 @@ class _LoginPageState extends State<LoginPage> {
             height: 10,
           ),
           TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+            ),
             controller: _email,
             keyboardType: TextInputType.emailAddress,
             obscureText: false,
             decoration: InputDecoration(
-                errorStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                border: InputBorder.none,
-                fillColor: Color(0xfff3f3f4),
-                filled: true,
-                ),
+              errorStyle: TextStyle(
+                color: Colors.black,
+              ),
+              border: InputBorder.none,
+              fillColor: Color(0xfff3f3f4),
+              filled: true,
+            ),
             validator: (value) {
               Pattern pattern =
                   r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -252,7 +256,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
         onPressed: _validateAndSubmit,
         padding: EdgeInsets.all(12),
-        
         color: Color(0xFFf96327),
         child: Text(
           'Login',
@@ -262,7 +265,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _divider() {
+  /* Widget _divider() {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -293,9 +296,9 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
-  }
+  } */
 
-  Widget _googleButton() {
+  /* Widget _googleButton() {
     return Container(
       height: 50,
       margin: EdgeInsets.symmetric(vertical: 20),
@@ -341,7 +344,7 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
-  }
+  } */
 
   Widget _createAccountLabel() {
     return Container(
@@ -404,7 +407,7 @@ class _LoginPageState extends State<LoginPage> {
             textStyle: Theme.of(context).textTheme.display1,
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            color: Colors.black,
+            color: Color(0xFFf96327),
           ),
           children: [
             TextSpan(
@@ -413,7 +416,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextSpan(
               text: ' B',
-              style: TextStyle(color: Colors.black, fontSize: 30),
+              style: TextStyle(color: Color(0xFFf96327), fontSize: 30),
             ),
             TextSpan(
               text: 'ored',
@@ -450,68 +453,70 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
       height: MediaQuery.of(context).size.height,
       child: new Form(
-              key: _formKey,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  flex: 4,
-                  child: SizedBox(),
-                ),
-                _title(),
-                SizedBox(
-                  height: 50,
-                ),
-                _emailPasswordWidget(),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  alignment: Alignment.centerRight,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    onPressed: _forgotPassword,
-                    padding: EdgeInsets.all(12),
-                    color: Colors.white,
-                    child: Text(
-                      'Forgot Password ?',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        key: _formKey,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: SizedBox(),
+                  ),
+                  _title(),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  _emailPasswordWidget(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    alignment: Alignment.centerRight,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      onPressed: _forgotPassword,
+                      padding: EdgeInsets.all(12),
+                      color: Colors.white,
+                      child: Text(
+                        'Forgot Password ?',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ),
-                ),
-                
-                _submitButton(),
-                _divider(),
-                _showErrorMessage(),
-                _showCircularProgress(),
-                _googleButton(),
-                Expanded(
-                  flex: 2,
-                  child: SizedBox(),
-                ),
-              ],
+                  _submitButton(),
+                  //_divider(),
+                  // _showCircularProgress(),
+                  // _googleButton(),
+                  _showErrorMessage(),
+                  Expanded(
+                    flex: 2,
+                    child: SizedBox(),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _createAccountLabel(),
-          ),
-          Positioned(top: 40, left: 0, child: _backButton()),
-          Positioned(
-              top: -MediaQuery.of(context).size.height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer())
-        ],
-      ),),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: _createAccountLabel(),
+            ),
+            Positioned(top: 40, left: 0, child: _backButton()),
+            Positioned(
+                top: -MediaQuery.of(context).size.height * .15,
+                right: -MediaQuery.of(context).size.width * .4,
+                child: BezierContainer())
+          ],
+        ),
+      ),
     )));
   }
 

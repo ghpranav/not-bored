@@ -9,8 +9,8 @@ import 'package:not_bored/pages/landing.dart';
 import 'package:not_bored/services/auth.dart';
 
 import 'package:not_bored/pages/home.dart';
-import 'package:not_bored/pages/login.dart';
-import 'package:not_bored/pages/reg.dart';
+import 'package:not_bored/pages/newlogin.dart';
+import 'package:not_bored/pages/newreg.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([

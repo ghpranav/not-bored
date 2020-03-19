@@ -5,7 +5,6 @@ import 'package:not_bored/services/auth.dart';
 
 import 'package:not_bored/pages/welcome.dart';
 
-import 'package:not_bored/pages/newlogin.dart';
 import 'package:not_bored/pages/landing.dart';
 import 'package:not_bored/pages/splash.dart';
 

@@ -6,7 +6,7 @@ import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/pages/reg.dart';
 
 class LoginPage extends StatefulWidget {
-  static String tag = 'login-page';
+  //static String tag = 'login-page';
   LoginPage({this.auth, this.onSignedIn});
 
   final BaseAuth auth;

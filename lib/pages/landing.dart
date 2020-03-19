@@ -6,11 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:not_bored/services/friends.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/services/serve.dart';
+import 'package:not_bored/services/notif.dart';
 
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/about.dart';
@@ -74,6 +74,7 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
     search();
+    var notif = new Notif();
     if (Platform.isIOS) {
       iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {});
 
@@ -81,6 +82,7 @@ class _LandingPageState extends State<LandingPage> {
     }
 
     _fcm.configure(
+      //when app is running
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         if (message['data']['id'] == '2') {
@@ -93,14 +95,6 @@ class _LandingPageState extends State<LandingPage> {
               ),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Accept'),
-                  onPressed: () => {
-                    widget.request
-                        .acceptReq(widget.userId, message['data']['frndid']),
-                    Navigator.of(context).pop(),
-                  },
-                ),
-                FlatButton(
                   child: Text('Reject'),
                   onPressed: () => {
                     widget.request
@@ -108,28 +102,21 @@ class _LandingPageState extends State<LandingPage> {
                     Navigator.of(context).pop(),
                   },
                 ),
-              ],
-            ),
-          );
-        } else if (message['data']['is'] == '1') {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              content: ListTile(
-                title: Text(message['notification']['title']),
-                subtitle: Text(message['notification']['body']),
-              ),
-              actions: <Widget>[
                 FlatButton(
-                  child: Text('Ok'),
-                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Accept'),
+                  onPressed: () => {
+                    widget.request
+                        .acceptReq(widget.userId, message['data']['frndid']),
+                    Navigator.of(context).pop(),
+                  },
                 ),
               ],
             ),
           );
+        } else if (message['data']['is'] == '1') {
+          notif.notif1(message, context, widget);
         } else if (message['data']['id'] == '3') {
           var frndid = await getNBmsg();
-
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -141,6 +128,13 @@ class _LandingPageState extends State<LandingPage> {
                   subtitle: Text("Wanna Chat?"),
                 ),
                 actions: <Widget>[
+                  FlatButton(
+                    child: Text('Reject'),
+                    onPressed: () => {
+                      rejectNBmsg(widget.userId, frndid.toString()),
+                      Navigator.of(context).pop(),
+                    },
+                  ),
                   FlatButton(
                     child: Text('Accept'),
                     onPressed: () => {
@@ -155,13 +149,6 @@ class _LandingPageState extends State<LandingPage> {
                                   ))),
                     },
                   ),
-                  FlatButton(
-                    child: Text('Reject'),
-                    onPressed: () => {
-                      rejectNBmsg(widget.userId, frndid.toString()),
-                      Navigator.of(context).pop(),
-                    },
-                  ),
                 ],
               );
             },
@@ -171,185 +158,53 @@ class _LandingPageState extends State<LandingPage> {
           if (await hasNbMsg() == "null") Navigator.of(context).pop();
         }
       },
+      //when app is not running
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
         if (message['data']['id'] == '2') {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => NotifPage(
-                        auth: widget.auth,
-                        userId: widget.userId,
-                        request: widget.request,
-                      )));
+          notif.notif2(message, context, widget);
+        } else if (message['data']['id'] == '1') {
+          notif.notif1(message, context, widget);
         } else if (message['data']['id'] == '3') {
-          var frndid = await getNBmsg();
-          if (frndid != null) {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                // return object of type Dialog
-                return AlertDialog(
-                  content: ListTile(
-                    title: Text("Bored?"),
-                    subtitle: Text("Wanna Chat?"),
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Accept'),
-                      onPressed: () async => {
-                        frndid = await getNBmsg(),
-                        Navigator.of(context).pop(),
-                        if (frndid != null)
-                          {
-                            acceptNBmsg(widget.userId, frndid.toString()),
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) => Chat(
-                                          peerId: frndid.toString(),
-                                          userId: widget.userId,
-                                        ))),
-                          }
-                        else
-                          {
-                            Fluttertoast.showToast(
-                                msg: "Your Friend is no longer bored",
-                                toastLength: Toast.LENGTH_LONG,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIos: 1,
-                                backgroundColor: PrimaryColor,
-                                textColor: Colors.white,
-                                fontSize: 16.0),
-                          }
-                      },
-                    ),
-                    FlatButton(
-                      child: Text('Reject'),
-                      onPressed: () => {
-                        rejectNBmsg(widget.userId, frndid.toString()),
-                        Navigator.of(context).pop(),
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          } else {
-            Fluttertoast.showToast(
-                msg: "Your Friend is no longer bored",
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIos: 1,
-                backgroundColor: PrimaryColor,
-                textColor: Colors.white,
-                fontSize: 16.0);
-          }
+          notif.notif3(message, context, widget);
         }
       },
+      //when app is in background
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
         if (message['data']['id'] == '2') {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => NotifPage(
-                        auth: widget.auth,
-                        userId: widget.userId,
-                        request: widget.request,
-                      )));
+          notif.notif2(message, context, widget);
+        } else if (message['data']['id'] == '1') {
+          notif.notif1(message, context, widget);
         } else if (message['data']['id'] == '3') {
-          var frndid = await getNBmsg();
-          if (frndid != null) {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                // return object of type Dialog
-                return AlertDialog(
-                  content: ListTile(
-                    title: Text("Bored?"),
-                    subtitle: Text("Wanna Chat?"),
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Accept'),
-                      onPressed: () async => {
-                        frndid = await getNBmsg(),
-                        Navigator.of(context).pop(),
-                        if (frndid != null)
-                          {
-                            acceptNBmsg(widget.userId, frndid.toString()),
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) => Chat(
-                                          peerId: frndid.toString(),
-                                          userId: widget.userId,
-                                        ))),
-                          }
-                        else
-                          {
-                            Fluttertoast.showToast(
-                                msg: "Your Friend is no longer bored",
-                                toastLength: Toast.LENGTH_LONG,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIos: 1,
-                                backgroundColor: PrimaryColor,
-                                textColor: Colors.white,
-                                fontSize: 16.0),
-                          }
-                      },
-                    ),
-                    FlatButton(
-                      child: Text('Reject'),
-                      onPressed: () => {
-                        rejectNBmsg(widget.userId, frndid.toString()),
-                        Navigator.of(context).pop(),
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          } else {
-            Fluttertoast.showToast(
-                msg: "Your Friend is no longer bored",
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIos: 1,
-                backgroundColor: PrimaryColor,
-                textColor: Colors.white,
-                fontSize: 16.0);
-          }
+          notif.notif3(message, context, widget);
         }
       },
     );
 
     _checkEmailVerification();
 
-   // _resetConnected();
-   _checkConnectedTo();
+    // _resetConnected();
+    _checkConnectedTo();
   }
 
-  void _checkConnectedTo() async{
-  
-    DocumentSnapshot querySnapshot =
-    await Firestore.instance.collection("users").document(widget.userId).get();
+  void _checkConnectedTo() async {
+    DocumentSnapshot querySnapshot = await Firestore.instance
+        .collection("users")
+        .document(widget.userId)
+        .get();
     var connectedTo = querySnapshot.data['connectedTo'];
-    if(connectedTo!='null')
-    {
-                Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Chat(
-                                userId: widget.userId,
-                                peerId: connectedTo.toString(),
-                              )));
+    if (connectedTo != 'null') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => Chat(
+                    userId: widget.userId,
+                    peerId: connectedTo.toString(),
+                  )));
     }
-
   }
+
   void _checkEmailVerification() async {
     DocumentReference _ref =
         Firestore.instance.collection('users').document(widget.userId);
@@ -414,14 +269,6 @@ class _LandingPageState extends State<LandingPage> {
         );
       },
     );
-  }
-
-  void _resetConnected() async {
-    DocumentReference _ref =
-        Firestore.instance.collection('users').document(widget.userId);
-    _ref.updateData(<String, dynamic>{
-      'connectedTo': "null",
-    });
   }
 
   @override

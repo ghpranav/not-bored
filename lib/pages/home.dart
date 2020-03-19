@@ -10,9 +10,10 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/pages/chat.dart';
+//import 'package:not_bored/pages/fab.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/services/serve.dart';
 
@@ -127,6 +128,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: FancyFab(
+      //   onPressed: null,
+      //   icon: Icons.ac_unit,
+      //   tooltip: 'ok',
+      // ),
       floatingActionButton: ScaleTransition(
         scale: _isLoading ? fab : fab1,
         child: Container(

@@ -15,6 +15,7 @@ import 'package:not_bored/pages/chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:not_bored/services/auth.dart';
+import 'package:not_bored/services/nbLoc.dart';
 import 'package:not_bored/services/serve.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,6 +50,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Completer<GoogleMapController> _controller = Completer();
 
   GoogleMap googleMap;
+  Map<String, GeoPoint> nbLocList = new Map<String, GeoPoint>();
+  geo.Position position;
   Map<MarkerId, Marker> markers = new Map<MarkerId, Marker>();
   List<Marker> markerTest = [];
   var _isLoading = false;
@@ -84,7 +87,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   initialLocation() async {
     await _locationService.changeSettings(
         accuracy: LocationAccuracy.HIGH, interval: 1000);
-    geo.Position position = await geo.Geolocator()
+    position = await geo.Geolocator()
         .getCurrentPosition(desiredAccuracy: geo.LocationAccuracy.high);
 
     setState(() {
@@ -158,31 +161,36 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 setState(() {
                   _isLoading = true;
                 });
-                await sendNBmsg();
+                await sendNBloc(position, nbLocList);
 
-                var connectedTo = await waitNBmsg();
+                // setState(() {
+                //   _isLoading = true;
+                // });
+                // await sendNBmsg();
 
-                if (connectedTo != "null") {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Chat(
-                                userId: widget.userId,
-                                peerId: connectedTo.toString(),
-                              )));
-                } else {
-                  Fluttertoast.showToast(
-                      msg: "Sorry no friends available",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIos: 1,
-                      backgroundColor: PrimaryColor,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-                }
-                setState(() {
-                  _isLoading = false;
-                });
+                // var connectedTo = await waitNBmsg();
+
+                // if (connectedTo != "null") {
+                //   Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (BuildContext context) => Chat(
+                //                 userId: widget.userId,
+                //                 peerId: connectedTo.toString(),
+                //               )));
+                // } else {
+                //   Fluttertoast.showToast(
+                //       msg: "Sorry no friends available",
+                //       toastLength: Toast.LENGTH_LONG,
+                //       gravity: ToastGravity.CENTER,
+                //       timeInSecForIos: 1,
+                //       backgroundColor: PrimaryColor,
+                //       textColor: Colors.white,
+                //       fontSize: 16.0);
+                // }
+                // setState(() {
+                //   _isLoading = false;
+                // });
               },
             ),
           ),
@@ -196,6 +204,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     final MarkerId markerId = MarkerId(markerIdVal);
     var g = lugar['position']['geopoint'] as GeoPoint;
+    nbLocList[lugaresid.toString()] = g;
     print(g.latitude);
     print(g.longitude);
     // creating a new MARKER

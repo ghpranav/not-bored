@@ -74,11 +74,11 @@ export const sendToDevice2 = functions.firestore
           icon: "your-icon-url",
           click_action: "FLUTTER_NOTIFICATION_CLICK",
           sound: "default",
-      
+
         },
         data: {
           id: "1"
-          
+
         }
 
       };
@@ -105,7 +105,7 @@ export const nbMsg = functions.firestore
 
     const payload: admin.messaging.MessagingPayload = {
       notification: {
-        title: "Bored?",
+        title: "Bored",
         body: `Wanna chat?`,
         icon: "your-icon-url",
         click_action: "FLUTTER_NOTIFICATION_CLICK",
@@ -113,6 +113,36 @@ export const nbMsg = functions.firestore
       },
       data: {
         id: "3",
+        frndid: `${frndid}`
+      }
+    };
+
+    return fcm.sendToDevice(tokens, payload);
+  });
+export const nbLoc = functions.firestore
+  .document("users/{userId}/nb_loc/{frndId}")
+  .onCreate(async (_snapshot, context) => {
+    const userid = context.params.userId;
+    const frndid = context.params.frndId;
+
+    const querySnapshot = await db
+      .collection("users")
+      .doc(userid)
+      .collection("tokens")
+      .get();
+
+    const tokens = querySnapshot.docs.map(snap => snap.id);
+
+    const payload: admin.messaging.MessagingPayload = {
+      notification: {
+        title: "Bored",
+        body: `Wanna Meet?`,
+        icon: "your-icon-url",
+        click_action: "FLUTTER_NOTIFICATION_CLICK",
+        sound: "default"
+      },
+      data: {
+        id: "4",
         frndid: `${frndid}`
       }
     };

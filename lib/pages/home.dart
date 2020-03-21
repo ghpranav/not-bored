@@ -14,6 +14,7 @@ import 'package:not_bored/pages/chat.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:not_bored/pages/try.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/services/nbLoc.dart';
 import 'package:not_bored/services/serve.dart';
@@ -52,6 +53,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   GoogleMap googleMap;
   Map<String, GeoPoint> nbLocList = new Map<String, GeoPoint>();
   geo.Position position;
+  var _show;
   Map<MarkerId, Marker> markers = new Map<MarkerId, Marker>();
   List<Marker> markerTest = [];
   var _isLoading = false;
@@ -162,6 +164,26 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   _isLoading = true;
                 });
                 await sendNBloc(position, nbLocList);
+                await pause(const Duration(seconds: 15));
+                _show = await waitNBLoc();
+                if (_show) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Try()));
+                } else {
+                  Fluttertoast.showToast(
+                      msg: "Sorry no friends available",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIos: 1,
+                      backgroundColor: PrimaryColor,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }
+                setState(() {
+                  _isLoading = false;
+                });
 
                 // setState(() {
                 //   _isLoading = true;

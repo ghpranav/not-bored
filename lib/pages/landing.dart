@@ -11,11 +11,13 @@ import 'package:not_bored/services/friends.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/services/serve.dart';
 import 'package:not_bored/services/notif.dart';
+import 'package:not_bored/services/nbLoc.dart';
 
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/about.dart';
 import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/chat.dart';
+import 'package:not_bored/pages/try.dart';
 
 import 'package:not_bored/pages/searchbar.dart';
 import 'package:not_bored/pages/my_friends.dart';
@@ -38,6 +40,7 @@ class LandingPage extends StatefulWidget {
 const PrimaryColor = const Color(0xFFf96327);
 
 class _LandingPageState extends State<LandingPage> {
+  bool show;
   hasNbMsg() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     DocumentSnapshot querySnapshot =
@@ -156,6 +159,46 @@ class _LandingPageState extends State<LandingPage> {
 
           await pause(const Duration(seconds: 15));
           if (await hasNbMsg() == "null") Navigator.of(context).pop();
+        } else if (message['data']['id'] == '4') {
+          var frndid = await getNBLoc();
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                content: ListTile(
+                  title: Text("Bored?"),
+                  subtitle: Text("Wanna Meet?"),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Reject'),
+                    onPressed: () => {
+                      rejectNBLoc(widget.userId, frndid.toString()),
+                      Navigator.of(context).pop(),
+                    },
+                  ),
+                  FlatButton(
+                    child: Text('Accept'),
+                    onPressed: () async => {
+                      acceptNBLoc(widget.userId, frndid.toString()),
+                      Navigator.of(context).pop(),
+                      Splash(),
+                      show = await showNBLoc(widget.userId, frndid.toString()),
+                      if (show)
+                        {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => Try())),
+                        }
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         }
       },
       //when app is not running

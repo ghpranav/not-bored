@@ -20,8 +20,12 @@ Future<void> sendNBloc(
       .document(user.uid)
       .collection('nb_loc')
       .document(user.uid)
-      .updateData({
+      .setData({
     'userid': user.uid,
+  });
+
+  await Firestore.instance.collection('places').document(user.uid).setData({
+    'show': false,
   });
 
   nbLocList.forEach((String userid, GeoPoint pos) async {
@@ -29,7 +33,6 @@ Future<void> sendNBloc(
         position.latitude, position.longitude, pos.latitude, pos.longitude);
     //if (distance / 1000 < 15) {
     var frnd = Firestore.instance.collection("users").document(userid);
-
     frnd.get().then((doc) {
       if (doc.data['connectedToLoc'] == 'null' &&
           doc.data['connectedTo'] == 'null') {
@@ -81,7 +84,7 @@ Future<void> acceptNBLoc(userid, frndid) async {
       .document(frndid)
       .collection('nb_loc')
       .document(userid)
-      .updateData({
+      .setData({
     'userid': userid,
   });
 }
@@ -111,10 +114,7 @@ waitNBLoc() async {
   DocumentSnapshot querySnapshot =
       await Firestore.instance.collection("users").document(user.uid).get();
   if (querySnapshot.data['connectedToLoc'] != 'null') {
-    await Firestore.instance
-        .collection("places")
-        .document(user.uid)
-        .updateData({
+    await Firestore.instance.collection("places").document(user.uid).setData({
       'show': true,
     });
     _show = true;

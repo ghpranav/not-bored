@@ -160,7 +160,7 @@ class _LandingPageState extends State<LandingPage> {
           await pause(const Duration(seconds: 15));
           if (await hasNbMsg() == "null") Navigator.of(context).pop();
         } else if (message['data']['id'] == '4') {
-          var frndid = await getNBLoc();
+          var frndid = message['data']['frndid'];
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -184,7 +184,7 @@ class _LandingPageState extends State<LandingPage> {
                     onPressed: () async => {
                       acceptNBLoc(widget.userId, frndid.toString()),
                       Navigator.of(context).pop(),
-                      Splash(),
+                      // Splash(),
                       show = await showNBLoc(widget.userId, frndid.toString()),
                       if (show)
                         {

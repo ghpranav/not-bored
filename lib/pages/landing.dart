@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:not_bored/services/friends.dart';
 import 'package:not_bored/services/auth.dart';
@@ -406,6 +408,10 @@ class _LandingPageState extends State<LandingPage> {
                       },
                     ),
                     ListTile(
+                      title: Text('Surprise'),
+                      onTap: _surprise,
+                    ),
+                    ListTile(
                       title: Text('Log Out'),
                       onTap: _signOut,
                     )
@@ -461,6 +467,23 @@ class _LandingPageState extends State<LandingPage> {
   void dispose() {
     iosSubscription.cancel();
     super.dispose();
+  }
+
+  _surprise() async {
+    var rng = new Random();
+    int a = rng.nextInt(11) + 1;
+
+    String ab;
+    ab = a.toString();
+
+    DocumentSnapshot querySnapshot = await Firestore.instance
+        .collection("randomsites")
+        .document("link")
+        .get();
+
+    var url = querySnapshot.data[ab];
+
+    launch(url);
   }
 }
 

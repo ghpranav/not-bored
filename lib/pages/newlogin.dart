@@ -60,7 +60,6 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _isLoading = false;
         });
-        print("hi2222222222222222222222222222222222");
 
         if (userId != null && userId.length > 0) {
           widget.onsignedIn();

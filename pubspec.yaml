@@ -44,7 +44,8 @@ dependencies:
   cached_network_image:
   fluttertoast:
   intl:
-
+  font_awesome_flutter:
+  rich_alert:
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,22 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:not_bored/pages/splash.dart';
-import 'package:not_bored/pages/chat.dart';
-//import 'package:not_bored/pages/fab.dart';
+
+import 'package:not_bored/pages/fab.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:not_bored/pages/try.dart';
+
 import 'package:not_bored/services/auth.dart';
-import 'package:not_bored/services/nbLoc.dart';
+
 import 'package:not_bored/services/serve.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,6 +34,7 @@ class HomePage extends StatefulWidget {
 }
 
 const PrimaryColor = const Color(0xFFf96327);
+var isLoadingFAB = false;
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   GoogleMapController mapController;
@@ -53,12 +54,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   GoogleMap googleMap;
   Map<String, GeoPoint> nbLocList = new Map<String, GeoPoint>();
   geo.Position position;
-  var _show;
   Map<MarkerId, Marker> markers = new Map<MarkerId, Marker>();
   List<Marker> markerTest = [];
-  var _isLoading = false;
-  AnimationController fab;
-  AnimationController fab1;
 
   /// Set of displayed markers and cluster markers on the map
   BitmapDescriptor myIcon;
@@ -78,12 +75,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
     createMarkers();
     updateLocation();
-    fab = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 2200));
-    fab.repeat();
-    fab1 =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 0));
-    fab1.forward();
   }
 
   initialLocation() async {
@@ -132,92 +123,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ],
               ),
             ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
       // floatingActionButton: FancyFab(
       //   onPressed: null,
       //   icon: Icons.ac_unit,
       //   tooltip: 'ok',
       // ),
-      floatingActionButton: ScaleTransition(
-        scale: _isLoading ? fab : fab1,
-        child: Container(
-          height: 180.0,
-          width: 140.0,
-          child: FittedBox(
-            child: FloatingActionButton(
-              heroTag: 'MainBtn',
-              child: _isLoading
-                  ? new Icon(
-                      Icons.sentiment_very_satisfied,
-                      size: 50.0,
-                      color: Colors.white54,
-                    )
-                  : new Icon(
-                      Icons.sentiment_dissatisfied,
-                      size: 50.0,
-                      color: Colors.white54,
-                    ),
-              backgroundColor: const Color(0xFFf96327),
-              foregroundColor: Colors.white54,
-              onPressed: () async {
-                setState(() {
-                  _isLoading = true;
-                });
-                await sendNBloc(position, nbLocList);
-                await pause(const Duration(seconds: 15));
-                _show = await waitNBLoc();
-                if (_show) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Try()));
-                } else {
-                  Fluttertoast.showToast(
-                      msg: "Sorry no friends available",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIos: 1,
-                      backgroundColor: PrimaryColor,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-                }
-                setState(() {
-                  _isLoading = false;
-                });
-
-                // setState(() {
-                //   _isLoading = true;
-                // });
-                // await sendNBmsg();
-
-                // var connectedTo = await waitNBmsg();
-
-                // if (connectedTo != "null") {
-                //   Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //           builder: (BuildContext context) => Chat(
-                //                 userId: widget.userId,
-                //                 peerId: connectedTo.toString(),
-                //               )));
-                // } else {
-                //   Fluttertoast.showToast(
-                //       msg: "Sorry no friends available",
-                //       toastLength: Toast.LENGTH_LONG,
-                //       gravity: ToastGravity.CENTER,
-                //       timeInSecForIos: 1,
-                //       backgroundColor: PrimaryColor,
-                //       textColor: Colors.white,
-                //       fontSize: 16.0);
-                // }
-                // setState(() {
-                //   _isLoading = false;
-                // });
-              },
-            ),
-          ),
-        ),
+      floatingActionButton:
+          // child: Container(
+          //   height: MediaQuery.of(context).size.height /
+          //       MediaQuery.of(context).size.width *
+          //       100,
+          //   width: MediaQuery.of(context).size.height /
+          //       MediaQuery.of(context).size.width *
+          //       50,
+          // color: Colors.green,
+          FittedBox(
+        child: RadialMenu(),
       ),
+      //),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -273,3 +199,5 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 }
+
+// The stateful widget + animation controller

@@ -1,150 +1,283 @@
+import 'dart:ffi';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:rich_alert/rich_alert.dart';
 
-class FancyFab extends StatefulWidget {
-  final Function() onPressed;
-  final String tooltip;
-  final IconData icon;
+import 'package:vector_math/vector_math.dart' show radians;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-  FancyFab({this.onPressed, this.tooltip, this.icon});
+import 'package:not_bored/services/serve.dart';
+import 'package:not_bored/services/auth.dart';
 
-  @override
-  _FancyFabState createState() => _FancyFabState();
+import 'package:not_bored/pages/home.dart';
+import 'package:not_bored/pages/chat.dart';
+
+bool show1 = false;
+bool show2 = true;
+
+class RadialMenu extends StatefulWidget {
+  createState() => _RadialMenuState();
 }
 
-class _FancyFabState extends State<FancyFab>
+class _RadialMenuState extends State<RadialMenu>
     with SingleTickerProviderStateMixin {
-  bool isOpened = false;
-  AnimationController _animationController;
-  Animation<Color> _buttonColor;
-  Animation<double> _animateIcon;
-  Animation<double> _translateButton;
-  Curve _curve = Curves.easeOut;
-  double _fabHeight = 56.0;
+  AnimationController controller;
 
   @override
-  initState() {
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
-          ..addListener(() {
-            setState(() {});
-          });
-    _animateIcon =
-        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
-    _buttonColor = ColorTween(
-      begin: Colors.blue,
-      end: Colors.red,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Interval(
-        0.00,
-        1.00,
-        curve: Curves.linear,
-      ),
-    ));
-    _translateButton = Tween<double>(
-      begin: _fabHeight,
-      end: -14.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Interval(
-        0.0,
-        0.75,
-        curve: _curve,
-      ),
-    ));
-    super.initState();
-  }
-
-  @override
-  dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  animate() {
-    if (!isOpened) {
-      _animationController.forward();
-    } else {
-      _animationController.reverse();
-    }
-    isOpened = !isOpened;
-  }
-
-  Widget add() {
-    return Container(
-      child: FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Add',
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-
-  Widget image() {
-    return Container(
-      child: FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Image',
-        child: Icon(Icons.image),
-      ),
-    );
-  }
-
-  Widget inbox() {
-    return Container(
-      child: FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Inbox',
-        child: Icon(Icons.inbox),
-      ),
-    );
-  }
-
-  Widget toggle() {
-    return Container(
-      child: FloatingActionButton(
-        backgroundColor: _buttonColor.value,
-        onPressed: animate,
-        tooltip: 'Toggle',
-        child: AnimatedIcon(
-          icon: AnimatedIcons.menu_close,
-          progress: _animateIcon,
-        ),
-      ),
-    );
+  void initState() {
+    controller =
+        AnimationController(duration: Duration(milliseconds: 900), vsync: this);
+    // ..addListener(() => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Transform(
-          transform: Matrix4.translationValues(
-            0.0,
-            _translateButton.value * 3.0,
-            0.0,
-          ),
-          child: add(),
-        ),
-        Transform(
-          transform: Matrix4.translationValues(
-            0.0,
-            _translateButton.value * 2.0,
-            0.0,
-          ),
-          child: image(),
-        ),
-        Transform(
-          transform: Matrix4.translationValues(
-            0.0,
-            _translateButton.value,
-            0.0,
-          ),
-          child: inbox(),
-        ),
-        toggle(),
-      ],
+    return RadialAnimation(
+      controller: controller,
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+}
+
+class RadialAnimation extends StatefulWidget {
+  RadialAnimation({Key key, this.controller})
+      : translation = Tween<double>(
+          begin: 0.0,
+          end: 180.0,
+        ).animate(
+          CurvedAnimation(parent: controller, curve: Curves.elasticOut),
+        ),
+        scale = Tween<double>(
+          begin: 2.5,
+          end: 0.0,
+        ).animate(
+          CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn),
+        ),
+        rotation = Tween<double>(
+          begin: 0.0,
+          end: 360.0,
+        ).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0.0,
+              0.7,
+              curve: Curves.decelerate,
+            ),
+          ),
+        ),
+        super(key: key);
+
+  final AnimationController controller;
+  final Animation<double> rotation;
+  final Animation<double> translation;
+  final Animation<double> scale;
+
+  @override
+  _RadialAnimationState createState() => _RadialAnimationState();
+}
+
+class _RadialAnimationState extends State<RadialAnimation>
+    with TickerProviderStateMixin {
+  AnimationController fab;
+  AnimationController fab1;
+
+  void initState() {
+    super.initState();
+    fab = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 2200));
+    fab.repeat();
+    fab1 =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 0));
+    fab1.forward();
+    super.initState();
+    show1 = false;
+  }
+
+  meetFab() async {
+    await _close();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return RichAlertDialog(
+            alertTitle: richTitle("COVID-19"),
+            alertSubtitle: richSubtitle(
+                " Due to the increase in outbreak of COVID-19 in the country this feature is currently diasabled.Stay Home Stay Safe!"),
+            alertType: RichAlertType.ERROR,
+          );
+        });
+  }
+
+  chatFab() async {
+    await _close();
+    setState(() {
+      isLoadingFAB = true;
+    });
+    await sendNBmsg();
+
+    var connectedTo = await waitNBmsg();
+
+    if (connectedTo != "null") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => Chat(
+                    userId: Auth().getCurrentUserid().toString(),
+                    peerId: connectedTo.toString(),
+                  )));
+    } else {
+      Fluttertoast.showToast(
+          msg: "Sorry no friends available",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIos: 1,
+          backgroundColor: PrimaryColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+    setState(() {
+      isLoadingFAB = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Animation<double> rotate = widget.rotation;
+    Animation<double> scale = widget.scale;
+    Animation<double> translation = widget.translation;
+
+    return AnimatedBuilder(
+        animation: widget.controller,
+        builder: (context, widget) {
+          return Column(mainAxisAlignment: MainAxisAlignment.start, children: <
+              Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  alignment: Alignment.bottomCenter,
+                  child: Transform.scale(
+                      scale: 1.5,
+                      child: Visibility(
+                          visible: show1,
+                          child: FloatingActionButton(
+                              child: Icon(FontAwesomeIcons.handshake),
+                              backgroundColor: PrimaryColor,
+                              onPressed: () {
+                                meetFab();
+                              },
+                              elevation: 2))),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  alignment: Alignment.bottomCenter,
+                  child: Transform.scale(
+                      scale: 1.5,
+                      child: Visibility(
+                          visible: show1,
+                          child: FloatingActionButton(
+                              child: Icon(FontAwesomeIcons.envelopeOpenText),
+                              backgroundColor: PrimaryColor,
+                              onPressed: () {
+                                chatFab();
+                              },
+                              elevation: 2))),
+                ),
+              ],
+            ),
+            Transform.rotate(
+                angle: radians(rotate.value),
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 4,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
+                  child: Stack(alignment: Alignment.center, children: <Widget>[
+                    _buildButton(
+                      225,
+                      color: PrimaryColor,
+                      icon: FontAwesomeIcons.handshake,
+                    ),
+                    _buildButton(
+                      315,
+                      color: PrimaryColor,
+                      icon: FontAwesomeIcons.envelopeOpenText,
+                    ),
+                    Transform.scale(
+                      scale: scale.value - 1.5,
+                      child: Visibility(
+                          visible: show2,
+                          child: FloatingActionButton(
+                              child: Icon(FontAwesomeIcons.timesCircle),
+                              onPressed: _close,
+                              backgroundColor: Colors.red)),
+                    ),
+                    Transform.scale(
+                      scale: scale.value,
+                      child: ScaleTransition(
+                        scale: isLoadingFAB ? fab : fab1,
+                        child: FloatingActionButton(
+                            heroTag: 'MainBtn',
+                            child: isLoadingFAB
+                                ? new Icon(
+                                    Icons.sentiment_very_satisfied,
+                                    size: 50.0,
+                                    color: Colors.white54,
+                                  )
+                                : new Icon(
+                                    Icons.sentiment_dissatisfied,
+                                    size: 50.0,
+                                    color: Colors.white54,
+                                  ),
+                            backgroundColor: const Color(0xFFf96327),
+                            foregroundColor: Colors.white54,
+                            onPressed: _open),
+                      ),
+                    )
+                  ]),
+                ))
+          ]);
+        });
+  }
+
+  _open() async {
+    show2 = true;
+    widget.controller.forward();
+    await pause(const Duration(milliseconds: 600));
+    show1 = true;
+  }
+
+  _close() async {
+    show1 = false;
+    widget.controller.reverse();
+    await pause(const Duration(milliseconds: 1000));
+    show2 = false;
+  }
+
+  _buildButton(double angle, {Color color, IconData icon}) {
+    final double rad = radians(angle);
+    return Transform(
+        transform: Matrix4.identity()
+          ..translate((widget.translation.value) * cos(rad),
+              (widget.translation.value) * sin(rad)),
+        child: Container(
+            height: MediaQuery.of(context).size.height / 4,
+            width: MediaQuery.of(context).size.width / 4,
+            child: Visibility(
+                visible: show2,
+                child: FloatingActionButton(
+                    child: Icon(icon),
+                    backgroundColor: color,
+                    onPressed: null,
+                    elevation: 2))));
   }
 }

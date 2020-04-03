@@ -7,6 +7,7 @@ import 'package:not_bored/pages/welcome.dart';
 
 import 'package:not_bored/pages/landing.dart';
 import 'package:not_bored/pages/splash.dart';
+import 'package:not_bored/pages/privacyPolicy.dart';
 
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
@@ -37,6 +38,7 @@ class _RootPageState extends State<RootPage> {
         }
         authStatus =
             user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+        _privacypolicy1();
       });
     });
   }
@@ -57,6 +59,38 @@ class _RootPageState extends State<RootPage> {
       authStatus = AuthStatus.NOT_LOGGED_IN;
       _userId = "";
     });
+  }
+
+  _privacypolicy1() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.only(left: 25, right: 25),
+            title: Center(child: Text("User Agreement and Privacy Policy")),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            content: Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(privacy),
+                  ],
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Accept User Agreement and Privacy Policy'))
+            ],
+          );
+        });
   }
 
   @override

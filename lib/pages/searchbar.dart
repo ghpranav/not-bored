@@ -32,15 +32,24 @@ class _SearchBarState extends State<SearchBar> {
     });
 
     widget.list.forEach((element) {
-      if (element['name']
-              .toString()
-              .toLowerCase()
-              .replaceAll(new RegExp(r"\s+\b|\b\s"), "")
-              .contains(value
+      if ((element['name']
                   .toString()
+                  .toLowerCase()
                   .replaceAll(new RegExp(r"\s+\b|\b\s"), "")
-                  .toLowerCase()) &&
-          !tempSearchStore.contains(element)) {
+                  .contains(value
+                      .toString()
+                      .replaceAll(new RegExp(r"\s+\b|\b\s"), "")
+                      .toLowerCase()) &&
+              !tempSearchStore.contains(element)) ||
+          (element['email']
+                  .toString()
+                  .toLowerCase()
+                  .replaceAll(new RegExp(r"\s+\b|\b\s"), "")
+                  .contains(value
+                      .toString()
+                      .replaceAll(new RegExp(r"\s+\b|\b\s"), "")
+                      .toLowerCase()) &&
+              !tempSearchStore.contains(element))) {
         setState(() {
           tempSearchStore.add(element);
         });
@@ -96,7 +105,7 @@ class _SearchBarState extends State<SearchBar> {
                     _onClear();
                   },
                 ),
-                hintText: 'Search by name',
+                hintText: 'Search by name or email id',
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4.0))),
           ),

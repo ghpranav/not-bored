@@ -421,7 +421,7 @@ class _LandingPageState extends State<LandingPage> {
             ),
             body: currentTab[provider.currentIndex],
             floatingActionButton: FloatingActionButton(
-              heroTag: 'SearchBtn',
+              heroTag: null,
               elevation: 4.0,
               backgroundColor: PrimaryColor,
               child: const Icon(Icons.search, color: Colors.white),

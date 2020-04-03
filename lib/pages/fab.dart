@@ -168,6 +168,8 @@ class _RadialAnimationState extends State<RadialAnimation>
                       child: Visibility(
                           visible: show1,
                           child: FloatingActionButton(
+                              tooltip: 'Meet Your Friends',
+                              heroTag: null,
                               child: Icon(FontAwesomeIcons.handshake),
                               backgroundColor: PrimaryColor,
                               onPressed: () {
@@ -186,6 +188,8 @@ class _RadialAnimationState extends State<RadialAnimation>
                       child: Visibility(
                           visible: show1,
                           child: FloatingActionButton(
+                              tooltip: 'Text with your friends',
+                              heroTag: null,
                               child: Icon(FontAwesomeIcons.envelopeOpenText),
                               backgroundColor: PrimaryColor,
                               onPressed: () {
@@ -217,6 +221,7 @@ class _RadialAnimationState extends State<RadialAnimation>
                       child: Visibility(
                           visible: show2,
                           child: FloatingActionButton(
+                              heroTag: null,
                               child: Icon(FontAwesomeIcons.timesCircle),
                               onPressed: _close,
                               backgroundColor: Colors.red)),
@@ -226,7 +231,8 @@ class _RadialAnimationState extends State<RadialAnimation>
                       child: ScaleTransition(
                         scale: isLoadingFAB ? fab : fab1,
                         child: FloatingActionButton(
-                            heroTag: 'MainBtn',
+                            tooltip: 'Click',
+                            heroTag: null,
                             child: isLoadingFAB
                                 ? new Icon(
                                     Icons.sentiment_very_satisfied,
@@ -240,7 +246,20 @@ class _RadialAnimationState extends State<RadialAnimation>
                                   ),
                             backgroundColor: const Color(0xFFf96327),
                             foregroundColor: Colors.white54,
-                            onPressed: _open),
+                            onPressed: () async {
+                              int _len = await getFriends();
+                              if (_len == 1) {
+                                Fluttertoast.showToast(
+                                    msg: "Click on search bar to find friends",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: PrimaryColor,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else
+                                _open();
+                            }),
                       ),
                     )
                   ]),
@@ -275,6 +294,7 @@ class _RadialAnimationState extends State<RadialAnimation>
             child: Visibility(
                 visible: show2,
                 child: FloatingActionButton(
+                    heroTag: null,
                     child: Icon(icon),
                     backgroundColor: color,
                     onPressed: null,

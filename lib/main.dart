@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -28,7 +26,7 @@ class MyApp extends StatelessWidget {
     LoginPage.tag: (context) => LoginPage(),
     HomePage.tag: (context) => HomePage(),
     RegPage.tag: (context) => RegPage(),
-    LandingPage.tag:(context)=>LandingPage(),
+    LandingPage.tag: (context) => LandingPage(),
   };
 
   @override
@@ -40,7 +38,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepOrange,
         primaryColor: PrimaryColor,
       ),
-       darkTheme: ThemeData(
+      darkTheme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.deepOrange,
       ),

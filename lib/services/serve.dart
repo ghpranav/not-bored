@@ -115,6 +115,17 @@ Future<void> rejectNBmsg(userid, frndid) async {
       .delete();
 }
 
+Future<int> getFriends() async {
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  QuerySnapshot querySnapshot = await Firestore.instance
+      .collection("users")
+      .document(user.uid)
+      .collection(user.uid)
+      .getDocuments();
+  List<DocumentSnapshot> frndList = querySnapshot.documents;
+  return frndList.length;
+}
+
 Future<String> waitNBmsg() async {
   int counter = 0;
 

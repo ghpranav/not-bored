@@ -4,6 +4,9 @@ import 'package:not_bored/pages/newreg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/models/root.dart';
+import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart' as geo;
+import 'package:not_bored/pages/privacyPolicy.dart';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({this.auth, this.onSignedIn});
@@ -16,7 +19,24 @@ class WelcomePage extends StatefulWidget {
   _WelcomePageState createState() => _WelcomePageState();
 }
 
+const BlueColor = const Color(0xFF00245A);
+
 class _WelcomePageState extends State<WelcomePage> {
+  Location _locationService = new Location();
+  geo.Position position;
+  @override
+  void initState() {
+    super.initState();
+    initialLocation();
+  }
+
+  void initialLocation() async {
+    await _locationService.changeSettings(
+        accuracy: LocationAccuracy.HIGH, interval: 1000);
+    position = await geo.Geolocator()
+        .getCurrentPosition(desiredAccuracy: geo.LocationAccuracy.high);
+  }
+
   void loginhua() {
 //widget.onSignedIn();
     Navigator.push(
@@ -82,13 +102,26 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
+  Widget _privacyPolicy() {
+    return InkWell(
+      child: Text(
+        'User Agreement and Privacy Policy',
+        style: TextStyle(color: BlueColor),
+      ),
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => PrivacyPolicy())),
+    );
+  }
+
   Widget _label() {
     return Container(
         margin: EdgeInsets.only(top: 40, bottom: 20),
         child: Column(
           children: <Widget>[
             Text(
-              'Our Tag Line',
+              "You ain't bored anymore",
               style: TextStyle(color: Colors.white, fontSize: 17),
             ),
             SizedBox(
@@ -178,7 +211,8 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(
                 height: 20,
               ),
-              _label()
+              _label(),
+              _privacyPolicy(),
             ],
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/services/friends.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/pages/info.dart';
@@ -34,60 +35,78 @@ class MyFriendsPageState extends State<MyFriendsPage> {
               myFriends.add(index.data['userid']);
             }
           });
-          return Scaffold(
-              body: new ListView.builder(
-            itemCount: myFriends.length,
-            itemBuilder: (BuildContext context, int index) {
-              return new StreamBuilder(
-                  stream: Firestore.instance
-                      .collection('users')
-                      .document(myFriends[index])
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Container();
-                    }
-                    var userDocument = snapshot.data;
+          return myFriends.length == 0
+              ? Scaffold(
+                  body: Center(
+                  child: TyperAnimatedTextKit(
+                    duration: const Duration(seconds: 3),
+                    text: ['Click on search bar to find friends'],
+                    textStyle: TextStyle(
+                      fontSize: 25.0,
+                      color: const Color(0xFFf96327),
+                    ),
+                    textAlign: TextAlign.start,
+                    alignment: AlignmentDirectional.topStart,
+                  ),
+                ))
+              : Scaffold(
+                  body: new ListView.builder(
+                  itemCount: myFriends.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return new StreamBuilder(
+                        stream: Firestore.instance
+                            .collection('users')
+                            .document(myFriends[index])
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Container();
+                          }
+                          var userDocument = snapshot.data;
 
-                    return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Flexible(
-                              fit: FlexFit.loose,
-                              child: ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(userDocument['imageURL']),
-                                ),
-                                title: Text(userDocument['name']),
-                                subtitle: Text(userDocument['status']),
-                                onTap: () {
-                                  if (widget.userId == userDocument['userid']) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                MyInfo(
-                                                  userId: widget.userId,
-                                                  auth: widget.auth,
-                                                )));
-                                  } else
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                Users(
-                                                  request: new Friends(),
-                                                  auth: widget.auth,
-                                                  userId: widget.userId,
-                                                  data: userDocument,
-                                                )));
-                                },
-                              ))
-                        ]);
-                  });
-            },
-          ));
+                          return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Flexible(
+                                    fit: FlexFit.loose,
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            userDocument['imageURL']),
+                                      ),
+                                      title: Text(userDocument['name']),
+                                      subtitle: Text(userDocument['status']),
+                                      onTap: () {
+                                        if (widget.userId ==
+                                            userDocument['userid']) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          MyInfo(
+                                                            userId:
+                                                                widget.userId,
+                                                            auth: widget.auth,
+                                                          )));
+                                        } else
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      Users(
+                                                        request: new Friends(),
+                                                        auth: widget.auth,
+                                                        userId: widget.userId,
+                                                        data: userDocument,
+                                                      )));
+                                      },
+                                    ))
+                              ]);
+                        });
+                  },
+                ));
         });
   }
 }

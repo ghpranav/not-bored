@@ -16,7 +16,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:not_bored/services/auth.dart';
-
 import 'package:not_bored/services/serve.dart';
 
 class HomePage extends StatefulWidget {
@@ -113,10 +112,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: (_initialPosition == null)
-          ? Splash()
-          : Container(
+    return _initialPosition == null
+        ? Scaffold(body: Splash())
+        : Scaffold(
+            body: Container(
               child: Stack(
                 children: <Widget>[
                   _googlemap(context),
@@ -124,27 +123,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
 
-      // floatingActionButton: FancyFab(
-      //   onPressed: null,
-      //   icon: Icons.ac_unit,
-      //   tooltip: 'ok',
-      // ),
-      floatingActionButton:
-          // child: Container(
-          //   height: MediaQuery.of(context).size.height /
-          //       MediaQuery.of(context).size.width *
-          //       100,
-          //   width: MediaQuery.of(context).size.height /
-          //       MediaQuery.of(context).size.width *
-          //       50,
-          // color: Colors.green,
-          FittedBox(
-        child: RadialMenu(),
-      ),
-      //),
+            // floatingActionButton: FancyFab(
+            //   onPressed: null,
+            //   icon: Icons.ac_unit,
+            //   tooltip: 'ok',
+            // ),
+            floatingActionButton:
+                // child: Container(
+                //   height: MediaQuery.of(context).size.height /
+                //       MediaQuery.of(context).size.width *
+                //       100,
+                //   width: MediaQuery.of(context).size.height /
+                //       MediaQuery.of(context).size.width *
+                //       50,
+                // color: Colors.green,
+                FittedBox(
+              child: RadialMenu(),
+            ),
+            //),
 
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+          );
   }
 
   void initMarker(lugar, lugaresid, length) {

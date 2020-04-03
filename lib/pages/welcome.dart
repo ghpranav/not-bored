@@ -30,11 +30,44 @@ class _WelcomePageState extends State<WelcomePage> {
     initialLocation();
   }
 
+  _privacypolicy1() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.only(left: 25, right: 25),
+            title: Center(child: Text("User Agreement and Privacy Policy")),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            content: Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(privacy),
+                  ],
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Accept User Agreement and Privacy Policy'))
+            ],
+          );
+        });
+  }
+
   void initialLocation() async {
     await _locationService.changeSettings(
         accuracy: LocationAccuracy.HIGH, interval: 1000);
     position = await geo.Geolocator()
         .getCurrentPosition(desiredAccuracy: geo.LocationAccuracy.high);
+    _privacypolicy1();
   }
 
   void loginhua() {

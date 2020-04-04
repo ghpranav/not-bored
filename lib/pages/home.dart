@@ -68,10 +68,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       _stndrdmapStyle = string;
     });
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(0, 0)), 'images/person.png')
+            ImageConfiguration(size: Size(0.5, 0.5)), 'images/person.png')
         .then((onValue) {
       myIcon = onValue;
     });
+
     createMarkers();
     updateLocation();
   }

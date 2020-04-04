@@ -227,7 +227,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
           width: MediaQuery.of(context).size.width / 1.1,
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
                   height: 20,

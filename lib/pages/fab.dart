@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:rich_alert/rich_alert.dart';
@@ -26,6 +25,7 @@ class _RadialMenuState extends State<RadialMenu>
 
   @override
   void initState() {
+    super.initState();
     controller =
         AnimationController(duration: Duration(milliseconds: 900), vsync: this);
     // ..addListener(() => setState(() {}));
@@ -150,7 +150,6 @@ class _RadialAnimationState extends State<RadialAnimation>
   Widget build(BuildContext context) {
     Animation<double> rotate = widget.rotation;
     Animation<double> scale = widget.scale;
-    Animation<double> translation = widget.translation;
 
     return AnimatedBuilder(
         animation: widget.controller,

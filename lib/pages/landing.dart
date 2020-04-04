@@ -397,7 +397,7 @@ class _LandingPageState extends State<LandingPage> {
                       },
                     ),
                     ListTile(
-                      title: Text('About'),
+                      title: Text('About Us'),
                       onTap: () {
                         Navigator.of(context).pop();
                         Navigator.push(

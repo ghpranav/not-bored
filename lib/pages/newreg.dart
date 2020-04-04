@@ -31,11 +31,11 @@ class _RegPageState extends State<RegPage> {
 
   @override
   void initState() {
+    super.initState();
     passwordHidden = true;
     repasswordHidden = true;
     _errorMessage = "";
     _isLoading = false;
-    super.initState();
     _fname = TextEditingController(text: "");
     _lname = TextEditingController(text: "");
     _email = TextEditingController(text: "");

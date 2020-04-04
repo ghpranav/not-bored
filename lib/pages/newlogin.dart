@@ -29,10 +29,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    super.initState();
     passwordHidden = true;
     _errorMessage = "";
     _isLoading = false;
-    super.initState();
+
     _email = TextEditingController(text: "");
     _password = TextEditingController(text: "");
   }
@@ -431,17 +432,6 @@ class _LoginPageState extends State<LoginPage> {
         _enteremail("Email id"),
         _enterpass("Password"),
       ],
-    );
-  }
-
-  Widget _showCircularProgress() {
-    if (_isLoading) {
-      return Center(
-          child: CircularProgressIndicator(backgroundColor: Colors.blueAccent));
-    }
-    return Container(
-      height: 0.0,
-      width: 0.0,
     );
   }
 

@@ -10,7 +10,7 @@ import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/newlogin.dart';
 import 'package:not_bored/pages/newreg.dart';
 
-void main() {
+void main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

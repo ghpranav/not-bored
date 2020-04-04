@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:not_bored/main.dart';
 import 'package:not_bored/pages/privacyPolicy.dart';
+import 'package:not_bored/pages/welcome.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -7,7 +10,6 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  @override
   Widget _label() {
     return Container(
         margin: EdgeInsets.only(top: 0, bottom: 20),
@@ -31,7 +33,7 @@ class _AboutPageState extends State<AboutPage> {
         child: Column(
           children: <Widget>[
             Text(
-              "NOT BORED Inc",
+              "NOT BORED",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 13,
@@ -44,11 +46,21 @@ class _AboutPageState extends State<AboutPage> {
         ));
   }
 
+  Widget _insta() {
+    return InkWell(
+      child: Text(
+        'Click to follow us on Instagram',
+        style: TextStyle(color: BlueColor),
+      ),
+      onTap: () => launch("https://www.instagram.com/notbored.india/"),
+    );
+  }
+
   Widget _privacyPolicy() {
     return InkWell(
       child: Text(
         'User Agreement and Privacy Policy',
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(color: BlueColor),
       ),
       onTap: () => Navigator.push(
           context,
@@ -57,10 +69,11 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('About'),
+        title: Text('About Us'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -88,46 +101,34 @@ class _AboutPageState extends State<AboutPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(
+                  height: 10,
+                ),
+                Image.asset('lib/assests/meetPeople.png'),
+                SizedBox(
+                  height: 20,
+                ),
                 _label(),
                 SizedBox(
-                  height: 80,
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 _privacyPolicy(),
                 SizedBox(
                   height: 20,
                 ),
+                _insta(),
                 SizedBox(
-                  height: 20,
+                  height: 40,
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                new Image.asset(
-                  'lib/assests/logo.png',
-                  fit: BoxFit.cover,
+                new GestureDetector(
+                  child: Image.asset(
+                    'lib/assests/logo.png',
+                    fit: BoxFit.cover,
+                  ),
+                  onTap: () =>
+                      launch("https://www.instagram.com/notbored.india/"),
                 ),
                 _label1(),
-                SizedBox(
-                  height: 20,
-                ),
               ]),
         ),
       ),

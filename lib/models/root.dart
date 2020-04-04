@@ -42,7 +42,7 @@ class _RootPageState extends State<RootPage> {
             user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
       });
     });
-   // _redirect();
+    // _redirect();
   }
 
   void _onLoggedIn() {
@@ -72,14 +72,13 @@ class _RootPageState extends State<RootPage> {
         .get();
 
     ded = querySnapshot.data["shut"];
-   // print(ded);
+    // print(ded);
     /*if (ded == true) {
         Navigator.push(
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => MaintainPage()));
    }*/
-    
   }
 
   @override

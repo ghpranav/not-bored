@@ -24,7 +24,6 @@ class _MaintainPageState extends State<MaintainPage> {
     setState(() {
       msg = querySnapshot.data['message'];
     });
-    print(msg);
   }
 
   Widget build(BuildContext context) {

@@ -132,7 +132,7 @@ Future<String> waitNBmsg() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   String connectedTo;
 
-  while (counter < 15) {
+  while (counter < 60) {
     DocumentSnapshot querySnapshot =
         await Firestore.instance.collection("users").document(user.uid).get();
     connectedTo = querySnapshot.data['connectedTo'];

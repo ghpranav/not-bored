@@ -81,7 +81,7 @@ class Auth implements BaseAuth {
       'email': profile['email'],
       'userid': user.uid.toString(),
       'phone': profile['phone'],
-      'status': 'I am Bored',
+      'status': 'Bored ☹️',
       'imageURL':
           'https://firebasestorage.googleapis.com/v0/b/not-bored-002.appspot.com/o/pro_pics%2Fdefault.jpg?alt=media&token=8198b851-f08e-4bfa-b7b8-64d055c43f20',
       'isMailVerified': false,

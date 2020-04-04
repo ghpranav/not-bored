@@ -43,7 +43,6 @@ class _MyInfoState extends State<MyInfo> {
     setState(() {
       _image = image;
       uploadPic(context);
-      print('Image Path $_image');
     });
   }
 
@@ -165,7 +164,7 @@ class _MyInfoState extends State<MyInfo> {
                     ],
                   ),
                 ),
-               /* Positioned(
+                /* Positioned(
                   bottom: MediaQuery.of(context).size.height / 5.5,
                   right: MediaQuery.of(context).size.width / 4,
                   child: Container(

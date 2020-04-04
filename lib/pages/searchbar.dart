@@ -55,7 +55,6 @@ class _SearchBarState extends State<SearchBar> {
         });
       }
     });
-    print(tempSearchStore);
   }
 
   String clear(value) {

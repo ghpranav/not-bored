@@ -55,18 +55,14 @@ class _LandingPageState extends State<LandingPage> {
     try {
       await widget.auth.signOut();
       widget.onSignedOut();
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
   _signOutClose() async {
     try {
       await widget.auth.signOut();
       widget.onSignedOut();
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
     Navigator.of(context).pop();
   }
 
@@ -89,7 +85,6 @@ class _LandingPageState extends State<LandingPage> {
     _fcm.configure(
       //when app is running
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
         if (message['data']['id'] == '2') {
           showDialog(
             context: context,
@@ -205,7 +200,6 @@ class _LandingPageState extends State<LandingPage> {
       },
       //when app is not running
       onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
         if (message['data']['id'] == '2') {
           notif.notif2(message, context, widget);
         } else if (message['data']['id'] == '1') {
@@ -216,7 +210,6 @@ class _LandingPageState extends State<LandingPage> {
       },
       //when app is in background
       onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
         if (message['data']['id'] == '2') {
           notif.notif2(message, context, widget);
         } else if (message['data']['id'] == '1') {
@@ -408,7 +401,7 @@ class _LandingPageState extends State<LandingPage> {
                       },
                     ),
                     ListTile(
-                      title: Text('Surprise'),
+                      title: Text('Surprise Me'),
                       onTap: _surprise,
                     ),
                     ListTile(
@@ -470,16 +463,16 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   _surprise() async {
-    var rng = new Random();
-    int a = rng.nextInt(11) + 1;
-
-    String ab;
-    ab = a.toString();
-
     DocumentSnapshot querySnapshot = await Firestore.instance
         .collection("randomsites")
         .document("link")
         .get();
+    int rand = querySnapshot.data['total'];
+    var rng = new Random();
+    int a = rng.nextInt(rand) + 1;
+
+    String ab;
+    ab = a.toString();
 
     var url = querySnapshot.data[ab];
 

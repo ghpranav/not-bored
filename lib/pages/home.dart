@@ -154,8 +154,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final MarkerId markerId = MarkerId(markerIdVal);
     var g = lugar['position']['geopoint'] as GeoPoint;
     nbLocList[lugaresid.toString()] = g;
-    print(g.latitude);
-    print(g.longitude);
     // creating a new MARKER
     final Marker marker = Marker(
       markerId: markerId,
@@ -169,8 +167,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     markerTest.add(marker);
     if (markerTest.length == length) initialLocation();
-
-    print(markerTest);
   }
 
   Widget _googlemap(BuildContext context) {

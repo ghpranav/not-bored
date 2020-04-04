@@ -56,13 +56,12 @@ class _EditProfileState extends State<EditProfile> {
       try {
         Map _profile = {
           'fname': _fname.text,
-          'lname':_lname.text,
+          'lname': _lname.text,
           'phone': _phone.text,
           'status': _status.text,
         };
 
         widget.auth.updateProfile(_profile);
-        print(' $username is updated');
         setState(() {
           _isLoading = false;
         });
@@ -87,7 +86,6 @@ class _EditProfileState extends State<EditProfile> {
           },
         );
       } catch (e) {
-        print('Error: $e');
         setState(() {
           _isLoading = false;
         });
@@ -127,7 +125,6 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-
   Widget _showLastName() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
@@ -160,7 +157,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
- /*Widget _showUsername() {
+  /*Widget _showUsername() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
@@ -289,7 +286,7 @@ class _EditProfileState extends State<EditProfile> {
                   SizedBox(height: 50.0),
                   _showFirstName(),
                   _showLastName(),
-                 // _showUsername(),
+                  // _showUsername(),
                   _showStatus(),
                   _showPhone(),
                   SizedBox(height: 50.0),
@@ -324,7 +321,7 @@ class _EditProfileState extends State<EditProfile> {
   void dispose() {
     _fname.dispose();
     _lname.dispose();
-   // _username.dispose();
+    // _username.dispose();
     _phone.dispose();
     _status.dispose();
     super.dispose();

@@ -95,12 +95,10 @@ class _RegPageState extends State<RegPage> {
         userid = await widget.auth.signUp(_profile);
         widget.auth.sendEmailVerification();
         _showVerifyEmailSentDialog();
-        print('Signed up user: $userid');
         setState(() {
           _isLoading = false;
         });
       } catch (e) {
-        print('Error: $e');
         setState(() {
           _isLoading = false;
           _errorMessage = e.message;

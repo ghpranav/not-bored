@@ -57,7 +57,6 @@ class _LoginPageState extends State<LoginPage> {
       String userId = "";
       try {
         userId = await widget.auth.signIn(_email.text, _password.text);
-        print('Signed in: $userId');
         setState(() {
           _isLoading = false;
         });
@@ -66,7 +65,6 @@ class _LoginPageState extends State<LoginPage> {
           widget.onsignedIn();
         }
       } catch (e) {
-        print('Error: $e');
         setState(() {
           _isLoading = false;
           _errorMessage = e.message;
@@ -94,7 +92,6 @@ class _LoginPageState extends State<LoginPage> {
         });
         _showforgotpassEmailSentDialog();
       } catch (e) {
-        print('Error: $e');
         setState(() {
           _isLoading = false;
           _errorMessage = e.message;

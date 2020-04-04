@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:not_bored/main.dart';
 import 'package:not_bored/pages/privacyPolicy.dart';
 import 'package:not_bored/pages/welcome.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,12 +31,15 @@ class _AboutPageState extends State<AboutPage> {
         margin: EdgeInsets.only(top: 20, bottom: 20),
         child: Column(
           children: <Widget>[
-            Text(
-              "NOT BORED",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
+            GestureDetector(
+              child: Text(
+                "Contact Us:NOT BORED",
+                style: TextStyle(
+                    color: BlueColor,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600),
+              ),
+              onTap: () => launch("mailto:notbored.india@gmail.com"),
             ),
             SizedBox(
               height: 20,
@@ -55,6 +57,16 @@ class _AboutPageState extends State<AboutPage> {
       onTap: () => launch("https://www.instagram.com/notbored.india/"),
     );
   }
+
+  // Widget _sendEmail() {
+  //   return InkWell(
+  //     child: Text(
+  //       'Click To Contact Us at NB',
+  //       style: TextStyle(color: BlueColor),
+  //     ),
+  //     onTap: () => launch("mailto:notbored.india@gmail.com"),
+  //   );
+  // }
 
   Widget _privacyPolicy() {
     return InkWell(

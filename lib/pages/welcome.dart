@@ -6,6 +6,8 @@ import 'package:not_bored/services/auth.dart';
 import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:not_bored/pages/privacyPolicy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({this.auth, this.onSignedIn});
@@ -27,6 +29,19 @@ class _WelcomePageState extends State<WelcomePage> {
   void initState() {
     super.initState();
     initialLocation();
+    new Timer(new Duration(milliseconds: 200), () {
+      checkFirstSeen();
+    });
+  }
+
+  Future checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+    if (_seen) {
+    } else {
+      await prefs.setBool('seen', true);
+      _privacypolicy1();
+    }
   }
 
   _privacypolicy1() {
@@ -66,7 +81,6 @@ class _WelcomePageState extends State<WelcomePage> {
         accuracy: LocationAccuracy.HIGH, interval: 1000);
     position = await geo.Geolocator()
         .getCurrentPosition(desiredAccuracy: geo.LocationAccuracy.high);
-    _privacypolicy1();
   }
 
   Widget _submitButton() {

@@ -120,10 +120,9 @@ class Auth implements BaseAuth {
     _ref.updateData(<String, dynamic>{
       'fname': profile['fname'],
       'lname': profile['lname'],
-      'userid': profile['userid'],
       'phone': profile['phone'],
       'status': profile['status'],
-      'name': profile['fname'] + profile['lname'],
+      'name': profile['fname'] + ' ' + profile['lname'],
     });
     _ref
         .collection(profile['fname'][0].toString().toUpperCase())

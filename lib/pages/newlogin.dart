@@ -63,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
 
         if (userId != null && userId.length > 0) {
           widget.onsignedIn();
+          Navigator.of(context).pop();
         }
       } catch (e) {
         setState(() {
@@ -71,6 +72,17 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     }
+  }
+
+  Widget _showCircularProgress() {
+    if (_isLoading) {
+      return Center(
+          child: CircularProgressIndicator(backgroundColor: Colors.blueAccent));
+    }
+    return Container(
+      height: 0.0,
+      width: 0.0,
+    );
   }
 
   void _forgotPassword() async {
@@ -499,7 +511,8 @@ class _LoginPageState extends State<LoginPage> {
             Positioned(
                 top: -MediaQuery.of(context).size.height * .15,
                 right: -MediaQuery.of(context).size.width * .4,
-                child: BezierContainer())
+                child: BezierContainer()),
+            _showCircularProgress(),
           ],
         ),
       ),

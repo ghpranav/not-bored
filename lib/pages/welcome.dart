@@ -3,7 +3,6 @@ import 'package:not_bored/pages/newlogin.dart';
 import 'package:not_bored/pages/newreg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:not_bored/services/auth.dart';
-import 'package:not_bored/models/root.dart';
 import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:not_bored/pages/privacyPolicy.dart';
@@ -70,14 +69,6 @@ class _WelcomePageState extends State<WelcomePage> {
     _privacypolicy1();
   }
 
-  void loginhua() {
-//widget.onSignedIn();
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => RootPage(auth: widget.auth)));
-  }
-
   Widget _submitButton() {
     return InkWell(
       onTap: () {
@@ -86,7 +77,7 @@ class _WelcomePageState extends State<WelcomePage> {
             MaterialPageRoute(
                 builder: (context) => LoginPage(
                       auth: widget.auth,
-                      onsignedIn: loginhua,
+                      onsignedIn: widget.onSignedIn,
                     )));
       },
       child: Container(

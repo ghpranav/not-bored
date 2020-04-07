@@ -24,7 +24,7 @@ class _RegPageState extends State<RegPage> {
   //TextEditingController _repassword;
   TextEditingController _phone;
   String _errorMessage;
-
+  String userid;
   bool _isLoading;
   bool passwordHidden;
   bool repasswordHidden;
@@ -45,6 +45,7 @@ class _RegPageState extends State<RegPage> {
 
   void _showVerifyEmailSentDialog() {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
@@ -83,7 +84,6 @@ class _RegPageState extends State<RegPage> {
       _isLoading = true;
     });
     if (_validateAndSave()) {
-      String userid = "";
       try {
         Map _profile = {
           'fname': _fname.text,
@@ -496,6 +496,16 @@ class _RegPageState extends State<RegPage> {
           ]),
     );
   } */
+  Widget _showCircularProgress() {
+    if (_isLoading) {
+      return Center(
+          child: CircularProgressIndicator(backgroundColor: Colors.blueAccent));
+    }
+    return Container(
+      height: 0.0,
+      width: 0.0,
+    );
+  }
 
   Widget _emailPasswordWidget() {
     return Column(
@@ -556,7 +566,8 @@ class _RegPageState extends State<RegPage> {
           Positioned(
               top: -MediaQuery.of(context).size.height * .15,
               right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer())
+              child: BezierContainer()),
+          _showCircularProgress()
         ],
       ),
     )));

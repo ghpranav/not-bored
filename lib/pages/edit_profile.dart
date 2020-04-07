@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:not_bored/services/auth.dart';
 
@@ -51,8 +50,6 @@ class _EditProfileState extends State<EditProfile> {
       _isLoading = true;
     });
     if (_updateAndSave()) {
-      FirebaseUser user = await widget.auth.getCurrentUser();
-      String username = user.uid;
       try {
         Map _profile = {
           'fname': _fname.text,
@@ -97,6 +94,7 @@ class _EditProfileState extends State<EditProfile> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
       child: new TextFormField(
+        maxLength: 15,
         controller: _fname,
         maxLines: 1,
         keyboardType: TextInputType.text,
@@ -131,6 +129,7 @@ class _EditProfileState extends State<EditProfile> {
       child: new TextFormField(
         controller: _lname,
         maxLines: 1,
+        maxLength: 15,
         keyboardType: TextInputType.text,
         autofocus: false,
         decoration: new InputDecoration(

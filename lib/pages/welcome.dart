@@ -39,9 +39,15 @@ class _WelcomePageState extends State<WelcomePage> {
     bool _seen = (prefs.getBool('seen') ?? false);
     if (_seen) {
     } else {
-      await prefs.setBool('seen', true);
       _privacypolicy1();
     }
+  }
+
+  Future itsSeen() async { 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('seen', true);
+ Navigator.of(context).pop();
   }
 
   _privacypolicy1() {
@@ -69,7 +75,7 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
             actions: <Widget>[
               FlatButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: itsSeen,
                   child: Text('Accept User Agreement and Privacy Policy'))
             ],
           );

@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:rich_alert/rich_alert.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:vector_math/vector_math.dart' show radians;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:not_bored/services/serve.dart';
-import 'package:not_bored/services/auth.dart';
 
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/chat.dart';
@@ -121,14 +121,17 @@ class _RadialAnimationState extends State<RadialAnimation>
     });
     await sendNBmsg();
 
-    var connectedTo = await waitNBmsg();
+    String connectedTo = await waitNBmsg();
 
     if (connectedTo != "null") {
+      final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+      FirebaseUser user = await _firebaseAuth.currentUser();
+
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => Chat(
-                    userId: Auth().getCurrentUserid().toString(),
+                    userId: user.uid,
                     peerId: connectedTo.toString(),
                   )));
     } else {

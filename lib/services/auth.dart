@@ -88,6 +88,7 @@ class Auth implements BaseAuth {
       'req_rec': [],
       'req_sent': [],
       'connectedTo': "null",
+      'isSearching': false,
     });
     _ref.collection(user.uid).document('null').setData(<String, dynamic>{});
     _ref.collection('req_rec').document('null').setData(<String, dynamic>{});

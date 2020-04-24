@@ -53,7 +53,8 @@ Future<void> sendNBmsg() async {
     var frnd = Firestore.instance.collection("users").document(frndId);
 
     frnd.get().then((doc) {
-      if (doc.data['connectedTo'] == 'null') {
+      if (doc.data['connectedTo'] == 'null' &&
+          doc.data['isSearching'] == false) {
         frnd.collection("nb_msg").document(user.uid).setData({
           'userid': user.uid,
           'time': new DateTime.now().millisecondsSinceEpoch,
@@ -97,13 +98,17 @@ getNBmsgTime() async {
   return time;
 }
 
-Future<void> acceptNBmsg(userid, frndid) async {
-  await Firestore.instance.collection('users').document(userid).updateData({
-    'connectedTo': frndid,
-  });
-  await Firestore.instance.collection('users').document(frndid).updateData({
-    'connectedTo': userid,
-  });
+acceptNBmsg(userid, frndid) async {
+  if (await checkConnectedTo(userid)) {
+    await Firestore.instance.collection('users').document(userid).updateData({
+      'connectedTo': frndid,
+    });
+    await Firestore.instance.collection('users').document(frndid).updateData({
+      'connectedTo': userid,
+    });
+    return true;
+  } else
+    return false;
 }
 
 Future<void> rejectNBmsg(userid, frndid) async {
@@ -131,6 +136,9 @@ Future<String> waitNBmsg() async {
 
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   String connectedTo;
+  await Firestore.instance.collection('users').document(user.uid).updateData({
+    'isSearching': true,
+  });
 
   while (counter < 20) {
     DocumentSnapshot querySnapshot =
@@ -144,6 +152,9 @@ Future<String> waitNBmsg() async {
   }
 
   await deleteNBmsg();
+  await Firestore.instance.collection('users').document(user.uid).updateData({
+    'isSearching': false,
+  });
   return connectedTo;
 }
 
@@ -168,4 +179,11 @@ Future<void> deleteNBmsg() async {
         .document(user.uid)
         .delete();
   });
+}
+
+checkConnectedTo(String user) async {
+  DocumentSnapshot querySnapshot =
+      await Firestore.instance.collection("users").document(user).get();
+  if (querySnapshot.data['connectedTo'] == 'null') return true;
+  return false;
 }

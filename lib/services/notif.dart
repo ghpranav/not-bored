@@ -15,6 +15,7 @@ abstract class BaseNotif {
 }
 
 class Notif extends BaseNotif {
+  bool _check;
   void notif2(message, context, widget) async {
     Navigator.push(
         context,
@@ -54,14 +55,18 @@ class Notif extends BaseNotif {
                   Navigator.of(context).pop(),
                   if (frndid != null)
                     {
-                      acceptNBmsg(widget.userId, frndid.toString()),
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Chat(
-                                    peerId: frndid.toString(),
-                                    userId: widget.userId,
-                                  ))),
+                      _check =
+                          await acceptNBmsg(widget.userId, frndid.toString()),
+                      if (_check)
+                        {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => Chat(
+                                        peerId: frndid.toString(),
+                                        userId: widget.userId,
+                                      ))),
+                        }
                     }
                   else
                     {

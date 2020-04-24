@@ -116,46 +116,8 @@ class _LandingPageState extends State<LandingPage> {
         } else if (message['data']['is'] == '1') {
           notif.notif1(message, context, widget);
         } else if (message['data']['id'] == '3') {
-          String frndid = message['data']['frndid'];
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              // return object of type Dialog
-              return AlertDialog(
-                content: ListTile(
-                  title: Text("Bored?"),
-                  subtitle: Text("Wanna Chat?"),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Reject'),
-                    onPressed: () => {
-                      rejectNBmsg(widget.userId, frndid.toString()),
-                      Navigator.of(context).pop(),
-                    },
-                  ),
-                  FlatButton(
-                    child: Text('Accept'),
-                    onPressed: () => {
-                      acceptNBmsg(widget.userId, frndid.toString()),
-                      Navigator.of(context).pop(),
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Chat(
-                                    peerId: frndid.toString(),
-                                    userId: widget.userId,
-                                  ))),
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-
-          await pause(const Duration(seconds: 15));
-          if (await hasNbMsg() == "null") Navigator.of(context).pop();
+          notif.notif3(message, context, widget);
+          // if (await hasNbMsg() == "null") Navigator.of(context).pop();
         }
         // } else if (message['data']['id'] == '4') {
         // String frndid = await getNBmsg();

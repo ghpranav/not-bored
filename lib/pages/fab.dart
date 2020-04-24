@@ -259,8 +259,12 @@ class _RadialAnimationState extends State<RadialAnimation>
                                     backgroundColor: PrimaryColor,
                                     textColor: Colors.white,
                                     fontSize: 16.0);
-                              } else
-                                _open();
+                              } else {
+                                if (isLoadingFAB) {
+                                  return null;
+                                } else
+                                  _open();
+                              }
                             }),
                       ),
                     )

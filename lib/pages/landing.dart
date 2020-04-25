@@ -13,13 +13,11 @@ import 'package:not_bored/services/friends.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/services/serve.dart';
 import 'package:not_bored/services/notif.dart';
-import 'package:not_bored/services/nbLoc.dart';
 
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/pages/about.dart';
 import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/chat.dart';
-import 'package:not_bored/pages/try.dart';
 
 import 'package:not_bored/pages/searchbar.dart';
 import 'package:not_bored/pages/my_friends.dart';

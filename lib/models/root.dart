@@ -99,7 +99,7 @@ class _RootPageState extends State<RootPage> {
                     auth: widget.auth,
                     onSignedOut: _onSignedOut,
                   ),
-                  builder: (BuildContext context) => LandingPageProvider(),
+                  create: (BuildContext context) => LandingPageProvider(),
                 );
         } else
           return Splash();

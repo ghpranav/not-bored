@@ -43,11 +43,11 @@ class _WelcomePageState extends State<WelcomePage> {
     }
   }
 
-  Future itsSeen() async { 
+  Future itsSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     await prefs.setBool('seen', true);
- Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 
   _privacypolicy1() {
@@ -197,7 +197,7 @@ class _WelcomePageState extends State<WelcomePage> {
       text: TextSpan(
           text: 'N',
           style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.display1,
+            textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
             fontWeight: FontWeight.w700,
             color: Colors.white,

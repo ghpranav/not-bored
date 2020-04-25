@@ -11,7 +11,6 @@ import 'package:not_bored/services/serve.dart';
 
 //import 'package:location/location.dart';
 
-final Firestore _firestore = Firestore.instance;
 Future<void> sendNBloc(
     Position position, Map<String, GeoPoint> nbLocList) async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -29,8 +28,8 @@ Future<void> sendNBloc(
   });
 
   nbLocList.forEach((String userid, GeoPoint pos) async {
-    final distance = await Geolocator().distanceBetween(
-        position.latitude, position.longitude, pos.latitude, pos.longitude);
+    // final distance = await Geolocator().distanceBetween(
+    //     position.latitude, position.longitude, pos.latitude, pos.longitude);
     //if (distance / 1000 < 15) {
     var frnd = Firestore.instance.collection("users").document(userid);
     frnd.get().then((doc) {

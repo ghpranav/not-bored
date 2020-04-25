@@ -49,7 +49,7 @@ class _MaintainPageState extends State<MaintainPage> {
               Text(
                 msg,
                 style: GoogleFonts.abel(
-                    textStyle: Theme.of(context).textTheme.display1,
+                    textStyle: Theme.of(context).textTheme.headline4,
                     fontSize: 30,
                     fontWeight: FontWeight.w700,
                     color: Colors.white),

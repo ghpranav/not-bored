@@ -51,13 +51,13 @@ class Notif extends BaseNotif {
                 child: Text('Accept'),
                 onPressed: () async => {
                   frndid = await getNBmsg(),
-                  Navigator.of(context).pop(),
                   if (frndid != null)
                     {
                       _check =
                           await acceptNBmsg(widget.userId, frndid.toString()),
                       if (_check)
                         {
+                          Navigator.of(context).pop(),
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -69,6 +69,7 @@ class Notif extends BaseNotif {
                     }
                   else
                     {
+                      Navigator.of(context).pop(),
                       Fluttertoast.showToast(
                           msg: "Your Friend is no longer bored",
                           toastLength: Toast.LENGTH_LONG,

@@ -454,7 +454,6 @@ class ChatScreenState extends State<ChatScreen> {
           .updateData({'connectedTo': "null"});
     }
 
-    Navigator.pop(context);
     Firestore.instance
         .collection('messages')
         .document(groupChatId)
@@ -465,6 +464,8 @@ class ChatScreenState extends State<ChatScreen> {
         ds.reference.delete();
       }
     });
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   @override

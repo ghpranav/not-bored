@@ -1,19 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart' as geo;
+import 'package:google_fonts/google_fonts.dart';
+import 'package:location/location.dart';
 import 'package:not_bored/pages/newlogin.dart';
 import 'package:not_bored/pages/newreg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:not_bored/services/auth.dart';
-import 'package:location/location.dart';
-import 'package:geolocator/geolocator.dart' as geo;
 import 'package:not_bored/pages/privacyPolicy.dart';
+import 'package:not_bored/services/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({this.auth, this.onSignedIn});
 
   final BaseAuth auth;
   final VoidCallback onSignedIn;
+
   //final String title;
 
   @override
@@ -25,6 +27,7 @@ const BlueColor = const Color(0xFF00245A);
 class _WelcomePageState extends State<WelcomePage> {
   Location _locationService = new Location();
   geo.Position position;
+
   @override
   void initState() {
     super.initState();

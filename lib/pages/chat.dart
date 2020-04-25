@@ -52,6 +52,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   String peerId;
   String userId;
+
   // String id;
 
   var listMessage;

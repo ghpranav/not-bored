@@ -2,9 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class FriendRequest {
   Future<void> sendReq(userId, friendId);
+
   Future<void> cancelReq(userId, friendId);
+
   Future<void> acceptReq(userId, friendId);
+
   Future<void> rejectReq(userId, friendId);
+
   Future<void> removeFrnd(userId, friendId);
 }
 

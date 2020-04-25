@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:not_bored/widgets/bezierContainer.dart';
-//import 'package:google_fonts/google_fonts.dart';
 import 'package:not_bored/services/auth.dart';
+import 'package:not_bored/widgets/bezierContainer.dart';
 
 class RegPage extends StatefulWidget {
   static String tag = 'reg-page';
@@ -21,6 +20,7 @@ class _RegPageState extends State<RegPage> {
   TextEditingController _lname;
   TextEditingController _email;
   TextEditingController _password;
+
   //TextEditingController _repassword;
   TextEditingController _phone;
   String _errorMessage;

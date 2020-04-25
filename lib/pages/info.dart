@@ -1,20 +1,19 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:not_bored/services/auth.dart';
-
-import 'package:not_bored/pages/splash.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:not_bored/pages/edit_profile.dart';
+import 'package:not_bored/pages/splash.dart';
+import 'package:not_bored/services/auth.dart';
 
 class MyInfo extends StatefulWidget {
   MyInfo({Key key, this.auth, this.userId}) : super(key: key);
 
   final BaseAuth auth;
   final String userId;
+
   @override
   _MyInfoState createState() => _MyInfoState();
 }

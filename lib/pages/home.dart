@@ -1,25 +1,21 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
-
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart' as geo;
-import 'package:not_bored/pages/splash.dart';
-
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:not_bored/pages/fab.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/services/serve.dart';
 
 class HomePage extends StatefulWidget {
   static String tag = 'home-page';
+
   HomePage({Key key, this.auth, this.userId, this.onSignedOut, this.user})
       : super(key: key);
 
@@ -58,6 +54,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   /// Set of displayed markers and cluster markers on the map
   BitmapDescriptor myIcon;
+
   @override
   void initState() {
     super.initState();

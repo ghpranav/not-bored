@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:not_bored/services/auth.dart';
 
 class EditProfile extends StatefulWidget {
   static String tag = 'Edit';
+
   EditProfile({Key key, this.auth, this.profile}) : super(key: key);
 
   final BaseAuth auth;

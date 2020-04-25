@@ -1,11 +1,14 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {
   @override
   _SplashState createState() => _SplashState();
 }
+
 const PrimaryColor = const Color(0xFFf96327);
+
 class _SplashState extends State<Splash> with TickerProviderStateMixin {
   AnimationController rotationController;
 

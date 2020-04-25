@@ -1,13 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:flutter/material.dart';
+import 'package:not_bored/pages/info.dart';
+import 'package:not_bored/pages/splash.dart';
+import 'package:not_bored/pages/users.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/services/friends.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-
-import 'package:not_bored/pages/splash.dart';
-import 'package:not_bored/pages/info.dart';
-import 'package:not_bored/pages/users.dart';
 
 class MyFriendsPage extends StatefulWidget {
   MyFriendsPage({Key key, this.auth, this.userId, this.user}) : super(key: key);

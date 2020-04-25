@@ -1,28 +1,25 @@
-import 'dart:io';
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'package:not_bored/services/friends.dart';
-import 'package:not_bored/services/auth.dart';
-import 'package:not_bored/services/serve.dart';
-import 'package:not_bored/services/notif.dart';
-
-import 'package:not_bored/pages/home.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:not_bored/pages/about.dart';
-import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/chat.dart';
-
-import 'package:not_bored/pages/searchbar.dart';
+import 'package:not_bored/pages/home.dart';
+import 'package:not_bored/pages/info.dart';
 import 'package:not_bored/pages/my_friends.dart';
-import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/pages/notifications.dart';
+import 'package:not_bored/pages/searchbar.dart';
+import 'package:not_bored/pages/splash.dart';
+import 'package:not_bored/services/auth.dart';
+import 'package:not_bored/services/friends.dart';
+import 'package:not_bored/services/notif.dart';
+import 'package:not_bored/services/serve.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({Key key, this.auth, this.userId, this.onSignedOut})
@@ -41,6 +38,7 @@ const PrimaryColor = const Color(0xFFf96327);
 
 class _LandingPageState extends State<LandingPage> {
   bool show;
+
   hasNbMsg() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     DocumentSnapshot querySnapshot =

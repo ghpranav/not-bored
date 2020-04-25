@@ -1,13 +1,10 @@
-import 'package:flutter/material.dart';
-
-import 'package:not_bored/models/root.dart';
-
-import 'package:not_bored/services/auth.dart';
-import 'package:not_bored/services/friends.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:not_bored/models/root.dart';
 import 'package:not_bored/pages/my_friends.dart';
 import 'package:not_bored/pages/splash.dart';
+import 'package:not_bored/services/auth.dart';
+import 'package:not_bored/services/friends.dart';
 
 class Users extends StatefulWidget {
   Users({Key key, this.auth, this.userId, this.data, this.request})
@@ -16,6 +13,7 @@ class Users extends StatefulWidget {
   final BaseAuth auth;
   final String userId;
   final data;
+
   @override
   _UsersState createState() => _UsersState();
 }

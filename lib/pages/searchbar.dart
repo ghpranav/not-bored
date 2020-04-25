@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/pages/info.dart';
-import 'package:not_bored/pages/users.dart';
-import 'package:not_bored/services/friends.dart';
 import 'package:not_bored/pages/landing.dart';
+import 'package:not_bored/pages/users.dart';
+import 'package:not_bored/services/auth.dart';
+import 'package:not_bored/services/friends.dart';
 
 class SearchBar extends StatefulWidget {
   SearchBar({Key key, this.auth, this.userId, this.onSignedOut, this.list})
@@ -15,6 +14,7 @@ class SearchBar extends StatefulWidget {
   final String userId;
 
   final list;
+
   @override
   _SearchBarState createState() => _SearchBarState();
 }
@@ -64,6 +64,7 @@ class _SearchBarState extends State<SearchBar> {
   }
 
   final TextEditingController eCtrl = new TextEditingController();
+
   _onClear() {
     setState(() {
       eCtrl.text = "";

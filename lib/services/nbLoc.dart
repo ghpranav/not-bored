@@ -1,12 +1,8 @@
 import 'dart:async';
 
-// import 'package:not_bored/pages/splash.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:not_bored/services/serve.dart';
 
 //import 'package:location/location.dart';

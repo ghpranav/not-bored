@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:not_bored/models/root.dart';
-import 'package:not_bored/pages/landing.dart';
-
-import 'package:not_bored/services/auth.dart';
-
 import 'package:not_bored/pages/home.dart';
+import 'package:not_bored/pages/landing.dart';
 import 'package:not_bored/pages/newlogin.dart';
 import 'package:not_bored/pages/newreg.dart';
+import 'package:not_bored/services/auth.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

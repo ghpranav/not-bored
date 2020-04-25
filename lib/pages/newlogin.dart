@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:not_bored/widgets/bezierContainer.dart';
-
-import 'package:not_bored/services/auth.dart';
-
 import 'package:not_bored/pages/newreg.dart';
+import 'package:not_bored/services/auth.dart';
+import 'package:not_bored/widgets/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
+
   LoginPage({this.auth, this.onsignedIn});
 
   final BaseAuth auth;

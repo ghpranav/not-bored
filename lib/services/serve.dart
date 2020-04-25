@@ -1,11 +1,8 @@
 import 'dart:async';
 
-// import 'package:not_bored/pages/splash.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
-
 import 'package:location/location.dart';
 
 var currentLocation = LocationData;

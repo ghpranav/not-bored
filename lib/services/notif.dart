@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:not_bored/services/serve.dart';
-
 import 'package:not_bored/pages/chat.dart';
-
 import 'package:not_bored/pages/notifications.dart';
+import 'package:not_bored/services/serve.dart';
 
 abstract class BaseNotif {
   void notif2(message, context, widget);
+
   void notif3(message, context, widget);
+
   void notif1(message, context, widget);
 }
 
 class Notif extends BaseNotif {
   bool _check;
+
   void notif2(message, context, widget) async {
     Navigator.push(
         context,

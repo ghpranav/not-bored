@@ -1,17 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:not_bored/pages/maintenance.dart';
-import 'package:provider/provider.dart';
-
-import 'package:not_bored/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:not_bored/pages/welcome.dart';
-
+import 'package:flutter/material.dart';
 import 'package:not_bored/pages/landing.dart';
+import 'package:not_bored/pages/maintenance.dart';
 import 'package:not_bored/pages/splash.dart';
+import 'package:not_bored/pages/welcome.dart';
+import 'package:not_bored/services/auth.dart';
+import 'package:provider/provider.dart';
 
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
+
   method() => _RootPageState()._onLoggedIn();
   final BaseAuth auth;
 

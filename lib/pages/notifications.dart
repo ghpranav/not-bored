@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:flutter/material.dart';
+import 'package:not_bored/pages/splash.dart';
 import 'package:not_bored/services/auth.dart';
 import 'package:not_bored/services/friends.dart';
-
-import 'package:not_bored/pages/splash.dart';
 
 class NotifPage extends StatefulWidget {
   NotifPage({Key key, this.auth, this.userId, this.request}) : super(key: key);
@@ -13,6 +11,7 @@ class NotifPage extends StatefulWidget {
   final BaseAuth auth;
   final FriendRequest request;
   final String userId;
+
   @override
   _NotifPageState createState() => _NotifPageState();
 }

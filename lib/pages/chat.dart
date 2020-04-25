@@ -683,14 +683,27 @@ class ChatScreenState extends State<ChatScreen> {
                               Colors.deepOrange)));
                 } else {
                   listMessage = snapshot.data.documents;
-                  return ListView.builder(
-                    padding: EdgeInsets.all(10.0),
-                    itemBuilder: (context, index) =>
-                        buildItem(index, snapshot.data.documents[index]),
-                    itemCount: snapshot.data.documents.length,
-                    reverse: true,
-                    controller: listScrollController,
-                  );
+                  if (listMessage.length == 0)
+                    return Container(
+                      padding: EdgeInsets.all(10.0),
+                      child: Center(
+                        child: Text(
+                          "If there is no response then user is probably offline",
+                          style: TextStyle(
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ),
+                    );
+                  else
+                    return ListView.builder(
+                      padding: EdgeInsets.all(10.0),
+                      itemBuilder: (context, index) =>
+                          buildItem(index, listMessage[index]),
+                      itemCount: listMessage.length,
+                      reverse: true,
+                      controller: listScrollController,
+                    );
                 }
               },
             ),

@@ -412,34 +412,59 @@ class ChatScreenState extends State<ChatScreen> {
         isShowSticker = false;
       });
     } else {
-      Firestore.instance
-          .collection('users')
-          .document(userId)
-          .updateData({'connectedTo': "null"});
-      DocumentSnapshot querySnapshot =
-          await Firestore.instance.collection("users").document(peerId).get();
-      var connectedTo = querySnapshot.data['connectedTo'];
-      if (connectedTo == userId) {
-        Firestore.instance
-            .collection('users')
-            .document(peerId)
-            .updateData({'connectedTo': "null"});
-      }
-
-      Navigator.pop(context);
-      Firestore.instance
-          .collection('messages')
-          .document(groupChatId)
-          .collection(groupChatId)
-          .getDocuments()
-          .then((snapshot) {
-        for (DocumentSnapshot ds in snapshot.documents) {
-          ds.reference.delete();
-        }
-      });
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          // return object of type Dialog
+          return AlertDialog(
+            title: new Text("Exit Chat"),
+            content:
+                new Text("Are you sure you want to exit chat and disconnect?"),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("No"),
+                onPressed: Navigator.of(context).pop,
+              ),
+              new FlatButton(
+                child: new Text("Yes"),
+                onPressed: disconnect,
+              ),
+            ],
+          );
+        },
+      );
     }
 
     return Future.value(false);
+  }
+
+  void disconnect() async {
+    Firestore.instance
+        .collection('users')
+        .document(userId)
+        .updateData({'connectedTo': "null"});
+    DocumentSnapshot querySnapshot =
+        await Firestore.instance.collection("users").document(peerId).get();
+    var connectedTo = querySnapshot.data['connectedTo'];
+    if (connectedTo == userId) {
+      Firestore.instance
+          .collection('users')
+          .document(peerId)
+          .updateData({'connectedTo': "null"});
+    }
+
+    Navigator.pop(context);
+    Firestore.instance
+        .collection('messages')
+        .document(groupChatId)
+        .collection(groupChatId)
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        ds.reference.delete();
+      }
+    });
   }
 
   @override

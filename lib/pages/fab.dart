@@ -139,7 +139,7 @@ class _RadialAnimationState extends State<RadialAnimation>
           msg: "Sorry no friends available",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: PrimaryColor,
           textColor: Colors.white,
           fontSize: 16.0);
@@ -255,7 +255,7 @@ class _RadialAnimationState extends State<RadialAnimation>
                                     msg: "Click on search bar to find friends",
                                     toastLength: Toast.LENGTH_LONG,
                                     gravity: ToastGravity.CENTER,
-                                    timeInSecForIos: 1,
+                                    timeInSecForIosWeb: 1,
                                     backgroundColor: PrimaryColor,
                                     textColor: Colors.white,
                                     fontSize: 16.0);

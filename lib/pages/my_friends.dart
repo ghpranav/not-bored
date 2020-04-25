@@ -39,7 +39,8 @@ class MyFriendsPageState extends State<MyFriendsPage> {
               ? Scaffold(
                   body: Center(
                   child: TyperAnimatedTextKit(
-                    duration: const Duration(seconds: 3),
+                    speed: const Duration(milliseconds: 100),
+                    isRepeatingAnimation: false,
                     text: ['Click on search bar to find friends'],
                     textStyle: TextStyle(
                       fontSize: 25.0,

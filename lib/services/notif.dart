@@ -74,7 +74,7 @@ class Notif extends BaseNotif {
                           msg: "Your Friend is no longer bored",
                           toastLength: Toast.LENGTH_LONG,
                           gravity: ToastGravity.CENTER,
-                          timeInSecForIos: 1,
+                          timeInSecForIosWeb: 1,
                           backgroundColor: PrimaryColor,
                           textColor: Colors.white,
                           fontSize: 16.0),
@@ -90,7 +90,7 @@ class Notif extends BaseNotif {
           msg: "Your Friend is no longer bored",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: PrimaryColor,
           textColor: Colors.white,
           fontSize: 16.0);

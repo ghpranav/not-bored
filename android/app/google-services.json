@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "845812989699",
+    "firebase_url": "https://not-bored-002.firebaseio.com",
+    "project_id": "not-bored-002",
+    "storage_bucket": "not-bored-002.appspot.com"
+  },
+  "client": [{
+      "client_info": {
+        "mobilesdk_app_id": "1:845812989699:android:68e6f3b35f2185e3683336",
+        "android_client_info": {
+          "package_name": "com.argia.not_bored"
+        }
+      },
+      "oauth_client": [{
+          "client_id": "845812989699-1a5ke2ecjc20lhrbc23blmb6le64iqae.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.argia.not_bored",
+            "certificate_hash": "66a779e5330502857bfb71261428d338432ac159"
+          }
+        },
+        {
+          "client_id": "845812989699-d2b719ou2huae6fejvrcges60blhccq6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [{
+        "current_key": "AIzaSyA1gTYEq5jG4zGEJXEXLeoLUe1W8Oy8fJY"
+      }],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [{
+            "client_id": "845812989699-d2b719ou2huae6fejvrcges60blhccq6.apps.googleusercontent.com",
+            "client_type": 3
+          }]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845812989699:android:6ded465119bba1bd683336",
+        "android_client_info": {
+          "package_name": "com.not_bored"
+        }
+      },
+      "oauth_client": [{
+          "client_id": "845812989699-l8ia3grdgbr2qbn8ivhj792kae2rin2d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.not_bored",
+            "certificate_hash": "66a779e5330502857bfb71261428d338432ac159"
+          }
+        },
+        {
+          "client_id": "845812989699-d2b719ou2huae6fejvrcges60blhccq6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [{
+        "current_key": "AIzaSyA1gTYEq5jG4zGEJXEXLeoLUe1W8Oy8fJY"
+      }],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [{
+            "client_id": "845812989699-d2b719ou2huae6fejvrcges60blhccq6.apps.googleusercontent.com",
+            "client_type": 3
+          }]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845812989699:android:8dd004ee54138114",
+        "android_client_info": {
+          "package_name": "com.notbored.android"
+        }
+      },
+      "oauth_client": [{
+          "client_id": "845812989699-7sbbiasjht8urocm0amukfv0vg7ba59r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.notbored.android",
+            "certificate_hash": "66a779e5330502857bfb71261428d338432ac159"
+          }
+        },
+        {
+          "client_id": "845812989699-d2b719ou2huae6fejvrcges60blhccq6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [{
+        "current_key": "AIzaSyA1gTYEq5jG4zGEJXEXLeoLUe1W8Oy8fJY"
+      }],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [{
+            "client_id": "845812989699-d2b719ou2huae6fejvrcges60blhccq6.apps.googleusercontent.com",
+            "client_type": 3
+          }]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

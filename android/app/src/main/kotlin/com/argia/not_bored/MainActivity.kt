@@ -1,4 +1,4 @@
-package com.example.not_bored
+package com.argia.not_bored
 
 import io.flutter.embedding.android.FlutterActivity
 

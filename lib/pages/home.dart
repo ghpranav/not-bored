@@ -136,7 +136,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 //       50,
                 // color: Colors.green,
                 FittedBox(
-              child: RadialMenu(),
+              child: RadialMenu(
+                position: position,
+                nbLocList: nbLocList,
+              ),
             ),
             //),
 

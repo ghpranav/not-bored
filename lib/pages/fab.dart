@@ -1,19 +1,28 @@
 import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:not_bored/pages/chat.dart';
 import 'package:not_bored/pages/home.dart';
 import 'package:not_bored/services/serve.dart';
+import 'package:not_bored/services/nbLoc.dart';
 import 'package:rich_alert/rich_alert.dart';
 import 'package:vector_math/vector_math.dart' show radians;
+import 'package:geolocator/geolocator.dart' as geo;
 
 bool show1 = false;
 bool show2 = true;
 
 class RadialMenu extends StatefulWidget {
+  RadialMenu({Key key, this.position, this.nbLocList}) : super(key: key);
+  final nbLocList;
+  final geo.Position position;
+  @override
   createState() => _RadialMenuState();
 }
 
@@ -33,6 +42,8 @@ class _RadialMenuState extends State<RadialMenu>
   Widget build(BuildContext context) {
     return RadialAnimation(
       controller: controller,
+      position: widget.position,
+      nbLocList: widget.nbLocList,
     );
   }
 
@@ -44,7 +55,7 @@ class _RadialMenuState extends State<RadialMenu>
 }
 
 class RadialAnimation extends StatefulWidget {
-  RadialAnimation({Key key, this.controller})
+  RadialAnimation({Key key, this.controller, this.position, this.nbLocList})
       : translation = Tween<double>(
           begin: 0.0,
           end: 180.0,
@@ -76,6 +87,8 @@ class RadialAnimation extends StatefulWidget {
   final Animation<double> rotation;
   final Animation<double> translation;
   final Animation<double> scale;
+  final nbLocList;
+  final geo.Position position;
 
   @override
   _RadialAnimationState createState() => _RadialAnimationState();
@@ -100,16 +113,62 @@ class _RadialAnimationState extends State<RadialAnimation>
 
   meetFab() async {
     await _close();
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return RichAlertDialog(
-            alertTitle: richTitle("COVID-19"),
-            alertSubtitle: richSubtitle(
-                " Due to the increase in outbreak of COVID-19 in the country this feature is currently diasabled.Stay Home Stay Safe!"),
-            alertType: RichAlertType.ERROR,
-          );
-        });
+    setState(() {
+      isLoadingFAB = true;
+    });
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    await sendNBloc(widget.position, widget.nbLocList);
+    await pause(const Duration(seconds: 60));
+    await deleteNBLoc();
+    QuerySnapshot querySnapshot = await Firestore.instance
+        .collection('users')
+        .document(user.uid)
+        .collection('nb_loc_meet')
+        .getDocuments();
+    List<DocumentSnapshot> frndList = querySnapshot.documents;
+    if (frndList.length > 1) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return ListView.builder(
+                itemCount: frndList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                      child: new Card(
+                          child: new Container(
+                              child: new Row(
+                    children: <Widget>[
+                      Text(frndList[index].data['name']),
+                      Text(frndList[index].data['phone']),
+                    ],
+                  ))));
+                });
+          });
+    } else {
+      Fluttertoast.showToast(
+          msg: "Sorry no friends available",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: PrimaryColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+    setState(() {
+      isLoadingFAB = false;
+    });
+
+    // showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return RichAlertDialog(
+    //         alertTitle: richTitle("COVID-19"),
+    //         alertSubtitle: richSubtitle(
+    //             " Due to the increase in outbreak of COVID-19 in the country this feature is currently diasabled.Stay Home Stay Safe!"),
+    //         alertType: RichAlertType.ERROR,
+    //       );
+    //     });
   }
 
   chatFab() async {

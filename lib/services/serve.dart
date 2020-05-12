@@ -51,6 +51,7 @@ Future<void> sendNBmsg() async {
 
     frnd.get().then((doc) {
       if (doc.data['connectedTo'] == 'null' &&
+          doc.data['connectedToLoc'] == 'null' &&
           doc.data['isSearching'] == false) {
         frnd.collection("nb_msg").document(user.uid).setData({
           'userid': user.uid,
@@ -137,7 +138,7 @@ Future<String> waitNBmsg() async {
     'isSearching': true,
   });
 
-  while (counter < 20) {
+  while (counter < 60) {
     DocumentSnapshot querySnapshot =
         await Firestore.instance.collection("users").document(user.uid).get();
     connectedTo = querySnapshot.data['connectedTo'];

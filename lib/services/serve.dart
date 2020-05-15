@@ -137,7 +137,7 @@ Future<String> waitNBmsg() async {
     'isSearching': true,
   });
 
-  while (counter < 20) {
+  while (counter < 60) {
     DocumentSnapshot querySnapshot =
         await Firestore.instance.collection("users").document(user.uid).get();
     connectedTo = querySnapshot.data['connectedTo'];

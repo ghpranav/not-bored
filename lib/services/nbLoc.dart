@@ -10,18 +10,6 @@ import 'package:not_bored/services/serve.dart';
 Future<void> sendNBloc(
     Position position, Map<String, GeoPoint> nbLocList) async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  await Firestore.instance
-      .collection('places')
-      .document(user.uid)
-      .collection('nb_loc')
-      .document(user.uid)
-      .setData({
-    'userid': user.uid,
-  });
-
-  await Firestore.instance.collection('places').document(user.uid).setData({
-    'show': false,
-  });
 
   nbLocList.forEach((String userid, GeoPoint pos) async {
     // final distance = await Geolocator().distanceBetween(
@@ -29,8 +17,8 @@ Future<void> sendNBloc(
     //if (distance / 1000 < 15) {
     var frnd = Firestore.instance.collection("users").document(userid);
     frnd.get().then((doc) {
-      if (doc.data['connectedToLoc'] == 'null' &&
-          doc.data['connectedTo'] == 'null') {
+      if (doc.data['connectedTo'] == 'null' &&
+          doc.data['isSearching'] == false) {
         frnd.collection("nb_loc").document(user.uid).setData({
           'userid': user.uid,
           'time': new DateTime.now().millisecondsSinceEpoch,
@@ -62,62 +50,44 @@ Future<void> rejectNBLoc(userid, frndid) async {
   await Firestore.instance
       .collection("users")
       .document(userid)
-      .collection("nb_msg")
+      .collection("nb_loc")
       .document(frndid)
       .delete();
 }
 
 Future<void> acceptNBLoc(userid, frndid) async {
-  await Firestore.instance.collection('users').document(userid).updateData({
-    'connectedToLoc': frndid,
-  });
-  await Firestore.instance.collection('users').document(frndid).updateData({
-    'connectedToLoc': frndid,
-  });
+  // await Firestore.instance.collection('users').document(userid).updateData({
+  //   'connectedToLoc': frndid,
+  // });
+  // await Firestore.instance.collection('users').document(frndid).updateData({
+  //   'connectedToLoc': frndid,
+  // });
   await Firestore.instance
-      .collection('places')
+      .collection('users')
       .document(frndid)
-      .collection('nb_loc')
+      .collection('nb_loc_meet')
       .document(userid)
-      .setData({
+      .updateData({
     'userid': userid,
   });
 }
 
-showNBLoc(userid, frndid) async {
-  int counter = 0;
-  bool show;
-  while (counter < 15) {
-    await Firestore.instance
-        .collection("places")
-        .document(frndid)
-        .get()
-        .then((docu) {
-      show = docu.data['show'];
-    });
-    if (show) break;
-    await pause(const Duration(seconds: 1));
-    counter++;
-  }
-  return show;
-}
+// waitNBLoc() async {
+//   FirebaseUser user = await FirebaseAuth.instance.currentUser();
+//   bool _show = false;
 
-waitNBLoc() async {
-  FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  bool _show = false;
+//   DocumentSnapshot querySnapshot =
+//       await Firestore.instance.collection("users").document(user.uid).get();
+//   if (querySnapshot.data['connectedToLoc'] != 'null') {
+//     await Firestore.instance.collection("places").document(user.uid).setData({
+//       'show': true,
+//     });
+//     _show = true;
+//   }
 
-  DocumentSnapshot querySnapshot =
-      await Firestore.instance.collection("users").document(user.uid).get();
-  if (querySnapshot.data['connectedToLoc'] != 'null') {
-    await Firestore.instance.collection("places").document(user.uid).setData({
-      'show': true,
-    });
-    _show = true;
-  }
-
-  await deleteNBLoc();
-  return _show;
-}
+//   await deleteNBLoc();
+//   return _show;
+// }
 
 Future<void> deleteNBLoc() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -140,4 +110,13 @@ Future<void> deleteNBLoc() async {
         .document(user.uid)
         .delete();
   });
+}
+
+Future<List> showDetails(String userid) async {
+  DocumentSnapshot doc =
+      await Firestore.instance.collection('users').document(userid).get();
+  List info = [];
+  info.add(doc.data['phone']);
+  info.add(doc.data['name']);
+  return info;
 }

@@ -109,10 +109,11 @@ class _LandingPageState extends State<LandingPage> {
               ],
             ),
           );
-        } else if (message['data']['is'] == '1') {
-          notif.notif1(message, context, widget);
         } else if (message['data']['id'] == '3') {
           notif.notif3(message, context, widget);
+          // if (await hasNbMsg() == "null") Navigator.of(context).pop();
+        } else if (message['data']['id'] == '4') {
+          notif.notif4(message, context, widget);
           // if (await hasNbMsg() == "null") Navigator.of(context).pop();
         }
         // } else if (message['data']['id'] == '4') {
@@ -162,9 +163,11 @@ class _LandingPageState extends State<LandingPage> {
         if (message['data']['id'] == '2') {
           notif.notif2(message, context, widget);
         } else if (message['data']['id'] == '1') {
-          notif.notif1(message, context, widget);
         } else if (message['data']['id'] == '3') {
           notif.notif3(message, context, widget);
+        } else if (message['data']['id'] == '4') {
+          notif.notif4(message, context, widget);
+          // if (await hasNbMsg() == "null") Navigator.of(context).pop();
         }
       },
       //when app is in background
@@ -172,9 +175,11 @@ class _LandingPageState extends State<LandingPage> {
         if (message['data']['id'] == '2') {
           notif.notif2(message, context, widget);
         } else if (message['data']['id'] == '1') {
-          notif.notif1(message, context, widget);
         } else if (message['data']['id'] == '3') {
           notif.notif3(message, context, widget);
+        } else if (message['data']['id'] == '4') {
+          notif.notif4(message, context, widget);
+          // if (await hasNbMsg() == "null") Navigator.of(context).pop();
         }
       },
     );
